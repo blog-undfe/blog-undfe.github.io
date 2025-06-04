@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Local File Inclusion (LFI) — Undefined_name blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      background: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 250, 246, 0.92);
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 60px auto;
+      background: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5em;
+      color: #c95f86;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.1em;
+      line-height: 1.7;
+      color: #444;
+    }
+
+    pre {
+      background: #f4f4f4;
+      padding: 16px;
+      border-radius: 10px;
+      overflow-x: auto;
+      font-size: 0.95em;
+      margin: 20px 0;
+    }
+
+    code {
+      font-family: monospace;
+      color: #b2356d;
+    }
+
+    a.button {
+      display: inline-block;
+      margin-top: 30px;
+      text-decoration: none;
+      background: #c95f86;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    a.button:hover {
+      background: #a14b6d;
+    }
+
+    .note {
+      background: #fff7f9;
+      border-left: 4px solid #c95f86;
+      padding: 12px 16px;
+      margin: 20px 0;
+      font-size: 0.95em;
+    }
+
+    ul {
+      margin-top: 16px;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>LFI (Local File Inclusion): Cuando tu servidor revela sus secretos</h1>
+
+    <p>Local File Inclusion (LFI) es una vulnerabilidad que permite a un atacante incluir archivos locales del servidor web en la respuesta HTTP. A menudo ocurre cuando se pasan rutas de archivos sin una validación adecuada.</p>
+
+    <div class="note">
+      <strong>Ejemplo típico vulnerable en PHP:</strong>
+      <pre><code>// index.php?page=about.php
+$page = $_GET['page'];
+include($page);</code></pre>
+    </div>
+
+    <p>Un atacante podría manipular esta entrada para cargar archivos del sistema:</p>
+
+    <pre><code>index.php?page=../../../../etc/passwd</code></pre>
+
+    <p>Este tipo de ataque puede revelar archivos sensibles, scripts del backend o incluso credenciales si se combinan con otras técnicas como wrappers (<code>php://</code>, <code>data://</code>, <code>zip://</code>).</p>
+
+    <p><strong>Consecuencias comunes:</strong></p>
+    <ul>
+      <li>Lectura de archivos como <code>/etc/passwd</code>, <code>config.php</code>, logs, etc.</li>
+      <li>Ejecutar código malicioso si hay RCE habilitado (por ejemplo, con LFI + log poisoning).</li>
+      <li>Escalada de privilegios.</li>
+    </ul>
+
+    <p><strong>¿Cómo protegerse?</strong></p>
+    <ul>
+      <li>Evitar usar rutas dinámicas sin validación.</li>
+      <li>Usar listas blancas de rutas válidas.</li>
+      <li>Desactivar funciones innecesarias como <code>allow_url_include</code> en PHP.</li>
+      <li>Monitorear logs de acceso para patrones sospechosos.</li>
+    </ul>
+
+    <p class="note">
+      Incluso un pequeño parámetro en la URL mal gestionado puede comprometer toda tu infraestructura.
+    </p>
+
+    <a href="index.html" class="button">← Volver al blog</a>
+  </div>
+</body>
+</html>

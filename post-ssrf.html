@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SSRF: cuando el servidor hace las peticiones por ti</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #fefaf6;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      background-color: #ffe2eb;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5em;
+      color: #c95f86;
+      margin-bottom: 10px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      color: #d16b8e;
+    }
+
+    p {
+      line-height: 1.6;
+      color: #444;
+    }
+
+    code, pre {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 6px;
+      display: block;
+      overflow-x: auto;
+      margin-bottom: 20px;
+      font-family: monospace;
+    }
+
+    a {
+      color: #c95f86;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 0.9em;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>SSRF: cuando el servidor hace las peticiones por ti</h1>
+    <p>Una puerta trasera a tus recursos internos</p>
+  </header>
+
+  <div class="container">
+    <h2>¿Qué es SSRF?</h2>
+    <p>
+      SSRF (Server-Side Request Forgery) ocurre cuando una aplicación web permite que el servidor realice peticiones HTTP basadas en entrada del usuario. Esto puede ser explotado para acceder a servicios internos, metadatos de la nube o incluso atacar otros sistemas desde el propio servidor.
+    </p>
+
+    <h2>Ejemplo simple</h2>
+    <p>Una funcionalidad aparentemente inofensiva como previsualizar una URL puede ser peligrosa:</p>
+
+    <pre><code>GET /preview?url=http://example.com</code></pre>
+
+    <p>Un atacante puede modificarla así:</p>
+
+    <pre><code>GET /preview?url=http://127.0.0.1:8000/admin</code></pre>
+
+    <p>Si no se valida el destino, el servidor intentará acceder a su propio panel interno.</p>
+
+    <h2>Casos reales de explotación</h2>
+    <ul>
+      <li>Acceso a APIs internas (como Redis, Elasticsearch, etc.)</li>
+      <li>Filtrado de puertos internos</li>
+      <li>Obtención de metadatos en entornos cloud (<code>http://169.254.169.254/</code> en AWS)</li>
+      <li>Incluso ejecución remota de comandos si el servicio accedido lo permite</li>
+    </ul>
+
+    <h2>Cómo prevenir SSRF</h2>
+    <ul>
+      <li>❌ No dejes que el usuario defina URLs arbitrarias</li>
+      <li>✅ Usa listas blancas de dominios permitidos</li>
+      <li>✅ Valida que las URLs no apunten a IPs internas (como 127.0.0.1, 10.x.x.x, 169.254.x.x, etc.)</li>
+      <li>✅ Usa una red separada para servicios internos sin acceso desde servicios web públicos</li>
+      <li>✅ Bloquea protocolos no HTTP (ftp://, file://, gopher://, etc.)</li>
+    </ul>
+
+    <h2>Detección</h2>
+    <p>
+      Puedes probar con URLs que apunten a IPs internas, o usar herramientas como Burp Suite o SSRFMap. También puedes intentar cargar tu propio servidor HTTP para comprobar si el servidor objetivo intenta conectarse.
+    </p>
+
+    <h2>Conclusión</h2>
+    <p>
+      SSRF es una vulnerabilidad peligrosa porque explota la confianza del servidor en sí mismo. A menudo lleva a exposición de datos sensibles, acceso no autorizado y escalación de privilegios. Controlar qué puede solicitar tu servidor es esencial para proteger tu infraestructura.
+    </p>
+
+    <p><a href="index.html">← Volver al blog</a></p>
+  </div>
+
+  <footer>
+    © 2025 Undefined_name blog
+  </footer>
+</body>
+</html>

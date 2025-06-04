@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RCE: Ejecución remota de código - Undefined_name blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      background: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 250, 246, 0.9);
+      z-index: -1;
+    }
+    header {
+      text-align: center;
+      padding: 60px 20px 40px;
+      background-color: rgba(255, 226, 235, 0.9);
+      border-bottom: 1px solid #f2cbd9;
+    }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3em;
+      color: #c95f86;
+      margin-bottom: 10px;
+    }
+    header p {
+      font-size: 1.2em;
+      color: #5e5e5e;
+    }
+    main.container {
+      max-width: 800px;
+      margin: auto;
+      padding: 40px 25px 60px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      line-height: 1.7;
+      color: #444;
+    }
+    h2 {
+      color: #d16b8e;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6em;
+      margin-top: 0;
+      margin-bottom: 25px;
+    }
+    p {
+      font-size: 1.12em;
+      margin-bottom: 20px;
+    }
+    h3 {
+      color: #c95f86;
+      font-family: 'Playfair Display', serif;
+      margin-top: 35px;
+      margin-bottom: 15px;
+      font-size: 1.7em;
+    }
+    ul {
+      margin-left: 20px;
+      margin-bottom: 20px;
+    }
+    ul li {
+      margin-bottom: 10px;
+      font-size: 1.05em;
+    }
+    a.button {
+      display: inline-block;
+      font-weight: 600;
+      color: #c95f86;
+      background-color: #fce6ed;
+      padding: 12px 22px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      margin-top: 25px;
+      box-shadow: 0 3px 8px rgba(201, 95, 134, 0.3);
+    }
+    a.button:hover {
+      background-color: #c95f86;
+      color: #fff;
+      box-shadow: 0 6px 15px rgba(201, 95, 134, 0.6);
+    }
+    code {
+      background: #f7d9e1;
+      padding: 2px 6px;
+      border-radius: 5px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Undefined_name blog</h1>
+    <p>Seguridad, desarrollo web y más</p>
+  </header>
+
+  <main class="container">
+    <h2>Ejecución remota de código (RCE): el riesgo más crítico para tu servidor</h2>
+    
+    <p>La <strong>ejecución remota de código (RCE)</strong> es una vulnerabilidad extremadamente peligrosa que permite a un atacante ejecutar código o comandos arbitrarios en el servidor afectado. Esto puede derivar en la completa toma de control del sistema, robo de información sensible, destrucción de datos y, en definitiva, comprometer la seguridad y estabilidad del entorno.</p>
+    
+    <h3>¿Cómo ocurre una vulnerabilidad RCE?</h3>
+    <p>RCE suele suceder cuando la aplicación acepta datos externos (inputs) y los interpreta como código sin validación ni sanitización adecuada. Algunos vectores comunes incluyen:</p>
+    <ul>
+      <li>Parámetros que se usan directamente en funciones como <code>eval()</code>, <code>exec()</code> o similares.</li>
+      <li>Procesamiento de archivos o plantillas que pueden incluir código malicioso.</li>
+      <li>Comandos del sistema ejecutados con parámetros controlados por el usuario.</li>
+      <li>Deserialización insegura de datos externos.</li>
+    </ul>
+
+    <h3>Impacto de una vulnerabilidad RCE</h3>
+    <p>El impacto es devastador. Un atacante puede:</p>
+    <ul>
+      <li>Obtener acceso completo al servidor o contenedor afectado.</li>
+      <li>Leer, modificar o eliminar bases de datos, archivos o configuraciones.</li>
+      <li>Instalar malware, puertas traseras o mineros de criptomonedas.</li>
+      <li>Escalar privilegios para controlar redes internas o servicios en la nube.</li>
+      <li>Exfiltrar información sensible de clientes, empleados o la empresa.</li>
+    </ul>
+
+    <h3>¿Cómo prevenir la ejecución remota de código?</h3>
+    <ul>
+      <li><strong>Validar y sanitizar</strong> estrictamente toda entrada de usuario.</li>
+      <li>Evitar el uso de funciones peligrosas como <code>eval()</code> o <code>exec()</code> con datos externos.</li>
+      <li>Usar <strong>listas blancas</strong> para controlar qué comandos o scripts se pueden ejecutar.</li>
+      <li>Implementar políticas de <strong>mínimos privilegios</strong> en sistemas y contenedores.</li>
+      <li>Aplicar <strong>sandboxing</strong> o entornos controlados para la ejecución de código.</li>
+      <li>Mantener software, frameworks y dependencias actualizadas.</li>
+      <li>Realizar auditorías y pruebas de seguridad periódicas, incluyendo pentesting.</li>
+    </ul>
+
+    <h3>Ejemplo simple de RCE vulnerable (PHP)</h3>
+    <pre><code>&lt;?php
+// Vulnerable a RCE:
+if (isset($_GET['cmd'])) {
+  $cmd = $_GET['cmd'];
+  system($cmd);
+}
+?&gt;
+</code></pre>
+    <p>En este ejemplo, el parámetro <code>cmd</code> es ejecutado directamente en el sistema, permitiendo a un atacante enviar cualquier comando.</p>
+
+    <h3>Conclusión</h3>
+    <p>La ejecución remota de código es la pesadilla de cualquier administrador o desarrollador web. Evitarla requiere disciplina, buenas prácticas de programación y un enfoque preventivo continuo. Si tienes una web con acceso a servidores o que ejecuta código dinámico, nunca bajes la guardia.</p>
+
+    <a href="index.html" class="button">← Volver al blog</a>
+  </main>
+</body>
+</html>

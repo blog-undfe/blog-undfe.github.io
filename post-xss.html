@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cross-Site Scripting (XSS)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fefaf6;
+      color: #333;
+      line-height: 1.6;
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: #c95f86;
+    }
+    pre {
+      background: #272822;
+      color: #f8f8f2;
+      padding: 1rem;
+      overflow-x: auto;
+      border-radius: 8px;
+    }
+    code {
+      color: #f1fa8c;
+    }
+    .tip {
+      background: #dff9fb;
+      padding: 1rem;
+      border-left: 5px solid #00cec9;
+      margin: 1rem 0;
+    }
+    .warning {
+      background: #ffeaa7;
+      padding: 1rem;
+      border-left: 5px solid #e17055;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🛡️ Cross-Site Scripting (XSS)</h1>
+
+  <p><strong>XSS</strong> permite a un atacante inyectar código JavaScript en una página web que otros usuarios visitan, provocando robo de datos, suplantación de identidad, o acciones automatizadas.</p>
+
+  <h2>🔍 Tipos de XSS</h2>
+  <ul>
+    <li><strong>Reflejado:</strong> El payload se refleja directamente en la respuesta.</li>
+    <li><strong>Persistente:</strong> El script se guarda en la base de datos y se ejecuta cada vez que se carga la página.</li>
+    <li><strong>DOM-based:</strong> Se ejecuta debido a manipulaciones del DOM en el lado del cliente.</li>
+  </ul>
+
+  <h2>💥 Ejemplo de XSS reflejado</h2>
+  <pre><code>URL: https://example.com?q=&lt;script&gt;alert('XSS')&lt;/script&gt;
+
+Respuesta del servidor:
+Hola &lt;script&gt;alert('XSS')&lt;/script&gt;</code></pre>
+
+  <h2>🛠️ Cómo se explota</h2>
+  <ul>
+    <li><strong>Campos de búsqueda, formularios, URLs</strong> mal sanitizados</li>
+    <li><strong>Parámetros que se insertan directamente en el DOM</strong></li>
+    <li>Contenido HTML generado dinámicamente sin escaping</li>
+  </ul>
+
+  <h2>🔐 Prevención</h2>
+
+  <div class="tip">
+    <strong>1. Escapa todo el contenido dinámico en HTML:</strong>
+    <pre><code>&lt;%= userInput %&gt; → correcto
+&lt;%= raw userInput %&gt; → ❌ vulnerable</code></pre>
+  </div>
+
+  <div class="tip">
+    <strong>2. Usa CSP (Content Security Policy):</strong>
+    <pre><code>Content-Security-Policy: default-src 'self'; script-src 'self'</code></pre>
+  </div>
+
+  <div class="tip">
+    <strong>3. Valida y filtra entrada del usuario:</strong>
+    <pre><code>re.match("^[a-zA-Z0-9 ]+$", entrada)</code></pre>
+  </div>
+
+  <div class="tip">
+    <strong>4. Usa frameworks que hacen escaping automáticamente:</strong>
+    <ul>
+      <li>React</li>
+      <li>Angular</li>
+      <li>Vue (con delimitadores estándar)</li>
+    </ul>
+  </div>
+
+  <h2>📉 Consecuencias de XSS</h2>
+  <ul>
+    <li>Robo de cookies y sesiones</li>
+    <li>Phishing y suplantación de interfaces</li>
+    <li>Control total del navegador víctima</li>
+  </ul>
+
+  <h2>✅ Conclusión</h2>
+  <p>XSS es tan peligroso como común. Escapa el contenido, valida siempre lo que venga del usuario y evita crear HTML desde strings sin filtros.</p>
+
+</body>
+</html>

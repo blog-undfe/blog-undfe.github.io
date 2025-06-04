@@ -1,70 +1,167 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Undefined_name blog</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta property="og:type" content="Undefined name site" />
+  <meta property="og:description" content="My bio🤍" />
+  <meta name="theme-color" content="#111" />
+  <meta name="keywords" content="hacking, ciberseguridad, modder, hacking.tel, pentesting, seguridad informática, ethical hacking, exploit, vulnerabilidades, OSINT, malware, forense digital, redes, anonimato, seguridad web, hacking ético, herramientas hacking, hacking móvil, ciberataques, defensa cibernética, programación hacking, Linux hacking, ataques de red, exploits, cracking, seguridad en internet, deep web, dark web, cifrado, privacidad digital, anonimato en línea, ingeniería inversa, test de penetración, sniffing, hacking wifi, hacking Android, hacking iOS, hacking bancario, ciberseguridad empresarial, undefined_name, exploit zero-day, backdoors, seguridad en servidores, ataques DDoS, seguridad en Telegram, ciberespionaje, OSINT avanzado, ethical hacker, hacking avanzado, seguridad digital">
+  <meta name="robots" content="index, nofollow, noarchive, nosnippet">
+  <meta name="author" content="undefined_name">
+  <meta name="googlebot" content="index, nofollow, noarchive, nosnippet">
+  <meta name="bingbot" content="index, nofollow, noarchive, nosnippet">
+  <meta name="revisit-after" content="1 day">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQujrhZYb3wjXbTgX2y3Na6kkY5k97zIatokKOGAx74kiJygSWPblTpNqNFuqVhZLM3fQ0&usqp=CAU">
+  <meta name="theme-color" content="#ff0000"> 
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#00ff00">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0000ff">
+  <meta name="theme-color" media="(max-width: 600px)" content="#ff00ff">
+  <link rel="icon" type="image/x-icon" href="https://undfe.github.io/resources/stolaspfpbyundefinedname.jpg" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background-color: #fefaf6;
       color: #333;
+      background: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 250, 246, 0.9);
+      z-index: -1;
     }
 
     header {
       text-align: center;
-      padding: 40px 20px;
-      background-color: #ffe2eb;
+      padding: 40px 20px 30px;
+      background-color: rgba(255, 226, 235, 0.9);
+      border-bottom: 1px solid #f2cbd9;
     }
 
     header h1 {
       font-family: 'Playfair Display', serif;
       font-size: 2.8em;
       color: #c95f86;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 1.1em;
+      color: #5e5e5e;
+      margin: 0;
     }
 
     .container {
-      max-width: 800px;
+      max-width: 1100px;
       margin: auto;
-      padding: 30px 20px;
+      padding: 30px 15px 60px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      justify-content: center;
     }
 
     .post {
       background: #fff;
       border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-      margin-bottom: 30px;
+      padding: 20px 18px 24px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+      flex: 1 1 300px; /* crece y se encoge, ancho base 300px */
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .post:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
     }
 
     .post h2 {
       color: #d16b8e;
       font-family: 'Playfair Display', serif;
-      font-size: 1.8em;
-      margin-top: 0;
+      font-size: 1.5em;
+      margin: 0 0 12px;
+      line-height: 1.25;
+      flex-shrink: 0;
     }
 
     .post p {
-      color: #555;
-      line-height: 1.6;
+      color: #444;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin: 0 0 14px;
+      flex-grow: 1;
     }
 
     .post a {
-      text-decoration: none;
-      color: #c95f86;
+      font-size: 0.85em;
       font-weight: 600;
-      display: inline-block;
-      margin-top: 10px;
+      color: #c95f86;
+      background-color: #fce6ed;
+      padding: 6px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.25s ease;
+      align-self: flex-start;
+      user-select: none;
+      box-shadow: 0 3px 6px rgba(201, 95, 134, 0.3);
+    }
+
+    .post a:hover {
+      color: #fff;
+      background-color: #c95f86;
+      box-shadow: 0 6px 15px rgba(201, 95, 134, 0.7);
+    }
+
+    /* Espacio reservado para anuncios (ejemplo: bloques vacíos) */
+    .ad-slot {
+      flex: 1 1 320px;
+      max-width: 320px;
+      height: 250px;
+      background: transparent;
+      margin: 10px 0;
+      /* no contenido visible, solo espacio para cuando añadas ads */
     }
 
     footer {
       text-align: center;
-      padding: 40px 20px;
+      padding: 30px 15px 50px;
       font-size: 0.9em;
-      color: #aaa;
+      color: #999;
+    }
+
+    footer .main-site {
+      margin-top: 15px;
+      font-weight: 600;
+      color: #c95f86;
+      text-decoration: none;
+      display: inline-block;
+      transition: color 0.3s ease;
+    }
+
+    footer .main-site:hover {
+      color: #a14b6d;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 720px) {
+      .container {
+        justify-content: center;
+      }
+      .post, .ad-slot {
+        max-width: 100%;
+        flex: 1 1 100%;
+      }
     }
   </style>
 </head>
@@ -80,10 +177,42 @@
       <p>Una vulnerabilidad que muchos subestiman: la inyección de plantillas en motores como Jinja2, Twig o Handlebars puede convertirse en una puerta peligrosa hacia la ejecución de código no autorizado.</p>
       <a href="post-inyeccion-plantillas.html">Leer más →</a>
     </div>
+
+    <div class="post">
+      <h2>Cross-site scripting (XSS): cuando tu navegador te traiciona</h2>
+      <p>XSS permite inyectar scripts maliciosos en páginas web que terminan ejecutándose en el navegador de la víctima. Puede robar cookies, secuestrar sesiones y mucho más.</p>
+      <a href="post-xss.html">Leer más →</a>
+    </div>
+
+    <div class="post">
+      <h2>SQL Injection: cuando tu base de datos te traiciona</h2>
+      <p>La inyección SQL permite a un atacante manipular consultas a la base de datos. Si no está protegido, podría acceder a usuarios, contraseñas y hasta tomar control del sistema completo.</p>
+      <a href="post-sqli.html">Leer más →</a>
+    </div>
+
+    <div class="post">
+      <h2>SSRF: cuando el servidor hace las peticiones por ti</h2>
+      <p>El ataque SSRF permite que un atacante obligue al servidor a hacer peticiones HTTP arbitrarias, accediendo a recursos internos, metadatos en la nube o incluso exfiltrando información crítica.</p>
+      <a href="post-ssrf.html">Leer más →</a>
+    </div>
+
+    <div class="post">
+      <h2>LFI: cuando tu servidor expone sus archivos</h2>
+      <p>El ataque de Local File Inclusion permite a un atacante leer archivos sensibles en el servidor web, accediendo a configuraciones, credenciales y otros secretos.</p>
+      <a href="post-lfi.html">Leer más →</a>
+    </div>
+
+    <div class="post">
+      <h2>Ejecución remota de código (RCE): el riesgo más crítico para tu servidor</h2>
+      <p>RCE permite a un atacante ejecutar comandos o código arbitrario en el servidor, comprometiendo toda la seguridad.</p>
+      <a href="post-rce.html">Leer más →</a>
+    </div>
+
   </div>
 
   <footer>
-      © 2025 Undefined_name blog
+    © 2025 Undefined_name blog<br />
+    <a href="https://undfe.github.io" class="main-site" target="_blank" rel="noopener noreferrer">Página web principal: https://undfe.github.io</a>
   </footer>
 </body>
 </html>
