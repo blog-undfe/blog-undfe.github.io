@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Inyección de Plantillas del Lado del Servidor (SSTI)</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      line-height: 1.6;
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1, h2 {
+      color: #2c3e50;
+    }
+    pre {
+      background: #272822;
+      color: #f8f8f2;
+      padding: 1rem;
+      overflow-x: auto;
+      border-radius: 8px;
+    }
+    code {
+      color: #c3e88d;
+    }
+    .warning {
+      background: #ffeaa7;
+      padding: 1rem;
+      border-left: 5px solid #e17055;
+      margin: 1rem 0;
+    }
+    .tip {
+      background: #dff9fb;
+      padding: 1rem;
+      border-left: 5px solid #00cec9;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🛡️ Inyección de Plantillas del Lado del Servidor (SSTI)</h1>
+
+  <p><strong>SSTI</strong> ocurre cuando tu aplicación web inserta datos del usuario directamente en una plantilla sin validación, permitiendo que se ejecute código malicioso.</p>
+
+  <h2>💥 Ejemplo Básico</h2>
+  <pre><code>Plantilla: Hola {{nombre}}
+Entrada legítima: Juan
+Resultado: Hola Juan
+
+Entrada maliciosa: {{7*7}}
+Resultado: Hola 49</code></pre>
+
+  <div class="warning">
+    ¡Si ves un resultado como <code>49</code> en lugar de <code>{{7*7}}</code>, tu plantilla es vulnerable!
+  </div>
+
+  <h2>🔍 ¿Cómo funcionan las plantillas?</h2>
+  <p>Normalmente, las plantillas sólo deberían mostrar datos:</p>
+  <pre><code>template = "Bienvenido {{usuario}}, tienes {{mensajes}} mensajes"
+render(usuario="Ana", mensajes=5)</code></pre>
+  <p>Pero si el usuario puede modificar la estructura de la plantilla... 😱</p>
+
+  <h2>🕵️ Motores de Plantillas Vulnerables</h2>
+  <ul>
+    <li><strong>Jinja2 (Python)</strong>: <code>{{config}}</code> expone configuración.</li>
+    <li><strong>Twig (PHP)</strong>: permite ejecución remota.</li>
+    <li><strong>Handlebars (JS)</strong>: puede ejecutar comandos del sistema.</li>
+  </ul>
+
+  <h2>🎯 Escenarios de Ataque</h2>
+  <ul>
+    <li><strong>Divulgación de Información:</strong> <code>{{request.environ}}</code></li>
+    <li><strong>Ejecución Remota:</strong> <code>{{''.__class__.__mro__[2].__subclasses__()[40]('/etc/passwd').read()}}</code></li>
+    <li><strong>Acceso a Archivos:</strong> lectura y escritura de archivos maliciosos.</li>
+  </ul>
+
+  <h2>🛠️ Cómo Detectarlo</h2>
+  <pre><code>{{7*7}} → ¿devuelve 49?
+{{''.__class__}} → ¿expone clases?</code></pre>
+
+  <h2>🛡️ Prevención</h2>
+  <div class="tip">
+    <strong>1. Nunca insertes entrada del usuario directamente:</strong>
+    <pre><code># ❌ Malo:
+render_template_string(f"Hola {usuario}")
+
+# ✅ Bueno:
+render_template("hola.html", nombre=usuario)</code></pre>
+  </div>
+
+  <div class="tip">
+    <strong>2. Valida y filtra entrada:</strong>
+    <pre><code>re.match("^[a-zA-Z0-9 ]+$", entrada)</code></pre>
+  </div>
+
+  <div class="tip">
+    <strong>3. Usa entornos seguros (sandbox):</strong>
+    <pre><code>from jinja2.sandbox import SandboxedEnvironment</code></pre>
+  </div>
+
+  <div class="tip">
+    <strong>4. Limita las funciones disponibles:</strong>
+    <pre><code>env.globals.update({'upper': str.upper})</code></pre>
+  </div>
+
+  <h2>🔐 Casos Reales</h2>
+  <ul>
+    <li><strong>Uber:</strong> $10,000 de recompensa por un bug SSTI</li>
+    <li><strong>Shopify:</strong> acceso a datos sensibles desde plantillas</li>
+  </ul>
+
+  <h2>✅ Conclusión</h2>
+  <p>Las plantillas deben mostrar datos, no ejecutar código. Usa buenas prácticas, evita insertar entradas sin validar, y no confíes ciegamente en tu framework.</p>
+
+</body>
+</html>
