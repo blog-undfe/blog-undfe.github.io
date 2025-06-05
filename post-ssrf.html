@@ -9,37 +9,41 @@
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background-color: #fefaf6;
+      background: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: #333;
     }
 
-    header {
-      text-align: center;
-      padding: 40px 20px;
-      background-color: #ffe2eb;
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 250, 246, 0.95);
+      z-index: -1;
     }
 
-    header h1 {
+    .content {
+      max-width: 900px;
+      margin: 50px auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px 30px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    h1, h2 {
       font-family: 'Playfair Display', serif;
-      font-size: 2.5em;
       color: #c95f86;
-      margin-bottom: 10px;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 30px 20px;
-    }
-
-    h2 {
-      font-family: 'Playfair Display', serif;
-      color: #d16b8e;
     }
 
     p {
       line-height: 1.6;
       color: #444;
+    }
+
+    ul {
+      padding-left: 1.2em;
+      margin-bottom: 1.5rem;
     }
 
     code, pre {
@@ -48,7 +52,7 @@
       border-radius: 6px;
       display: block;
       overflow-x: auto;
-      margin-bottom: 20px;
+      margin: 10px 0 20px;
       font-family: monospace;
     }
 
@@ -58,21 +62,45 @@
       text-decoration: none;
     }
 
+    .back-button {
+      display: inline-block;
+      margin-top: 2rem;
+      text-decoration: none;
+      background-color: #fce6ed;
+      color: #c95f86;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .back-button:hover {
+      background-color: #c95f86;
+      color: #fff;
+    }
+
     footer {
       text-align: center;
       padding: 40px 20px;
       font-size: 0.9em;
       color: #aaa;
     }
+
+    .subtitle {
+      margin-top: -1rem;
+      margin-bottom: 2rem;
+      color: #777;
+      font-size: 1.1rem;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>SSRF: cuando el servidor hace las peticiones por ti</h1>
-    <p>Una puerta trasera a tus recursos internos</p>
-  </header>
 
-  <div class="container">
+  <div class="content">
+    <h1>SSRF: cuando el servidor hace las peticiones por ti</h1>
+    <p class="subtitle">Una puerta trasera a tus recursos internos</p>
+
     <h2>¿Qué es SSRF?</h2>
     <p>
       SSRF (Server-Side Request Forgery) ocurre cuando una aplicación web permite que el servidor realice peticiones HTTP basadas en entrada del usuario. Esto puede ser explotado para acceder a servicios internos, metadatos de la nube o incluso atacar otros sistemas desde el propio servidor.
@@ -99,11 +127,11 @@
 
     <h2>Cómo prevenir SSRF</h2>
     <ul>
-      <li>❌ No dejes que el usuario defina URLs arbitrarias</li>
-      <li>✅ Usa listas blancas de dominios permitidos</li>
-      <li>✅ Valida que las URLs no apunten a IPs internas (como 127.0.0.1, 10.x.x.x, 169.254.x.x, etc.)</li>
-      <li>✅ Usa una red separada para servicios internos sin acceso desde servicios web públicos</li>
-      <li>✅ Bloquea protocolos no HTTP (ftp://, file://, gopher://, etc.)</li>
+      <li>No dejes que el usuario defina URLs arbitrarias</li>
+      <li>Usa listas blancas de dominios permitidos</li>
+      <li>Valida que las URLs no apunten a IPs internas (como 127.0.0.1, 10.x.x.x, 169.254.x.x, etc.)</li>
+      <li>Usa una red separada para servicios internos sin acceso desde servicios web públicos</li>
+      <li>Bloquea protocolos no HTTP (ftp://, file://, gopher://, etc.)</li>
     </ul>
 
     <h2>Detección</h2>
@@ -116,11 +144,12 @@
       SSRF es una vulnerabilidad peligrosa porque explota la confianza del servidor en sí mismo. A menudo lleva a exposición de datos sensibles, acceso no autorizado y escalación de privilegios. Controlar qué puede solicitar tu servidor es esencial para proteger tu infraestructura.
     </p>
 
-    <p><a href="index.html">← Volver al blog</a></p>
+    <a class="back-button" href="index.html">← Volver al blog</a>
   </div>
 
   <footer>
     © 2025 Undefined_name blog
   </footer>
+
 </body>
 </html>
