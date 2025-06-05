@@ -1,22 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SQL Injection (SQLi)</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
+      margin: 0;
       font-family: 'Inter', sans-serif;
-      background-color: #fefaf6;
+      background: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: #333;
-      line-height: 1.6;
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 250, 246, 0.95);
+      z-index: -1;
+    }
+    .content {
+      max-width: 900px;
+      margin: 50px auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px 30px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     }
     h1, h2 {
       font-family: 'Playfair Display', serif;
       color: #c95f86;
+    }
+    p {
+      line-height: 1.6;
+      color: #444;
+    }
+    ul {
+      padding-left: 1.2em;
+      margin-bottom: 1.5rem;
     }
     pre {
       background: #272822;
@@ -24,104 +46,135 @@
       padding: 1rem;
       overflow-x: auto;
       border-radius: 8px;
+      margin-bottom: 20px;
     }
     code {
       color: #f1fa8c;
+      font-family: monospace;
+    }
+    .tip, .warning {
+      padding: 1rem;
+      border-left: 5px solid;
+      margin: 1rem 0;
+      border-radius: 6px;
     }
     .tip {
-      background: #dff9fb;
-      padding: 1rem;
-      border-left: 5px solid #00cec9;
-      margin: 1rem 0;
+      background: #eafafc;
+      border-color: #00cec9;
     }
     .warning {
-      background: #ffeaa7;
-      padding: 1rem;
-      border-left: 5px solid #e17055;
-      margin: 1rem 0;
+      background: #fff4e5;
+      border-color: #e17055;
+    }
+    .back-button {
+      display: inline-block;
+      margin-top: 2rem;
+      text-decoration: none;
+      background-color: #fce6ed;
+      color: #c95f86;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .back-button:hover {
+      background-color: #c95f86;
+      color: #fff;
+    }
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 0.9em;
+      color: #aaa;
     }
   </style>
 </head>
 <body>
 
-  <h1>🕳️ SQL Injection (SQLi): la grieta en tu base de datos</h1>
+  <div class="content">
+    <h1>SQL Injection (SQLi)</h1>
+    <p><strong>SQLi</strong> ocurre cuando una aplicación web permite que el usuario inyecte instrucciones SQL directamente en las consultas que se ejecutan contra la base de datos.</p>
 
-  <p><strong>SQLi</strong> ocurre cuando una aplicación web permite que el usuario inyecte instrucciones SQL directamente en las consultas que se ejecutan contra la base de datos.</p>
+    <h2>¿Cómo se hace un volcado de base de datos con SQLi?</h2>
+    <p>Si un formulario o parámetro no está protegido, el atacante puede insertar código SQL como:</p>
+    <pre><code>' OR '1'='1</code></pre>
 
-  <h2>💥 ¿Cómo se hace un volcado de base de datos con SQLi?</h2>
-  <p>Si un formulario o parámetro no está protegido, el atacante puede insertar código SQL como:</p>
-  <pre><code>' OR '1'='1</code></pre>
+    <p>Y convertir una consulta como:</p>
+    <pre><code>SELECT * FROM usuarios WHERE usuario = '$input'</code></pre>
 
-  <p>Y convertir una consulta como:</p>
-  <pre><code>SELECT * FROM usuarios WHERE usuario = '$input'</code></pre>
+    <p>en:</p>
+    <pre><code>SELECT * FROM usuarios WHERE usuario = '' OR '1'='1'</code></pre>
 
-  <p>en:</p>
-  <pre><code>SELECT * FROM usuarios WHERE usuario = '' OR '1'='1'</code></pre>
+    <h2>¿Qué puede hacer un atacante?</h2>
+    <ul>
+      <li>Obtener todos los usuarios (dump de base de datos)</li>
+      <li>Ver correos, contraseñas, direcciones de clientes y empleados</li>
+      <li>Buscar campos como <code>admin</code>, <code>password</code>, <code>token</code></li>
+      <li>Modificar o eliminar datos</li>
+      <li>Tomar control del panel de administración</li>
+    </ul>
 
-  <h2>🔍 ¿Qué puede hacer un atacante?</h2>
-  <ul>
-    <li>Obtener todos los usuarios (dump de base de datos)</li>
-    <li>Ver correos, contraseñas, direcciones de clientes y empleados</li>
-    <li>Buscar campos como <code>admin</code>, <code>password</code>, <code>token</code></li>
-    <li>Modificar o eliminar datos</li>
-    <li>Tomar control del panel de administración</li>
-  </ul>
+    <h2>Ejemplo práctico: volcado con <code>UNION SELECT</code></h2>
+    <pre><code>https://example.com/producto.php?id=1 UNION SELECT nombre, contraseña FROM usuarios</code></pre>
+    <p>Esto muestra en pantalla nombres y contraseñas si no está protegido.</p>
 
-  <h2>📥 Ejemplo práctico: volcado con `UNION SELECT`</h2>
-  <pre><code>https://example.com/producto.php?id=1 UNION SELECT nombre, contraseña FROM usuarios</code></pre>
+    <h2>Exploits avanzados</h2>
+    <ul>
+      <li>Enumerar tablas y columnas usando <code>information_schema</code></li>
+      <li>Usar técnicas de <strong>blind SQLi</strong> cuando no hay errores visibles</li>
+      <li>Escalar a ejecución de comandos si el motor lo permite (MySQL con <code>LOAD_FILE</code>, <code>INTO OUTFILE</code>)</li>
+    </ul>
 
-  <p>Esto muestra en pantalla nombres y contraseñas si no está protegido.</p>
+    <h2>Prevención</h2>
 
-  <h2>🧨 Exploits avanzados</h2>
-  <ul>
-    <li>Enumerar tablas y columnas usando <code>information_schema</code></li>
-    <li>Usar técnicas de <strong>blind SQLi</strong> cuando no hay errores visibles</li>
-    <li>Escalar a ejecución de comandos si el motor lo permite (MySQL con `LOAD_FILE`, `INTO OUTFILE`)</li>
-  </ul>
-
-  <h2>🔐 Prevención</h2>
-
-  <div class="tip">
-    <strong>1. Prepared Statements (consultas preparadas)</strong>
-    <pre><code>// PHP con PDO
+    <div class="tip">
+      <strong>1. Prepared Statements (consultas preparadas)</strong>
+      <pre><code>// PHP con PDO
 $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE usuario = ?");
 $stmt->execute([$usuario]);</code></pre>
-  </div>
+    </div>
 
-  <div class="tip">
-    <strong>2. Validar y filtrar inputs</strong>
-    <p>No permitas símbolos raros, comillas, comentarios SQL o palabras clave sin filtrar.</p>
-  </div>
+    <div class="tip">
+      <strong>2. Validar y filtrar inputs</strong>
+      <p>No permitas símbolos raros, comillas, comentarios SQL o palabras clave sin filtrar.</p>
+    </div>
 
-  <div class="tip">
-    <strong>3. Minimizar permisos de la base de datos</strong>
-    <p>El usuario de la app NO debe tener acceso a DROP, DELETE global o SELECT sobre todas las tablas.</p>
-  </div>
+    <div class="tip">
+      <strong>3. Minimizar permisos de la base de datos</strong>
+      <p>El usuario de la app NO debe tener acceso a DROP, DELETE global o SELECT sobre todas las tablas.</p>
+    </div>
 
-  <div class="tip">
-    <strong>4. Usa ORM modernos</strong>
+    <div class="tip">
+      <strong>4. Usa ORM modernos</strong>
+      <ul>
+        <li>SQLAlchemy (Python)</li>
+        <li>Prisma (Node)</li>
+        <li>Eloquent (Laravel)</li>
+      </ul>
+    </div>
+
+    <h2>¿Qué tipo de datos suelen estar en peligro?</h2>
     <ul>
-      <li>SQLAlchemy (Python)</li>
-      <li>Prisma (Node)</li>
-      <li>Eloquent (Laravel)</li>
+      <li>Datos personales (nombre, email, DNI)</li>
+      <li>Contraseñas y hashes</li>
+      <li>Direcciones físicas</li>
+      <li>Pedidos, compras, historial</li>
+      <li>Datos internos de empleados y admins</li>
     </ul>
+
+    <div class="warning">
+      Un SQLi exitoso puede significar acceso total a todos los sistemas si los mismos credenciales están en varios servicios.
+    </div>
+
+    <h2>Conclusión</h2>
+    <p>Una web con SQL sin protección es una invitación abierta a ser vaciada. Protege las consultas, valida la entrada, y nunca confíes en los datos del usuario.</p>
+
+    <a class="back-button" href="index.html">← Volver al blog</a>
   </div>
 
-  <h2>📊 ¿Qué tipo de datos suelen estar en peligro?</h2>
-  <ul>
-    <li>Datos personales (nombre, email, DNI)</li>
-    <li>Contraseñas y hashes</li>
-    <li>Direcciones físicas</li>
-    <li>Pedidos, compras, historial</li>
-    <li>Datos internos de empleados y admins</li>
-  </ul>
-
-  <div class="warning">
-    Un SQLi exitoso puede significar acceso total a todos los sistemas si los mismos credenciales están en varios servicios.
-  </div>
-
-  <h2>✅ Conclusión</h2>
-  <p>Una web con SQL sin protección es una invitación abierta a ser vaciada. Protege las consultas, valida la entrada, y nunca confíes en los datos del usuario.</p>
+  <footer>
+    © 2025 Undefined_name blog
+  </footer>
 
 </body>
 </html>
