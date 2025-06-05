@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Métodos para interceptar tráfico móvil y SMS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fefaf6;
+      background: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      line-height: 1.6;
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: #c95f86;
+      margin-bottom: 1rem;
+    }
+    p, ul, ol, pre, code {
+      margin-bottom: 1rem;
+    }
+    pre {
+      background: #272822;
+      color: #f8f8f2;
+      padding: 1rem;
+      overflow-x: auto;
+      border-radius: 8px;
+    }
+    code {
+      color: #f1fa8c;
+      font-family: monospace;
+    }
+    .content {
+      white-space: pre-wrap; /* para respetar saltos de línea */
+    }
+    a {
+      color: #c95f86;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Métodos para interceptar tráfico móvil y SMS</h1>
+
+  <div class="content">
+Aprenda qué es SS7 y sus ventajas
+
+<div style="text-align:center; margin: 20px 0;">
+  <iframe 
+    width="560" 
+    height="315" 
+    src="https://www.youtube.com/embed/jtmxBbu-3Xg" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+</div>
+
+
+En este tema quiero hablar sobre cómo trabajar con equipos GSM y facilitar el estudio, la construcción y el uso de sistemas de monitoreo y gestión del tráfico GSM.
+
+La información de este artículo contradice la información que puede encontrar en las noticias, las fuentes de noticias y el periodismo de investigación, porque... están escritos por personas que necesitan una sensación y no una imagen real, y ni siquiera todos los sitios de "seguridad" brindan información real porque con el mismo gsm, es posible que simplemente no funcionen y tengan un excelente conocimiento de la protección, por ejemplo, contra DDoS.
+
+Métodos de interceptación de tráfico.
+1. Método pasivo
+
+Escuchas telefónicas de un teléfono móvil interceptando y decodificando el tráfico GSM.
+
+Los dispositivos para estos fines se venden libremente en Internet, aunque su costo comienza en 50 mil dólares. En términos generales, dicho dispositivo es un ordenador portátil al que se conecta una antena...
+
+Este dispositivo escanea los canales celulares a tu alrededor. Y permite conectarse a uno de los canales e interceptar información. Pero hay un matiz: toda la información se intercepta de forma cifrada. Para descifrar, debe utilizar "tablas arcoíris" y la herramienta Kraken.
+
+Este método de interceptación es difícil de utilizar incluso para un especialista experimentado, ya que un operador de telefonía móvil tiene al menos 4-5 ARFCN, respectivamente, es necesario conectarse a cada uno de estos canales y buscar información... Con la ayuda de tal complejo es imposible encontrar un número de teléfono específico, porque .To. se almacenan en la base de datos del operador celular. Para realizar llamadas y SMS, se utiliza IMSI, el identificador interno de la tarjeta SIM.
+
+¿Cómo encontrar el IMSI de un suscriptor?
+
+Para encontrar este número, debe realizar una solicitud HLR para el número del suscriptor:
+
+SMS de prueba HLR
+
+2. Método activo
+
+Este método implica una interferencia activa en el funcionamiento de la red GSM existente. La herramienta principal es una estación base falsa, que actúa como puente entre los suscriptores y la estación base legítima del operador.
+
+Para implementar este método, puede utilizar equipos profesionales (desde $120 000), semiprofesionales (desde $5000) o amateurs (desde $420).
+
+La diferencia entre estas soluciones está en 3 cosas:
+
+Marca (después de todo, la atención se centra en los servicios especiales)
+3. Funcionalidad auxiliar (protección térmica, batería, modo "wake-on-t", etc.)
+
+4. El número de módulos de radio es probablemente el parámetro más importante que no está disponible en bladerf/hackrf y otros equipos de aficionados; funciona simultáneamente con varios operadores y en diferentes frecuencias;
+
+
+Cifrado, mesas arcoiris, Kraken, unicornios y agencias de inteligencia del planeta Nibiru.
+
+Muchos usuarios confunden los métodos activo y pasivo de interceptación de tráfico y han creado su propia secta "Testigos del uso de tablas arcoíris en el método activo de interceptación".
+
+Veamos los problemas de cifrado y comencemos con los tipos de cifrado:
+
+A5/0: texto sin formato, sin cifrado o deshabilitado
+
+A5/1: cifrado de transmisión habilitado;
+
+A5/2 - modificación de A5/1 con complejidad deliberadamente reducida
+
+A5/3 - (Kasumi) del creador de RSA apareció con la llegada de la red 3g
+
+A5/4 - modificación de Kasumi para operación en redes LTE
+
+¿Cómo ocurre el hackeo?
+
+A diferencia del método de interceptación pasivo, en el método activo el atacante controla él mismo el cifrado. Todos los modelos del cifrado A5 utilizan una clave que es almacenada tanto por el operador como por el suscriptor en su tarjeta SIM, esta clave es única para cada suscriptor y para protegerla hay un criptochip especial para cada tarjeta SIM y este criptochip hará todo que le dice la estación base. La BS falsa la presenta el suscriptor a la BS real y la BS real la presenta el suscriptor, mientras que para el dispositivo del suscriptor el cifrado se reduce al nivel A5/2, que se descifra en línea sobre la marcha y en ese momento aparece la trampa. RECUPERA LA CLAVE SECRETA DEL SUSCRIPTOR y luego restablece la conexión al nivel anterior de cifrado. Por lo tanto, una vez recibida la clave de cifrado del suscriptor, el atacante no necesita Krakens ni Rainbow Tables y puede descifrar todo en línea.
+
+4. Método interactivo
+
+Acceso completo a SMS, llamadas y geolocalización de cualquier suscriptor en cualquier parte del mundo.
+
+Puede recibir diferentes nombres, pero su esencia se reduce a acceder a la red móvil y explotar la vulnerabilidad del protocolo SS7 (SS7). El acceso en sí es ip+port+login+pass, pero de esta forma solo puede ser utilizado por aquellos que ya han tenido experiencia comunicándose con él.
+
+¿Dónde puedo comprar?
+
+Mucha gente intenta buscar en el TOP algún tipo de sitio "hacker" como TYTS , pero, aparte de los estafadores, es poco probable que se topen con alguien más. En cambio, el acceso se puede obtener de forma oficial o semioficial de operadores de telecomunicaciones y estructuras individuales involucradas en la interceptación de GSM sobre bases completamente legales.
+
+Lista de empresas que proporcionan acceso a ss7
+A menudo, el acceso se ofrece sólo a organizaciones gubernamentales, pero al realizar una transacción (pago con Bitcoin o banco de garantía), los momentos de verificación se reducen a "confiamos en usted".
+
+Pero aquí hay un problema, en el proceso de compra de acceso es necesario acordar claramente el territorio de acceso, lo cierto es que el acceso al suscriptor solo puede limitarse al territorio del país del que usted es representante y cuando Si intenta acceder a otros países, simplemente se desconecta y luego se le informa un enlace a las reglas que violó y nadie le devolverá el dinero, pero a menudo dichas prohibiciones se implementan en la interfaz web del usuario a la que accede después de la compra.
+
+¿Cuánto cuesta?
+
+Olvídate de artículos estúpidos como "¡Por ??500 dólares puedes escuchar cualquier teléfono del mundo!" o "Un colegial ahorró para el almuerzo y escuchó a su maestro sin registrarse ni enviar SMS": todas estas tonterías fueron escritas por periodistas cuyo objetivo es causar sensación.
+
+Si tomamos el revuelo asociado con el proyecto TOP "interconnect0r", entonces este revuelo se ha extendido por todo el mundo, aunque hacer un sitio como este en el TOP lleva 5 minutos.
+
+Me comuniqué con muchas empresas y les diré que el rango de precios es de $ 10.000 a $ 30.000 por mes, no encontré nada más barato y la diferencia de precio se debe a la falta de referencia territorial y capacidades adicionales de la interfaz web.
+
+5. Trampa IMSI.
+
+En muchos recursos IMSI, las estaciones base falsas se denominan señuelos, pero yo le daría un término aparte para este dispositivo tan útil. Una trampa IMSI es un "dispositivo", por ejemplo basado en RTL-SDR, que ve a todos los suscriptores a su alrededor. Utiliza un método de interceptación pasiva, lo que hace que sea casi imposible de detectar.
+
+El uso independiente de este dispositivo es dudoso porque Bueno, ¿qué puedes eliminar de la lista de 30 a 40 suscriptores circundantes? Además, no solo son visibles los números, sino también IMSI/TMSI/nombre de red.
+
+¡Este dispositivo es extremadamente útil cuando se utiliza una estación base falsa y es útil como medio para proteger a un atacante de la interceptación!
+
+Ejemplo 1:
+
+El atacante está esperando a la víctima (por ejemplo, cerca de la casa) y quiere interceptar las llamadas de la víctima utilizando bladerf. Necesita activar la tontería falsa y sentarse y esperar, pero en este momento se vuelve vulnerable porque se puede detectar. Por lo tanto, el atacante primero activa la trampa IMSI, que, cuando aparece el objetivo, activará automáticamente la BS falsa y, dado que la trampa IMSI utiliza un método de interceptación pasiva, es casi imposible detectarla. De esta forma, el atacante sólo actuará cuando el objetivo esté cerca.
+
+Ejemplo #2
+
+Recibí muchas preguntas como "¿Es posible hacer que Bladerf alcance 1 km?" y cada vez que aparecía en mi cabeza una escena de la película "Sportloto 82":
+
+- San Sanych, ¿se pueden comer estas bayas?
+
+- Puedes, pero te envenenarán.
+
+
+La respuesta a esta pregunta es exactamente la misma: es posible, pero dormirás. El hecho es que cuando se enciende, la BS falsa envía una solicitud de baliza (como: ¡Estoy aquí! ¡Ven a mí! ¡Conéctate!) y cuando esta solicitud ilegítima llega a la BS legítima de un operador celular real, se activa una "alarma". Está encendido y el operador de telefonía móvil se da cuenta inmediatamente de que ha aparecido un BS no identificado, por lo que ha comenzado la cuenta atrás y es cuestión de un par de decenas de minutos hasta que se detecte al atacante. Para evitar esto, antes de encender la BS falsa, es necesario verificar la distancia a la BS más cercana (por nivel de señal) y correlacionar la potencia de la BS falsa, para no llamar la atención de una BS legítima. y para ello lo más conveniente es volver a utilizar las funciones RTL-SDR como trampas IMSI.
+
+Equipo
+1. Motorola cxxx
+Descripción:
+
+Este equipo está basado en un antiguo teléfono Motorola basado en el chipset Calypso (MotorolaC115/C117/C123/C121/C118/C140/C139/C155/V171), etc. El cual, debido a la filtración de la especificación a la red, fue modificado por los participantes del proyecto Osmocom y un cable USB-TTL. Funcionamiento extremadamente inestable, retrasos y congelaciones constantes, un pequeño rango de acción se compensa con un precio muy económico: todo costará unos 20 dólares.
+
+Una excelente opción para el autoaprendizaje, sin embargo, vale la pena considerar que con el método de interceptación pasiva, para recibir el tráfico entrante al teléfono, será necesario soldar dos filtros muy pequeños, por lo que es mejor comprar uno ya hecho. Kit hecho y no te engañes.
+
+Posibilidades:
+
+Trampa IMSI
+Método de interceptación activa
+Método de interceptación pasiva
+Creando tu propia red celular
+Donde puedo comprar:
+
+Versión regular en el mercado de radio (MotorolaC115/C117/C123/C121/C118/C140/C139/C155/V171)
+
+Puede soldar el cable USB-TTL usted mismo o comprar uno ya hecho
+
+USB-TTL
+La versión terminada soldada para trabajar se puede encontrar en eBay o Taobao.
+
+eBay Osmocom
+Software:
+
+Osmocom
+TyphonOS
+Foto:
+
+Escuchas telefónicas e interceptación de SMS. Teoría y práctica., imagen Nº1
+2. HackRF
+Posibilidades:
+
+Trampa IMSI
+Método de interceptación activa
+Método de interceptación pasiva
+Creando tu propia red celular
+Software:
+
+AbiertoBTS 2g/3g
+3. BladeRF
+Posibilidades:
+
+Donde puedo comprar:
+
+Software:
+
+AbiertoBTS 2g/3g
+Foto:
+
+
+4. Rtl-DEG
+Descripción:
+
+Un sintonizador de TV que también sea SDR es muy barato y todo aquel que construya su propio BS DEBE tenerlo. Su objetivo principal es medir la distancia a una BS legítima real y, en función de esta distancia, el usuario debe seleccionar la intensidad de la señal de su BS falsa. También es excelente para trampas IMSI.
+
+Posibilidades:
+
+Trampa IMSI
+Método de interceptación pasiva
+Donde puedo comprar:
+
+En aliexpress
+
+Aliexpress
+Software:
+
+IMSI-Catcher
+Foto:
+
+Escuchas telefónicas e interceptación de SMS. Teoría y práctica., imagen Nº5
+Compilaciones de sistemas operativos listos para usar:
+
+A muchos les resultará difícil ensamblar y soportar todos los componentes de software para que funcionen con el equipo anterior, por lo que a continuación puede descargar ensamblajes listos para usar.
+
+GNU-Radio
+Montaje con la masa instalada de componentes para trabajar con SDR. Soporta RTL-SDR/BladeRf/HackRf
+
+GNU-Radio LiveCD 14
+GNU-Radio LiveCD 16
+RTL-SDR/HackRF
+Software preinstalado para construir una trampa IMSI y trabajar con HackRF
+
+RTL-SDR/HackRF
+Pentoo BladeRF
+Conjunto para trabajar con BladeRf.
+
+HojaRF
+Osmocom
+TyphonOS
+Terminología
+
+
+2G Segunda generación del estándar GSM3G Tercera generación del estándar GSM
+
+3GMS Sistema de comunicación móvil de tercera generación.
+
+Proyecto de asociación de tercera generación 3GPP
+
+Canal de Notificación de Concesión de Acceso AGCH
+
+Aplicaciones del Identificador de AID
+
+Multitasa adaptativa AMR
+
+Instituto Nacional de Estándares ANSI
+
+Notificación de cargo de AoC
+
+Aviso de Cargos de la AoCC (Costos)
+
+Aviso de cargo de AoCI (información)
+
+Interfaz de programación de aplicaciones API
+
+ARFCN Número absoluto de frecuencia del canal de radio
+
+ARIB Asociación de Industria y Negocios de la Radio
+
+Elemento de servicio de aplicación ASE
+
+ASN.1 Notación de sintaxis abstracta versión 1
+
+Comando AT Comando de atención
+
+Centro de autenticación AuC
+
+BAIC Restringir todas las llamadas entrantes
+
+BAOC Restringir todas las llamadas salientes
+
+Canal de control de transmisión BCCH
+
+Canales de transmisión BCH
+
+BIC-Roam Restricción de llamadas entrantes en roaming fuera del país de su propia PLMN
+
+BOIC Prohibición de llamadas internacionales salientes
+
+BOIC-exHC Prohibición de llamadas internacionales salientes excepto llamadas al país de la propia PLMN
+
+Estación base BTS
+
+Controlador de estación base BSC
+
+Sistema de estación base BSS
+
+Protocolo de aplicación de gestión del subsistema de estación base BSSMAP
+
+Información de carga CAI
+
+Lógica móvil avanzada CAMEL para aplicaciones personalizadas
+
+Subsistema de aplicación CAP CAMEL
+
+Restricción de llamadas CB
+
+Centro de transmisión celular CBC
+
+Canal de transmisión celular CBCH
+
+Servicio de transmisión celular CBS
+
+Control de llamadas CC
+
+CCBS Establecer una conexión cuando el abonado está ocupado
+
+CCCH Canal de control común
+
+Rechazo de llamada de CD
+
+Informe de llamada CDR
+
+Desvío de llamada CF
+
+Desvío de llamada CFB ocupado
+
+CFNRc Desvío de llamadas cuando el terminal no está disponible
+
+Desvío de llamada CFNR si no hay respuesta
+
+Desvío de llamadas de CFU incondicional
+
+ID de línea de llamada CLI
+
+Presentación CLIP de identificación de línea de llamada
+
+Restricción de identificación de línea de llamada CLIR
+
+Gestión de configuración CM
+
+Protocolo de información de control común CMIP
+
+Elemento de servicio de información de control común CMISE
+
+Red central CN
+
+Representación del nombre de la persona que llama CNAP
+
+Representación de identificación de línea conectada COLP
+
+Restricción de identificación de línea conectada COLR
+
+CORBA Tecnología para la construcción de aplicaciones de objetos distribuidos, propuesta por la empresa
+
+Conmutación de circuito CS
+
+Conjunto de funciones de red inteligente CS-1
+
+Entorno de servicio CSE CAMEL
+
+Grupo cerrado de usuarios CUG
+
+Notificación de llamada en espera CW
+
+Grupo de estandarización de comunicaciones inalámbricas de CWTS China
+
+Equipo de terminación de enlace de datos DCE
+
+Canal de control dedicado DCCH
+
+Equipo terminal de datos DTE
+
+Señalización multifrecuencia DTMF
+
+Transmisión intermitente DTX
+
+ECT Transferencia de llamada explícita
+
+EGPRS GPRS mejorado
+
+Registro de identificación de equipos EIR
+
+Subsistema de gestión de elementos EM
+
+Servicio mejorado de prioridad multinivel y prioridad de prioridad eMLPP
+
+ES Marca CE
+
+E-OTD mejora la diferencia horaria observada
+
+Procedimiento elemental EP
+
+ETSI Instituto Europeo de Normas de Telecomunicaciones
+
+FACCH Canal de control de acceso rápido
+
+Canal de corrección de frecuencia FCCH
+
+Gestión de fallos FM
+
+Descripción del Área Geográfica del GAD
+
+Servicios generales de transferencia GBS
+
+Guía GDMO para definir objetos administrados
+
+Red de acceso radio GERAN GSM EDGE
+
+Nodo de puerta de enlace GGSN GPRS
+
+Registro de ubicación de puerta de enlace GLR
+
+Centro de ubicación móvil GMLC Gateway
+
+Puerta de enlace GMSC MSC
+
+Servicio general de paquetes de datos GPRS
+
+gprsSSF Función de conmutación de servicio GPRS
+
+Sistema de posicionamiento global GPS
+
+Sistema Global GSM para Comunicaciones Móviles
+
+Códec de voz GSM de velocidad completa mejorado GSM-EFR
+
+gsmSCF Función de control de servicio GSM
+
+gsmSRF Función para soportar recursos GSM especializados
+
+gsmSSF Función de conmutación de servicio GSM
+
+Nodo de soporte GSN GPRS
+
+Encabezado global GT
+
+Protocolo de túnel GTP GPRS
+
+Control de enlace de datos de alto nivel HDLC
+
+HE Entorno propio
+
+Registro de ubicación de inicio de HLR
+
+HPLMN Red móvil terrestre pública propietaria
+
+Transferencia de datos conmutada por circuito de alta velocidad HSCSD
+
+Circuito integrado IC
+
+Identificador de identificación
+
+IMEI Identidad Internacional de Equipo Móvil
+
+Nodo de servicio GPRS intermedio IM-GSN
+
+Centro de conmutación móvil intermedio IM-MSC
+
+Identidad de estación móvil internacional IMSI
+
+EN red inteligente
+
+Protocolo de capa de aplicación de red inteligente INAP
+
+Protocolo de Internet IP
+
+IPLMN solicitando PLMN
+
+Asociación de datos infrarrojos IrDA
+
+IrMC Comunicaciones móviles en el rango de infrarrojos.
+
+Punto de referencia de integración IRP
+
+Servicio de información SI
+
+Red Digital de Servicios Integrados RDSI
+
+ISO Organización Internacional de Normalización
+
+Subsistema de usuario RDSI ISUP
+
+Interfaz Itf-N N
+
+Interacciones de funciones IWF
+
+LAN Red local
+
+Servicio de localización LCS
+
+Identificador de estación móvil local LMSI
+
+Unidad de posicionamiento LMU
+
+Solicitud de ubicación de LR
+
+Subsistema de aplicaciones móviles MAP
+
+MC llamada múltiple
+
+Código de país de la estación móvil MCC
+
+ME Equipo de comunicación móvil
+
+Entorno de ejecución de estación móvil MExE
+
+Modelo de información de gestión MIM
+
+Extensiones de correo electrónico de Internet multipropósito MIME
+
+Centro de ubicación de estaciones móviles MLC
+
+Gestión de Movilidad MM
+
+Interfaz hombre-máquina MMI
+
+Servicio de mensajería multimedia MMS
+
+Código de red móvil MNC
+
+Intercambiabilidad del número de estación móvil MNP
+
+MO Desde la estación móvil
+
+Solicitud MO-LR de la estación móvil para determinar la posición
+
+MPTY Multilateral
+
+Estación móvil MS
+
+Centro de conmutación móvil de MSC
+
+MSISDN Número RDSI internacional de una estación móvil
+
+Perfil de suscriptor múltiple de MSP
+
+MSRN Número de roaming de estación móvil
+
+Terminal móvil MT
+
+Terminal móvil MT
+
+Elemento de red NE
+
+ID de red NITZ y zona horaria
+
+Gestión de redes NM
+
+Modelo de recursos de red NRM
+
+OACSU Establecer una conexión sin ocupar primero un recurso de radio
+
+Restricción de llamadas establecida por el operador ODB
+
+Grupo de objetos administrados por OMG
+
+Sistema operativo
+
+Arquitectura de sistemas abiertos OSA
+
+Interconexión de sistemas abiertos OSI
+
+PBX Centralita privada
+
+PCH Canal de llamada (búsqueda) MS Canal de llamada MS
+
+Modulación de código de pulso PCM
+
+PDC-EFR ARIB Códec de voz PDC-EFR a 6,7 ??Kbps
+
+Red Pública de Datos PDN
+
+Protocolo de datos de paquetes PDP
+
+Unidad de datos de protocolo PDU
+
+Indicador de presentación PI
+
+Extensión de identificador de aplicación nativa PIX
+
+Red móvil terrestre pública PLMN
+
+PP "Punto a punto"
+
+Conmutación de paquetes PS
+
+Entorno de servicio personal de PSE
+
+Red telefónica pública conmutada PSTN
+
+Canal de solicitud de acceso a la red RACH
+
+Subsistema de aplicación de red de acceso radioeléctrico RANAP
+
+Identificador de proveedor de aplicaciones registradas RID
+
+Control de enlace de radio RLC/MAC /Control de acceso a medios
+
+Líneas de radio del protocolo RLP
+
+Controlador de red de radio RNC
+
+Redes de radio del sistema RNS
+
+Recurso de radio RR
+
+Canal de control de acceso lento SACCH
+
+Kit de herramientas de aplicación SAT SIM
+
+Centro de servicio SC
+
+Subsistema de control de conexión de señalización SCCP
+
+Canal de sincronización SCH
+
+Velocidad controlada inicial del SCR
+
+Servidor de capacidad de servicio SCS
+
+Organización de desarrollo de estándares SDO
+
+Radio controlada por software SDR
+
+Nodo de soporte GPRS de servicio SGSN
+
+Tamices indicadores SI
+
+Descriptor de silencio SID
+
+Módulo de identidad de suscriptor SIM GSM
+
+Función de interacción colaborativa SIWF
+
+Servidor de funciones colaborativas SIWFS
+
+Gestión de sesiones SM
+
+Lenguaje de integración multimedia sincronizado SMIL
+
+Función de transmisión de mensajes cortos SM-RL
+
+Servicio de mensajes cortos SMS
+
+Centro de servicio de mensajes cortos SMSC
+
+Servicio de mensajes cortos SMSCB - Transmisión celular
+
+Protocolo de correo electrónico simple SMTP
+
+Soporte de enrutamiento óptimo SOR
+
+Controlador de red de radio de servicio SRNC
+
+SRNS Sirviendo RNS
+
+Servicio adicional SS
+
+Conjunto de soluciones SS
+
+SS7 Sistema de Alarma No. 7
+
+Función de conmutación de servicio SSF
+
+T1 Comité de Normas T1 (parte de ANSI)
+
+Subcomité Técnico T1P1 sobre Servicios y Sistemas Inalámbricos/Móviles
+
+Adaptación terminal TA
+
+Función de adaptación del terminal TAF
+
+Modelo de estado de servicio de llamada base T-BCSM
+
+Instalaciones de transacciones TCAP
+
+Canal de voz TCH/F de velocidad completa/media
+
+Acceso múltiple por división de tiempo TDMA
+
+TDMA_EFR TIA IS-641 Códec de voz mejorado
+
+TDMA_USI TIA TDMA-US1 (códec de 12,2 Kbps, similar a GSM-EFR)
+
+Equipo terminal TE
+
+Asociación de la industria de comunicaciones TIA
+
+TMSI Identificador temporal de estación móvil
+
+TOA Hora de llegada
+
+Operación TrFO sin transcodificador
+
+Especificación técnica TS
+
+Grupo de especificaciones técnicas de TSG
+
+Asociación de Tecnología de Telecomunicaciones TTA (Corea)
+
+Comité de Tecnología de Telecomunicaciones de TTC (Japón)
+
+Subsistema de Usuario Telefónico TUP (Sistema de Alarma No. 7)
+
+Protocolo de datagramas de usuario UDP
+
+Equipo de usuario UE
+
+Tarjeta IC universal UICC
+
+Módulo de identificación de usuario de UIM
+
+Sistema universal de comunicaciones móviles UMTS
+
+Kit de herramientas de aplicación USAT USIM
+
+Módulo de identidad de suscriptor universal de USIM
+
+USSD Datos de servicios de valor agregado no estructurados
+
+Acceso de radio terrestre universal UTRA
+
+Acceso de radio terrestre universal UTRA-FDD - Dúplex por división de frecuencia
+
+Red de acceso de radio terrestre universal UTRAN
+
+Acceso de radio terrestre universal UTRA-TDD - Dúplex por división de tiempo
+
+Señalización de usuario a usuario UUS
+
+Detector de voz VAD
+
+Servicio de transmisión de voz VBS
+
+Servicio de llamadas grupales de voz VGCS
+
+Entorno nativo virtual VHE
+
+Registro de ubicación temporal de VLR
+
+VMSC visita el centro de conmutación móvil
+
+VPLMN visita la red móvil terrestre pública
+
+Protocolo de aplicación inalámbrica WAP
+
+<div style="display:flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 20px 0;">
+  <img src="https://i.ibb.co/BBhGQcJ/image.jpg" alt="Imagen 1" style="max-width: 300px; width: 100%; border-radius: 8px;">
+  <img src="https://i.ibb.co/6swcW08/image.jpg" alt="Imagen 2" style="max-width: 300px; width: 100%; border-radius: 8px;">
+  <img src="https://i.ibb.co/p4TM9Ly/image.jpg" alt="Imagen 3" style="max-width: 300px; width: 100%; border-radius: 8px;">
+  <img src="https://i.ibb.co/ss1vZ79/image.jpg" alt="Imagen 4" style="max-width: 300px; width: 100%; border-radius: 8px;">
+  <img src="https://i.ibb.co/3ywQZ8J/image.jpg" alt="Imagen 5" style="max-width: 300px; width: 100%; border-radius: 8px;">
+</div>
+
+SMPP
+
+SMPP ( Mensaje corto en inglés  Peer-to-Peer ): transmisión de mensajes cortos entre pares. Es un protocolo abierto en la industria de las telecomunicaciones que está diseñado específicamente para proporcionar una interfaz flexible para el intercambio de mensajes SMS entre plataformas de aplicaciones SMS ( ESME ), enrutadores (RE) y centros de servicios de mensajes cortos ( SMSC ). [1]
+
+SMPP suele ser utilizado por terceros, como proveedores de servicios de valor añadido y medios de comunicación, para transmitir mensajes SMS , a menudo de forma masiva. Mediante este protocolo se pueden transmitir SMS , EMS , notificaciones de correo de voz, transmisiones de radio celular , mensajes WAP , mensajes USSD , etc. Debido a su versatilidad, que consiste en soportar redes GSM , UMTS , IS-95 ( CDMA ), CDMA2000 , ANSI. 136 ( TDMA ) y similares, SMPP es el protocolo más utilizado para intercambiar mensajes cortos fuera de las redes SS7 ( SS7 ).
+
+SMS: puede capturar el tráfico con SDR o con Motorola antiguos. Acerca de ss7/ox7: si tienes una bolsa extra de masa, también está bien.
+
+También está esto:
+**QCSuper** es una herramienta que se comunica con teléfonos y módems basados ??en Qualcomm, lo que permite **capturar tramas de radio 2G/3G/4G** (y para ciertos modelos 5G), entre otras cosas.
+Le permitirá **generar capturas PCAP** utilizando un teléfono Android rooteado, una llave USB o una captura existente en otro formato.
+https://github.com/P1sec/QCSuper.git
+
+<div style="text-align:center; margin: 20px 0;">
+  <iframe 
+    width="560" 
+    height="315" 
+    src="https://www.youtube.com/embed/gEYGCNJ0rhc" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+</div>
+
+</div>
+
+  </div>
+
+  <p><a href="index.html">← Volver al blog</a></p>
+
+</body>
+</html>
