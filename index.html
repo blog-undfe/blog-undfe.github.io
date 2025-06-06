@@ -163,98 +163,84 @@
     }
   }
 
-  .cookie-box {
-    background: #fff;
-    border-radius: 16px;
-    padding: 30px 25px;
-    margin: 40px auto;
-    max-width: 800px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-    border: 1px solid #f2cbd9;
-  }
+  .cookie-box-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 250, 246, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
 
-  .cookie-box h2 {
-    font-family: 'Playfair Display', serif;
-    color: #c95f86;
-    font-size: 2em;
-    margin-bottom: 10px;
-  }
+.cookie-box-overlay.visible {
+  visibility: visible;
+  opacity: 1;
+}
 
-  .cookie-box h3 {
-    font-size: 1.3em;
-    color: #a14b6d;
-    margin-top: 25px;
-  }
+.cookie-box {
+  background: #fff;
+  border-radius: 18px;
+  padding: 30px 25px;
+  max-width: 800px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f2cbd9;
+  overflow-y: auto;
+  max-height: 90vh;
+}
 
-  .cookie-box p,
-  .cookie-box li {
-    font-size: 1em;
-    color: #444;
-    line-height: 1.6;
-  }
+.cookie-box h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2em;
+  color: #c95f86;
+  margin-bottom: 15px;
+}
 
-  .cookie-box ul {
-    margin-left: 20px;
-    padding-left: 10px;
-  }
+.cookie-box h3 {
+  font-size: 1.2em;
+  color: #a14b6d;
+  margin-top: 25px;
+}
 
-  .cookie-box a {
-    color: #c95f86;
-    text-decoration: underline;
-  }
+.cookie-box p, .cookie-box ul {
+  font-size: 1em;
+  color: #444;
+  line-height: 1.6;
+}
 
-  .cookie-box .note {
-    font-size: 0.9em;
-    color: #999;
-    margin-top: 25px;
-  }
+.cookie-box ul {
+  padding-left: 20px;
+}
 
-  .cookie-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin: 20px 0 30px;
-  }
+.cookie-box a {
+  color: #c95f86;
+  text-decoration: underline;
+}
 
-  .cookie-btn {
-    font-size: 0.95em;
-    font-weight: 600;
-    padding: 10px 18px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    box-shadow: 0 3px 8px rgba(201, 95, 134, 0.2);
-    transition: all 0.3s ease;
-  }
+.cookie-box .btn {
+  display: inline-block;
+  margin: 10px 8px 0 0;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  background-color: #c95f86;
+  color: #fff;
+  transition: background 0.3s ease;
+}
 
-  .cookie-btn.accept {
-    background-color: #c95f86;
-    color: #fff;
-  }
+.cookie-box .btn:hover {
+  background-color: #a14b6d;
+}
 
-  .cookie-btn.accept:hover {
-    background-color: #a14b6d;
-    box-shadow: 0 6px 15px rgba(201, 95, 134, 0.5);
-  }
-
-  .cookie-btn.reject {
-    background-color: #fce6ed;
-    color: #c95f86;
-  }
-
-  .cookie-btn.reject:hover {
-    background-color: #f8d9e4;
-  }
-
-  .cookie-btn.config {
-    background-color: #fff0f5;
-    color: #a14b6d;
-    border: 1px solid #f5c7da;
-  }
-
-  .cookie-btn.config:hover {
-    background-color: #ffe6ef;
-  }
+.cookie-box .note {
+  font-size: 0.9em;
+  color: #888;
+  margin-top: 20px;
+}
 
   .legal-box {
   background: #fff;
@@ -392,13 +378,14 @@
   <p class="note">Última actualización: junio de 2025</p>
 </div>
 
-    <div class="cookie-box">
+<div class="cookie-box-overlay" id="cookieOverlay">
+  <div class="cookie-box" id="cookieBox">
     <h2>Política de Cookies</h2>
     <p>En este sitio web utilizamos cookies propias y de terceros para ofrecerte una mejor experiencia de usuario, personalizar el contenido, proporcionar funciones de redes sociales y analizar el tráfico. Puedes aceptar todas las cookies o configurarlas según tus preferencias.</p>
 
     <div class="button-container">
-      <a href="#" class="btn">Aceptar todas</a>
-      <a href="#" class="btn" style="background-color:#ddd; color:#333;">Rechazar todas</a>
+      <a href="#" class="btn" id="acceptCookies">Aceptar todas</a>
+      <a href="#" class="btn" id="rejectCookies" style="background-color:#ddd; color:#333;">Rechazar todas</a>
       <a href="#gestion" class="btn" style="background-color:#f1c40f;">Gestionar preferencias</a>
     </div>
 
@@ -422,6 +409,38 @@
     <p class="note">Ten en cuenta que el bloqueo de ciertas cookies puede afectar el correcto funcionamiento del sitio.</p>
     <p class="note">Última actualización: 6 de junio de 2025</p>
   </div>
+</div>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const overlay = document.getElementById("cookieOverlay");
+    const acceptBtn = document.getElementById("acceptCookies");
+    const rejectBtn = document.getElementById("rejectCookies");
+
+    const consent = localStorage.getItem("cookieConsent");
+    if (!consent) {
+      setTimeout(() => {
+        overlay.classList.add("visible");
+      }, 2000);
+    }
+
+    const hideBanner = () => {
+      overlay.classList.remove("visible");
+    };
+
+    acceptBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.setItem("cookieConsent", "accepted");
+      hideBanner();
+    });
+
+    rejectBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.setItem("cookieConsent", "rejected");
+      hideBanner();
+    });
+  });
+</script>
   
 </body>
 </html>
