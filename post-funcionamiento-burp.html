@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Funcionamiento básico de Burp Suite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      overflow-x: hidden;
+    }
+    body {
+      background-color: #fefaf6;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px 15px;
+      background-image: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.94);
+      max-width: 800px;
+      width: 100%;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      overflow-wrap: break-word;
+      backdrop-filter: saturate(180%) blur(8px);
+      -webkit-backdrop-filter: saturate(180%) blur(8px);
+    }
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: #c95f86;
+      margin-bottom: 0.8rem;
+    }
+    p, ul, ol {
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+    ul, ol {
+      padding-left: 1.2rem;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    a {
+      color: #c95f86;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Funcionamiento básico de Burp Suite</h1>
+
+    <div class="content">
+      <p><strong>Introducción:</strong></p>
+      <p>
+        Burp, o Burp Suite, es una herramienta gráfica para probar la seguridad de aplicaciones web. Está escrita en Java y desarrollada por PortSwigger Web Security. Su creador es la empresa Portswigger, alias de su fundador, Dafydd Stuttard.
+      </p>
+      <p>
+        Burp Suite es una plataforma integrada para realizar pruebas de seguridad de aplicaciones web. Sus diversas herramientas funcionan a la perfección para respaldar todo el proceso de pruebas, desde el mapeo inicial y el análisis de la superficie de ataque de una aplicación hasta la detección y explotación de vulnerabilidades de seguridad.
+      </p>
+      <p>
+        Burpsuite puede utilizarse como un proxy HTTP básico para interceptar tráfico para su análisis y reproducción, como escáner de seguridad de aplicaciones web, como herramienta para realizar ataques automatizados contra aplicaciones web, como herramienta para rastrear sitios web completos e identificar la superficie de ataque y cuenta con una API de plugins con una gran cantidad de complementos de terceros disponibles.
+      </p>
+      <p>
+        Es la herramienta más popular entre los investigadores profesionales de seguridad de aplicaciones web y los buscadores de errores. Su facilidad de uso la convierte en una opción más adecuada que alternativas gratuitas como OWASP ZAP.
+      </p>
+
+      <img src="0_GwhV1TKuR_yye0tU (1).webp" alt="Burp Suite Interfaz" />
+
+      <p>
+        Para utilizar Burp Suite correctamente, es necesario conocer todas las herramientas disponibles. En el próximo artículo, utilizaremos la versión Burp Community, ya que está disponible para todos de forma gratuita.
+      </p>
+
+      <p><strong>Diferentes ediciones de Burp Suite:</strong></p>
+      <ul>
+        <li><strong>Community:</strong> Versión gratuita que se instala por defecto en Kali Linux.</li>
+        <li><strong>Profesional:</strong> Edición de pago, cuesta alrededor de $399 al año.</li>
+        <li><strong>Enterprise:</strong> Edición para empresas, cuesta alrededor de $3999 al año.</li>
+      </ul>
+
+      <p><strong>Características:</strong></p>
+      <ul>
+        <li><strong>Enterprise ($3999/año):</strong> Escáner de vulnerabilidades web, escaneos programados y repetidos, escalabilidad ilimitada, integración de CI.</li>
+        <li><strong>Profesional ($399/año):</strong> Escáner web, herramientas manuales avanzadas y esenciales.</li>
+        <li><strong>Community (Gratis):</strong> Herramientas manuales esenciales.</li>
+      </ul>
+    </div>
+
+    <p><a href="index.html">← Volver al blog</a></p>
+  </div>
+
+</body>
+</html>
