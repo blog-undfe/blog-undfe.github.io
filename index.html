@@ -21,147 +21,241 @@
   <meta name="theme-color" media="(max-width: 600px)" content="#ff00ff">
   <link rel="icon" type="image/x-icon" href="https://undfe.github.io/resources/stolaspfpbyundefinedname.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      color: #333;
-      background: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg') no-repeat center center fixed;
-      background-size: cover;
-    }
+<style>
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    background: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
 
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: rgba(255, 250, 246, 0.9);
-      z-index: -1;
-    }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 250, 246, 0.9);
+    z-index: -1;
+  }
 
-    header {
-      text-align: center;
-      padding: 40px 20px 30px;
-      background-color: rgba(255, 226, 235, 0.9);
-      border-bottom: 1px solid #f2cbd9;
-    }
+  header {
+    text-align: center;
+    padding: 40px 20px 30px;
+    background-color: rgba(255, 226, 235, 0.9);
+    border-bottom: 1px solid #f2cbd9;
+  }
 
-    header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8em;
-      color: #c95f86;
-      margin-bottom: 8px;
-    }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8em;
+    color: #c95f86;
+    margin-bottom: 8px;
+  }
 
-    header p {
-      font-size: 1.1em;
-      color: #5e5e5e;
-      margin: 0;
-    }
+  header p {
+    font-size: 1.1em;
+    color: #5e5e5e;
+    margin: 0;
+  }
 
+  .container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px 15px 60px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    justify-content: center;
+  }
+
+  .post {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 18px 24px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+    flex: 1 1 300px;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .post:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .post h2 {
+    color: #d16b8e;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5em;
+    margin: 0 0 12px;
+    line-height: 1.25;
+    flex-shrink: 0;
+  }
+
+  .post p {
+    color: #444;
+    font-size: 0.95em;
+    line-height: 1.5;
+    margin: 0 0 14px;
+    flex-grow: 1;
+  }
+
+  .post a {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #c95f86;
+    background-color: #fce6ed;
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.25s ease;
+    align-self: flex-start;
+    user-select: none;
+    box-shadow: 0 3px 6px rgba(201, 95, 134, 0.3);
+  }
+
+  .post a:hover {
+    color: #fff;
+    background-color: #c95f86;
+    box-shadow: 0 6px 15px rgba(201, 95, 134, 0.7);
+  }
+
+  .ad-slot {
+    flex: 1 1 320px;
+    max-width: 320px;
+    height: 250px;
+    background: transparent;
+    margin: 10px 0;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 15px 50px;
+    font-size: 0.9em;
+    color: #999;
+  }
+
+  footer .main-site {
+    margin-top: 15px;
+    font-weight: 600;
+    color: #c95f86;
+    text-decoration: none;
+    display: inline-block;
+    transition: color 0.3s ease;
+  }
+
+  footer .main-site:hover {
+    color: #a14b6d;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 720px) {
     .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 30px 15px 60px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
       justify-content: center;
     }
 
-    .post {
-      background: #fff;
-      border-radius: 16px;
-      padding: 20px 18px 24px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
-      flex: 1 1 300px;
-      max-width: 320px;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    .post, .ad-slot {
+      max-width: 100%;
+      flex: 1 1 100%;
     }
+  }
 
-    .post:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-    }
+  .cookie-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 30px 25px;
+    margin: 40px auto;
+    max-width: 800px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f2cbd9;
+  }
 
-    .post h2 {
-      color: #d16b8e;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5em;
-      margin: 0 0 12px;
-      line-height: 1.25;
-      flex-shrink: 0;
-    }
+  .cookie-box h2 {
+    font-family: 'Playfair Display', serif;
+    color: #c95f86;
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
 
-    .post p {
-      color: #444;
-      font-size: 0.95em;
-      line-height: 1.5;
-      margin: 0 0 14px;
-      flex-grow: 1;
-    }
+  .cookie-box h3 {
+    font-size: 1.3em;
+    color: #a14b6d;
+    margin-top: 25px;
+  }
 
-    .post a {
-      font-size: 0.85em;
-      font-weight: 600;
-      color: #c95f86;
-      background-color: #fce6ed;
-      padding: 6px 12px;
-      border-radius: 8px;
-      text-decoration: none;
-      text-align: center;
-      transition: all 0.25s ease;
-      align-self: flex-start;
-      user-select: none;
-      box-shadow: 0 3px 6px rgba(201, 95, 134, 0.3);
-    }
+  .cookie-box p,
+  .cookie-box li {
+    font-size: 1em;
+    color: #444;
+    line-height: 1.6;
+  }
 
-    .post a:hover {
-      color: #fff;
-      background-color: #c95f86;
-      box-shadow: 0 6px 15px rgba(201, 95, 134, 0.7);
-    }
-    
-    .ad-slot {
-      flex: 1 1 320px;
-      max-width: 320px;
-      height: 250px;
-      background: transparent;
-      margin: 10px 0;
-    }
+  .cookie-box ul {
+    margin-left: 20px;
+    padding-left: 10px;
+  }
 
-    footer {
-      text-align: center;
-      padding: 30px 15px 50px;
-      font-size: 0.9em;
-      color: #999;
-    }
+  .cookie-box a {
+    color: #c95f86;
+    text-decoration: underline;
+  }
 
-    footer .main-site {
-      margin-top: 15px;
-      font-weight: 600;
-      color: #c95f86;
-      text-decoration: none;
-      display: inline-block;
-      transition: color 0.3s ease;
-    }
+  .cookie-box .note {
+    font-size: 0.9em;
+    color: #999;
+    margin-top: 25px;
+  }
 
-    footer .main-site:hover {
-      color: #a14b6d;
-      text-decoration: underline;
-    }
+  .cookie-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 20px 0 30px;
+  }
 
-    @media (max-width: 720px) {
-      .container {
-        justify-content: center;
-      }
-      .post, .ad-slot {
-        max-width: 100%;
-        flex: 1 1 100%;
-      }
-    }
-  </style>
+  .cookie-btn {
+    font-size: 0.95em;
+    font-weight: 600;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(201, 95, 134, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .cookie-btn.accept {
+    background-color: #c95f86;
+    color: #fff;
+  }
+
+  .cookie-btn.accept:hover {
+    background-color: #a14b6d;
+    box-shadow: 0 6px 15px rgba(201, 95, 134, 0.5);
+  }
+
+  .cookie-btn.reject {
+    background-color: #fce6ed;
+    color: #c95f86;
+  }
+
+  .cookie-btn.reject:hover {
+    background-color: #f8d9e4;
+  }
+
+  .cookie-btn.config {
+    background-color: #fff0f5;
+    color: #a14b6d;
+    border: 1px solid #f5c7da;
+  }
+
+  .cookie-btn.config:hover {
+    background-color: #ffe6ef;
+  }
+</style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9778679469657985"
      crossorigin="anonymous"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PT6RCZDJ4H"></script>
@@ -236,6 +330,38 @@
 <p><strong>Cookies:</strong> usamos cookies para mejorar la experiencia del usuario y para estadísticas.</p>
 <p><strong>Derechos del usuario:</strong> puedes acceder, rectificar o eliminar tus datos escribiéndonos a [tu email].</p>
 <p><strong>Contacto:</strong> para cualquier duda sobre privacidad, escríbenos a [tu email o formulario de contacto].</p>
+
+
+    <div class="cookie-box">
+    <h2>Política de Cookies</h2>
+    <p>En este sitio web utilizamos cookies propias y de terceros para ofrecerte una mejor experiencia de usuario, personalizar el contenido, proporcionar funciones de redes sociales y analizar el tráfico. Puedes aceptar todas las cookies o configurarlas según tus preferencias.</p>
+
+    <div class="button-container">
+      <a href="#" class="btn">Aceptar todas</a>
+      <a href="#" class="btn" style="background-color:#ddd; color:#333;">Rechazar todas</a>
+      <a href="#gestion" class="btn" style="background-color:#f1c40f;">Gestionar preferencias</a>
+    </div>
+
+    <h3>¿Qué cookies usamos?</h3>
+    <ul>
+      <li><strong>Cookies necesarias:</strong> Permiten la navegación en el sitio y el uso de sus funciones básicas. No requieren consentimiento.</li>
+      <li><strong>Cookies de análisis:</strong> Nos ayudan a comprender cómo los usuarios interactúan con el sitio, por ejemplo mediante Google Analytics.</li>
+      <li><strong>Cookies de marketing:</strong> Utilizadas para mostrar anuncios personalizados, como las de Google Ads o Meta Ads.</li>
+    </ul>
+
+    <h3 id="gestion">¿Cómo puedes gestionar las cookies?</h3>
+    <p>Al acceder por primera vez a nuestro sitio, verás un banner de consentimiento donde puedes aceptar, rechazar o configurar el uso de cookies.</p>
+    <p>Además, puedes modificar tus preferencias en cualquier momento o configurar tu navegador para bloquear cookies no esenciales.</p>
+    <ul>
+      <li><strong>Chrome:</strong> <a href="https://support.google.com/chrome/answer/95647" target="_blank">Configuración de cookies</a></li>
+      <li><strong>Firefox:</strong> <a href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies" target="_blank">Administrar cookies</a></li>
+      <li><strong>Safari:</strong> <a href="https://support.apple.com/es-es/HT201265" target="_blank">Preferencias de cookies</a></li>
+      <li><strong>Edge:</strong> <a href="https://support.microsoft.com/es-es/help/4027947" target="_blank">Administrar cookies</a></li>
+    </ul>
+
+    <p class="note">Ten en cuenta que el bloqueo de ciertas cookies puede afectar el correcto funcionamiento del sitio.</p>
+    <p class="note">Última actualización: 6 de junio de 2025</p>
+  </div>
   
 </body>
 </html>
