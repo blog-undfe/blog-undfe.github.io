@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Funcionamiento básico de Burp Suite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      overflow-x: hidden;
+    }
+    body {
+      background-color: #fefaf6;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px 15px;
+      background-image: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.94);
+      max-width: 800px;
+      width: 100%;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      overflow-wrap: break-word;
+      backdrop-filter: saturate(180%) blur(8px);
+      -webkit-backdrop-filter: saturate(180%) blur(8px);
+    }
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: #c95f86;
+      margin-bottom: 0.8rem;
+    }
+    p, ul, ol {
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+    ul, ol {
+      padding-left: 1.2rem;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    a {
+      color: #c95f86;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+  <h1>Guía rápida Proxmark3 - RFID/NFC hacking</h1>
+
+  <div class="section">
+    <h2>¿Qué es el Proxmark3?</h2>
+    <p>es un dispositivo usado para leer clonar y analizar tarjetas RFID/NFC
+      tanto de baja frecuencia (125kHz) como alta frecuencia (13.56MHz) sirve para hacer pruebas de seguridad físicas
+      y también investigación técnica</p>
+  </div>
+
+  <div class="section">
+    <h2>Versiones comunes</h2>
+    <ul>
+      <li>Proxmark3 Easy - barata buena para empezar</li>
+      <li>Proxmark3 RDV4 - versión más potente y pequeña</li>
+      <li>RDV4 con módulo Bluetooth - para trabajar sin cable</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Requisitos</h2>
+    <ul>
+      <li>Proxmark3 con sus antenas</li>
+      <li>Un PC (Windows Linux o macOS)</li>
+      <li>Cable USB</li>
+      <li>Drivers instalados</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Instalación del software</h2>
+    <h3>Windows</h3>
+    <ol>
+      <li>Instalar <a href="https://zadig.akeo.ie/" target="_blank">Zadig</a> para el driver USB</li>
+      <li>Clonar repositorio:
+<pre><code>git clone https://github.com/RfidResearchGroup/proxmark3
+cd proxmark3
+make clean && make all</code></pre>
+      </li>
+    </ol>
+
+    <h3>Linux</h3>
+<pre><code>sudo apt update
+sudo apt install git build-essential
+git clone https://github.com/RfidResearchGroup/proxmark3
+cd proxmark3
+make clean && make all</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>Conexión inicial</h2>
+<pre><code>./client/proxmark3 /dev/ttyACM0   # Linux
+proxmark3.exe COM3                # Windows</code></pre>
+    <p>si ves el prompt <code>proxmark3&gt;</code> ya está funcionando</p>
+  </div>
+
+  <div class="section">
+    <h2>Comandos básicos</h2>
+    <ul>
+      <li><code>hw version</code> — info del dispositivo</li>
+      <li><code>hw tune</code> — calibrar antena</li>
+      <li><code>hf search</code> — buscar tarjeta HF</li>
+      <li><code>lf search</code> — buscar tarjeta LF</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Clonar tarjeta MIFARE Classic (13.56 MHz)</h2>
+    <h3>1. Leer tarjeta</h3>
+<pre><code>hf mf autopwn</code></pre>
+
+    <h3>2. Dump de los datos</h3>
+<pre><code>hf mf dump</code></pre>
+
+    <h3>3. Restaurar en tarjeta virgen</h3>
+<pre><code>hf mf restore 1 dumpkeys.dmp</code></pre>
+
+    <h3>4. Cambiar UID si es magic card</h3>
+<pre><code>hf mf csetuid [nuevo_uid]</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>Clonar tarjeta de 125kHz (LF)</h2>
+    <h3>1. Leer tarjeta</h3>
+<pre><code>lf search</code></pre>
+
+    <h3>2. Leer ID (ej. HID)</h3>
+<pre><code>lf hid read</code></pre>
+
+    <h3>3. Clonar ID a tarjeta virgen</h3>
+<pre><code>lf hid clone --tag T55x7 --format HID --raw [ID]</code></pre>
+
+    <h3>Otra opción</h3>
+<pre><code>lf t55xx write</code></pre>
+  </div>
+
+    <p><a href="index.html">← Volver al blog</a></p>
+  </div>
+
+</body>
+</html>
