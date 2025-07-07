@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guía rápida Flipper Zero - Herramientas y usos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      overflow-x: hidden;
+    }
+    body {
+      background-color: #fefaf6;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px 15px;
+      background-image: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.94);
+      max-width: 800px;
+      width: 100%;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      overflow-wrap: break-word;
+      backdrop-filter: saturate(180%) blur(8px);
+      -webkit-backdrop-filter: saturate(180%) blur(8px);
+    }
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: #c95f86;
+      margin-bottom: 0.8rem;
+    }
+    p, ul, ol {
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+    ul, ol {
+      padding-left: 1.2rem;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    a {
+      color: #c95f86;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Guía rápida Flipper Zero - Herramientas y usos</h1>
+
+    <div class="section">
+      <h2>¿Qué es el Flipper Zero?</h2>
+      <p>Es un dispositivo multifunción de bolsillo diseñado para pruebas de seguridad en el mundo real. Permite interactuar con tarjetas RFID/NFC, señales de infrarrojos, sistemas de radiofrecuencia, dispositivos GPIO, BadUSB, iButtons y mucho más. Es ideal para aprender, investigar o testear sistemas.</p>
+    </div>
+
+    <div class="section">
+      <h2>Funciones principales</h2>
+      <ul>
+        <li><strong>RFID 125kHz:</strong> Leer/emular tarjetas de baja frecuencia.</li>
+        <li><strong>NFC 13.56MHz:</strong> Leer/clonar tarjetas MIFARE.</li>
+        <li><strong>Infrarrojos:</strong> Capturar y reproducir señales de mandos.</li>
+        <li><strong>Radiofrecuencia:</strong> Enviar/recibir señales de garajes, sensores, etc.</li>
+        <li><strong>GPIO/UART/SPI/I2C:</strong> Conectar con dispositivos electrónicos.</li>
+        <li><strong>iButton:</strong> Leer chips tipo llavero de contacto.</li>
+        <li><strong>BadUSB:</strong> Ejecutar scripts como si fuera un teclado.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>¿Qué necesitas?</h2>
+      <ul>
+        <li>Flipper Zero</li>
+        <li>Cable USB-C</li>
+        <li>Firmware oficial o custom (ej: Unleashed, RogueMaster)</li>
+        <li>PC o teléfono para gestionarlo</li>
+        <li>Tarjetas blancas si vas a clonar</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Primeros pasos</h2>
+      <ol>
+        <li>Instala QFlipper desde <a href="https://flipperzero.one" target="_blank">flipperzero.one</a>.</li>
+        <li>Conecta tu Flipper al PC o teléfono.</li>
+        <li>Actualiza el firmware y explora las apps del dispositivo.</li>
+      </ol>
+    </div>
+
+    <div class="section">
+      <h2>Ejemplos rápidos</h2>
+      <ul>
+        <li><strong>Clonar una tarjeta RFID:</strong> Menú &rarr; RFID &rarr; 125kHz &rarr; Leer &rarr; Guardar &rarr; Emular.</li>
+        <li><strong>Capturar un mando IR:</strong> IR &rarr; Capturar &rarr; Pulsa el mando &rarr; Guardar &rarr; Repetir.</li>
+        <li><strong>Enviar señal RF:</strong> RF &rarr; Leer frecuencia &rarr; Capturar &rarr; Guardar &rarr; Transmitir.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Consejo final</h2>
+      <p>Explora, prueba, pero siempre con responsabilidad y respeto por la ley. El Flipper es una herramienta educativa, no un juguete para molestar.</p>
+    </div>
+
+    <p><a href="index.html">&larr; Volver al blog</a></p>
+  </div>
+</body>
+</html>
