@@ -380,6 +380,198 @@
     <a href="https://ufde.github.io" class="main-site" target="_blank" rel="noopener noreferrer">Página web principal: https://ufde.github.io</a>
   </footer>
 
+<style>
+  .privacy-policy, 
+  .legal-notice, 
+  .about-me {
+    background: #fff;
+    padding: 2rem 2.5rem;
+    margin-bottom: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    color: #222;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  .privacy-policy h2,
+  .legal-notice h2,
+  .about-me h2 {
+    font-family: 'Playfair Display', serif;
+    color: #b74472;
+    font-weight: 600;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #f0a6b8;
+    padding-bottom: 0.3rem;
+  }
+
+  .privacy-policy h3,
+  .legal-notice h3 {
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-top: 1.8rem;
+    margin-bottom: 0.8rem;
+    color: #8e2a4d;
+  }
+
+  .privacy-policy p,
+  .legal-notice p,
+  .about-me p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: #444;
+  }
+
+  .privacy-policy ul,
+  .legal-notice ul {
+    margin-left: 1.4rem;
+    margin-bottom: 1rem;
+    color: #555;
+  }
+
+  .privacy-policy ul li,
+  .legal-notice ul li {
+    margin-bottom: 0.5rem;
+  }
+
+  .privacy-policy a,
+  .legal-notice a {
+    color: #b74472;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .privacy-policy a:hover,
+  .legal-notice a:hover {
+    text-decoration: underline;
+  }
+
+  .legal-notice .note,
+  .privacy-policy .note {
+    font-size: 0.875rem;
+    color: #888;
+    font-style: italic;
+    margin-top: 1.5rem;
+  }
+
+  .about-me {
+    border: 1px solid #f0a6b8;
+    background: #fff6f9;
+    color: #6a3a52;
+    font-size: 1.1rem;
+  }
+
+  .cookie-box-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+  .cookie-box-overlay.visible {
+    display: flex;
+  }
+
+  .cookie-box {
+    background: #fff;
+    border-radius: 12px;
+    max-width: 460px;
+    width: 100%;
+    padding: 2rem 2.5rem;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    color: #333;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+  }
+
+  .cookie-box h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #b74472;
+    border-bottom: 2px solid #f0a6b8;
+    padding-bottom: 0.4rem;
+  }
+
+  .cookie-box h3 {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 1.4rem;
+    margin-bottom: 0.8rem;
+    color: #8e2a4d;
+  }
+
+  .cookie-box p {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    color: #444;
+  }
+
+  .cookie-box ul {
+    margin-left: 1.4rem;
+    margin-bottom: 1rem;
+    color: #555;
+  }
+
+  .cookie-box ul li {
+    margin-bottom: 0.4rem;
+  }
+
+  .cookie-box a {
+    color: #b74472;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .cookie-box a:hover {
+    text-decoration: underline;
+  }
+
+  .cookie-box .note {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: #777;
+    margin-top: 1.2rem;
+  }
+
+  .cookie-box .button-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .cookie-box .btn {
+    flex: 1 1 45%;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    color: #fff;
+    background-color: #b74472;
+    border: none;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+  }
+  .cookie-box .btn:hover {
+    background-color: #922f57;
+  }
+  .cookie-box .btn[style] {
+    color: #333;
+  }
+  .cookie-box .btn[style]:hover {
+    background-color: #bbb;
+  }
+</style>
+
 <section class="privacy-policy">
   <h2>Política de Privacidad</h2>
   <p>La privacidad de nuestros usuarios es una prioridad en <strong>https://blog-undfe.github.io</strong>. Esta política detalla cómo recopilamos, utilizamos y protegemos tu información personal.</p>
@@ -434,15 +626,15 @@
   <p>Soy estudiante de ciberseguridad con pasión por la tecnología. Comparto conocimientos y recursos para ayudar a otros a aprender, protegerse en línea y entender mejor el mundo digital.</p>
 </section>
 
-<div class="cookie-box-overlay" id="cookieOverlay">
-  <div class="cookie-box" id="cookieBox">
-    <h2>Política de Cookies</h2>
+<div class="cookie-box-overlay" id="cookieOverlay" aria-hidden="true" role="dialog" aria-labelledby="cookieBoxTitle" aria-modal="true">
+  <div class="cookie-box" id="cookieBox" tabindex="-1">
+    <h2 id="cookieBoxTitle">Política de Cookies</h2>
     <p>Utilizamos cookies propias y de terceros para mejorar la experiencia del usuario, personalizar el contenido, analizar el tráfico y mostrar publicidad personalizada. Puedes aceptar, rechazar o configurar tus preferencias.</p>
 
     <div class="button-container">
       <a href="#" class="btn" id="acceptCookies">Aceptar todas</a>
       <a href="#" class="btn" id="rejectCookies" style="background-color:#ddd; color:#333;">Rechazar todas</a>
-      <a href="#gestion" class="btn" style="background-color:#f1c40f;">Gestionar preferencias</a>
+      <a href="#gestion" class="btn" style="background-color:#f1c40f; color:#333;">Gestionar preferencias</a>
     </div>
 
     <h3>¿Qué cookies usamos?</h3>
@@ -457,10 +649,10 @@
     <p>Además, puedes configurar tu navegador para bloquear o eliminar cookies no esenciales.</p>
 
     <ul>
-      <li><strong>Chrome:</strong> <a href="https://support.google.com/chrome/answer/95647" target="_blank">Configuración de cookies</a></li>
-      <li><strong>Firefox:</strong> <a href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies" target="_blank">Administrar cookies</a></li>
-      <li><strong>Safari:</strong> <a href="https://support.apple.com/es-es/HT201265" target="_blank">Preferencias de cookies</a></li>
-      <li><strong>Edge:</strong> <a href="https://support.microsoft.com/es-es/help/4027947" target="_blank">Administrar cookies</a></li>
+      <li><strong>Chrome:</strong> <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer">Configuración de cookies</a></li>
+      <li><strong>Firefox:</strong> <a href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies" target="_blank" rel="noopener noreferrer">Administrar cookies</a></li>
+      <li><strong>Safari:</strong> <a href="https://support.apple.com/es-es/HT201265" target="_blank" rel="noopener noreferrer">Preferencias de cookies</a></li>
+      <li><strong>Edge:</strong> <a href="https://support.microsoft.com/es-es/help/4027947" target="_blank" rel="noopener noreferrer">Administrar cookies</a></li>
     </ul>
 
     <p class="note">El bloqueo de cookies puede afectar algunas funcionalidades del sitio.</p>
@@ -478,11 +670,14 @@
     if (!consent) {
       setTimeout(() => {
         overlay.classList.add("visible");
+        overlay.setAttribute("aria-hidden", "false");
+        document.getElementById("cookieBox").focus();
       }, 2000);
     }
 
     const hideBanner = () => {
       overlay.classList.remove("visible");
+      overlay.setAttribute("aria-hidden", "true");
     };
 
     acceptBtn.addEventListener("click", (e) => {
