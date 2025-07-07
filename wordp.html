@@ -65,49 +65,62 @@
 </head>
 <body>
 
-  <div class="container">
-    <h1>Vulnerabilidades comunes de WordPress y por qué no usarlo</h1>
+<div class="container">
+  <h1>Vulnerabilidades comunes de WordPress y por qué no usarlo</h1>
 
-    <div class="section">
-      <h2>Introducción</h2>
-      <p>WordPress es uno de los CMS más populares, pero también uno de los más atacados. Muchos sitios corren con configuraciones por defecto y plugins no seguros, lo que lo hace una presa fácil para hackers.</p>
-    </div>
+  <div class="section">
+    <h2>Introducción</h2>
+    <p>WordPress es uno de los CMS más populares, pero también uno de los más atacados. Muchos sitios funcionan con configuraciones por defecto y plugins inseguros, lo que lo convierte en un blanco fácil para hackers.</p>
+  </div>
 
-    <div class="section">
-      <h2>Vulnerabilidades más comunes</h2>
-      <ul>
-        <li><strong>Plugins inseguros:</strong> La mayoría de los ataques vienen por plugins mal desarrollados o abandonados.</li>
-        <li><strong>Temas vulnerables:</strong> Temas gratuitos o nulled que incluyen backdoors o código malicioso.</li>
-        <li><strong>Inyección SQL:</strong> Falta de saneamiento en formularios o consultas puede permitir acceso a la base de datos.</li>
-        <li><strong>Cross-Site Scripting (XSS):</strong> Scripts maliciosos inyectados que afectan a usuarios y administradores.</li>
-        <li><strong>Contraseñas débiles:</strong> El admin con contraseña sencilla es la puerta principal para muchos ataques.</li>
-        <li><strong>Falta de actualizaciones:</strong> No actualizar el núcleo, plugins o temas deja vulnerabilidades sin parchear.</li>
-      </ul>
-    </div>
+  <div class="section">
+    <h2>Vulnerabilidades más comunes</h2>
+    <ul>
+      <li><strong>Plugins inseguros:</strong> La mayoría de los ataques provienen de plugins mal desarrollados o abandonados.</li>
+      <li><strong>Temas vulnerables:</strong> Temas gratuitos o nulled que incluyen puertas traseras o código malicioso.</li>
+      <li><strong>Inyección SQL:</strong> La falta de saneamiento en formularios o consultas puede permitir el acceso a la base de datos.</li>
+      <li><strong>Cross-Site Scripting (XSS):</strong> Inyección de scripts maliciosos que afectan a usuarios y administradores.</li>
+      <li><strong>Contraseñas débiles:</strong> Un admin con contraseña sencilla es la puerta principal para muchos ataques.</li>
+      <li><strong>Falta de actualizaciones:</strong> No actualizar el núcleo, plugins o temas deja vulnerabilidades sin parchear.</li>
+    </ul>
+  </div>
 
-    <div class="section">
-      <h2>¿Por qué no usar WordPress?</h2>
-      <p>Si bien WordPress es accesible y fácil de usar, tiene sus desventajas:</p>
-      <ul>
-        <li>Es un blanco constante para atacantes por su popularidad.</li>
-        <li>Requiere mantenimiento continuo para evitar vulnerabilidades.</li>
-        <li>Puede ser pesado y lento sin optimizaciones.</li>
-        <li>La dependencia de terceros (plugins y temas) aumenta riesgos.</li>
-      </ul>
-      <p>Para proyectos que requieren máxima seguridad, es mejor optar por CMS más ligeros, frameworks personalizados o soluciones menos expuestas.</p>
-    </div>
+  <div class="section">
+    <h2>¿Por qué no usar WordPress?</h2>
+    <p>Si bien WordPress es accesible y fácil de usar, tiene sus desventajas:</p>
+    <ul>
+      <li>Es un blanco constante para atacantes debido a su popularidad.</li>
+      <li>Requiere mantenimiento continuo para evitar vulnerabilidades.</li>
+      <li>Puede volverse pesado y lento sin optimizaciones.</li>
+      <li>La dependencia de terceros (plugins y temas) aumenta los riesgos.</li>
+    </ul>
+    <p>Para proyectos que requieren máxima seguridad, es preferible optar por CMS más ligeros, frameworks personalizados o soluciones menos expuestas.</p>
+  </div>
 
-    <div class="section">
-      <h2>Consejos para mejorar seguridad si usas WordPress</h2>
-      <ul>
-        <li>Usa solo plugins oficiales y con buena reputación.</li>
-        <li>Mantén todo actualizado a la última versión.</li>
-        <li>Configura permisos de archivo correctos en el servidor.</li>
-        <li>Usa contraseñas fuertes y 2FA en cuentas admin.</li>
-        <li>Haz backups periódicos y revisa logs de actividad.</li>
-        <li>Considera usar plugins de seguridad como Wordfence o Sucuri.</li>
-      </ul>
-    </div>
+  <div class="section">
+    <h2>Consejos para mejorar la seguridad si usas WordPress</h2>
+    <ul>
+      <li>Usa únicamente plugins oficiales y con buena reputación.</li>
+      <li>Mantén todo actualizado a la última versión disponible.</li>
+      <li>Configura correctamente los permisos de archivos en el servidor.</li>
+      <li>Utiliza contraseñas fuertes y activa la autenticación de dos factores (2FA) en cuentas de administrador.</li>
+      <li>Realiza copias de seguridad periódicas y revisa los registros de actividad.</li>
+      <li>Considera usar plugins de seguridad como Wordfence o Sucuri.</li>
+    </ul>
+  </div>
+
+<div class="section">
+  <h2>Cosas que deberías quitar si tienes WordPress configurado</h2>
+  <p><strong>xmlrpc.php</strong> es una puerta de entrada para atacantes si saben cómo explotarlo correctamente. Se recomienda deshabilitar o restringir el acceso a este archivo para mejorar la seguridad de tu sitio.</p>
+  <ul>
+    <li><strong>Acceso al archivo <code>readme.html</code>:</strong> Puede revelar la versión exacta de WordPress que usas, facilitando ataques dirigidos.</li>
+    <li><strong>Carpeta <code>/wp-admin/install.php</code>:</strong> Si tu sitio ya está instalado, esta debería estar protegida o eliminada para evitar reinstalaciones o exploits.</li>
+    <li><strong>Desactivar listado de directorios:</strong> Para impedir que atacantes puedan ver el contenido de carpetas vacías o con archivos accesibles.</li>
+    <li><strong>El archivo <code>wp-config.php</code> debe estar protegido:</strong> Es vital evitar que pueda ser descargado o leído desde el navegador.</li>
+    <li><strong>API REST sin restricciones:</strong> Algunos endpoints de la API REST pueden exponer información sensible, conviene limitar su acceso o deshabilitar lo innecesario.</li>
+    <li><strong>Deshabilitar edición de archivos desde el panel:</strong> Evita que un atacante con acceso admin pueda modificar archivos PHP directamente desde el backend.</li>
+  </ul>
+</div>
 
     <p><a href="index.html">← Volver al blog</a></p>
   </div>
