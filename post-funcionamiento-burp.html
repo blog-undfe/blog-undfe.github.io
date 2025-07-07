@@ -74,44 +74,62 @@
 </head>
 <body>
 
-  <div class="container">
-    <h1>Funcionamiento básico de Burp Suite</h1>
+<div class="container">
+  <h1>Guía completa sobre Burp Suite: Qué es y cómo utilizarlo</h1>
 
-    <div class="content">
-      <p><strong>Introducción:</strong></p>
-      <p>
-        Burp, o Burp Suite, es una herramienta gráfica para probar la seguridad de aplicaciones web. Está escrita en Java y desarrollada por PortSwigger Web Security. Su creador es la empresa Portswigger, alias de su fundador, Dafydd Stuttard.
-      </p>
-      <p>
-        Burp Suite es una plataforma integrada para realizar pruebas de seguridad de aplicaciones web. Sus diversas herramientas funcionan a la perfección para respaldar todo el proceso de pruebas, desde el mapeo inicial y el análisis de la superficie de ataque de una aplicación hasta la detección y explotación de vulnerabilidades de seguridad.
-      </p>
-      <p>
-        Burpsuite puede utilizarse como un proxy HTTP básico para interceptar tráfico para su análisis y reproducción, como escáner de seguridad de aplicaciones web, como herramienta para realizar ataques automatizados contra aplicaciones web, como herramienta para rastrear sitios web completos e identificar la superficie de ataque y cuenta con una API de plugins con una gran cantidad de complementos de terceros disponibles.
-      </p>
-      <p>
-        Es la herramienta más popular entre los investigadores profesionales de seguridad de aplicaciones web y los buscadores de errores. Su facilidad de uso la convierte en una opción más adecuada que alternativas gratuitas como OWASP ZAP.
-      </p>
+  <div class="content">
+    <p><strong>¿Qué es Burp Suite?</strong></p>
+    <p>
+      Burp Suite es una plataforma integral diseñada para realizar pruebas de seguridad en aplicaciones web. Desarrollada por PortSwigger, esta herramienta está enfocada en ayudar a profesionales y entusiastas en ciberseguridad a identificar y explotar vulnerabilidades dentro de sitios web y servicios HTTP/S.
+    </p>
+    <p>
+      La aplicación actúa principalmente como un proxy interceptador que permite analizar, modificar y reenviar el tráfico entre el navegador y el servidor, facilitando la inspección profunda de las comunicaciones y la detección de posibles fallos de seguridad.
+    </p>
 
-      <img src="0_GwhV1TKuR_yye0tU (1).webp" alt="Burp Suite Interfaz" />
+    <p><strong>Principales funcionalidades de Burp Suite</strong></p>
+    <ul>
+      <li><strong>Proxy HTTP/S:</strong> Permite capturar y modificar peticiones y respuestas para entender cómo funciona la aplicación y probar posibles vulnerabilidades.</li>
+      <li><strong>Escáner de vulnerabilidades:</strong> Analiza automáticamente el sitio para detectar fallos comunes como inyección SQL, XSS, CSRF y más (disponible en versiones avanzadas).</li>
+      <li><strong>Repeater:</strong> Herramienta para enviar manualmente solicitudes modificadas y analizar las respuestas, facilitando pruebas personalizadas.</li>
+      <li><strong>Intruder:</strong> Automatiza ataques de fuerza bruta o fuzzing para probar la robustez de entradas, autenticaciones o formularios.</li>
+      <li><strong>Sequencer:</strong> Analiza la calidad de tokens de sesión y otros valores aleatorios para evaluar su seguridad.</li>
+      <li><strong>Decoder:</strong> Decodifica y codifica datos en diferentes formatos (Base64, URL encoding, hex, etc.), útil para análisis manual.</li>
+      <li><strong>Comparer:</strong> Compara dos sets de datos para identificar diferencias, importante para detectar variaciones inesperadas en las respuestas.</li>
+      <li><strong>Extensiones y API:</strong> Burp cuenta con un ecosistema de plugins que amplían su funcionalidad, desarrollados por la comunidad o PortSwigger.</li>
+    </ul>
 
-      <p>
-        Para utilizar Burp Suite correctamente, es necesario conocer todas las herramientas disponibles. En el próximo artículo, utilizaremos la versión Burp Community, ya que está disponible para todos de forma gratuita.
-      </p>
+    <p><strong>¿Para qué sirve Burp Suite?</strong></p>
+    <p>
+      Burp Suite es esencial para los profesionales que realizan pruebas de penetración en aplicaciones web, permitiendo entender cómo una aplicación procesa las solicitudes y responde, para encontrar puntos débiles antes de que los atacantes los exploten.
+    </p>
+    <p>
+      También es usada para auditar configuraciones, probar autenticaciones, revisar políticas de seguridad y verificar la protección frente a ataques comunes como Cross-Site Scripting o Inyección SQL.
+    </p>
 
-      <p><strong>Diferentes ediciones de Burp Suite:</strong></p>
-      <ul>
-        <li><strong>Community:</strong> Versión gratuita que se instala por defecto en Kali Linux.</li>
-        <li><strong>Profesional:</strong> Edición de pago, cuesta alrededor de $399 al año.</li>
-        <li><strong>Enterprise:</strong> Edición para empresas, cuesta alrededor de $3999 al año.</li>
-      </ul>
+    <p><strong>Cómo usar Burp Suite correctamente</strong></p>
+    <ol>
+      <li>Configura tu navegador para que use Burp Suite como proxy local (por defecto, Burp escucha en localhost:8080).</li>
+      <li>Interceta tráfico HTTP/S navegando por la aplicación objetivo para analizar peticiones y respuestas.</li>
+      <li>Utiliza Repeater para modificar y reenviar solicitudes específicas, observando cómo responde el servidor.</li>
+      <li>Emplea Intruder para realizar ataques automatizados en formularios o parámetros.</li>
+      <li>Aplica el escáner (en versiones pagas) para buscar vulnerabilidades conocidas y obtener reportes detallados.</li>
+      <li>Analiza la seguridad de tokens con Sequencer y manipula datos codificados con Decoder.</li>
+      <li>Complementa con extensiones para adaptarlo a casos específicos o ampliar funcionalidades.</li>
+      <li>Guarda y documenta los hallazgos para generar informes y recomendaciones.</li>
+    </ol>
 
-      <p><strong>Características:</strong></p>
-      <ul>
-        <li><strong>Enterprise ($3999/año):</strong> Escáner de vulnerabilidades web, escaneos programados y repetidos, escalabilidad ilimitada, integración de CI.</li>
-        <li><strong>Profesional ($399/año):</strong> Escáner web, herramientas manuales avanzadas y esenciales.</li>
-        <li><strong>Community (Gratis):</strong> Herramientas manuales esenciales.</li>
-      </ul>
-    </div>
+    <p><strong>Versiones disponibles de Burp Suite</strong></p>
+    <ul>
+      <li><strong>Community:</strong> Gratuita, con funcionalidades básicas, ideal para aprender y hacer pruebas manuales.</li>
+      <li><strong>Professional:</strong> Versión de pago que incluye escáner automatizado, herramientas avanzadas y soporte prioritario.</li>
+      <li><strong>Enterprise:</strong> Dirigida a organizaciones, con automatización completa, integración en pipelines y escalabilidad para auditorías masivas.</li>
+    </ul>
+
+    <p>
+      Sea cual sea la versión, Burp Suite sigue siendo una herramienta fundamental para cualquier auditor de seguridad web, y aprender a usarla correctamente puede marcar la diferencia en la detección temprana de vulnerabilidades críticas.
+    </p>
+  </div>
+</div>
 
     <p><a href="index.html">← Volver al blog</a></p>
   </div>
