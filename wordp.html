@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vulnerabilidades comunes de WordPress y por qué no usarlo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      overflow-x: hidden;
+    }
+    body {
+      background-color: #fefaf6;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px 15px;
+      background-image: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.94);
+      max-width: 800px;
+      width: 100%;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      overflow-wrap: break-word;
+      backdrop-filter: saturate(180%) blur(8px);
+      -webkit-backdrop-filter: saturate(180%) blur(8px);
+    }
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: #c95f86;
+      margin-bottom: 0.8rem;
+    }
+    p, ul, ol {
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+    ul, ol {
+      padding-left: 1.2rem;
+    }
+    a {
+      color: #c95f86;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Vulnerabilidades comunes de WordPress y por qué no usarlo</h1>
+
+    <div class="section">
+      <h2>Introducción</h2>
+      <p>WordPress es uno de los CMS más populares, pero también uno de los más atacados. Muchos sitios corren con configuraciones por defecto y plugins no seguros, lo que lo hace una presa fácil para hackers.</p>
+    </div>
+
+    <div class="section">
+      <h2>Vulnerabilidades más comunes</h2>
+      <ul>
+        <li><strong>Plugins inseguros:</strong> La mayoría de los ataques vienen por plugins mal desarrollados o abandonados.</li>
+        <li><strong>Temas vulnerables:</strong> Temas gratuitos o nulled que incluyen backdoors o código malicioso.</li>
+        <li><strong>Inyección SQL:</strong> Falta de saneamiento en formularios o consultas puede permitir acceso a la base de datos.</li>
+        <li><strong>Cross-Site Scripting (XSS):</strong> Scripts maliciosos inyectados que afectan a usuarios y administradores.</li>
+        <li><strong>Contraseñas débiles:</strong> El admin con contraseña sencilla es la puerta principal para muchos ataques.</li>
+        <li><strong>Falta de actualizaciones:</strong> No actualizar el núcleo, plugins o temas deja vulnerabilidades sin parchear.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>¿Por qué no usar WordPress?</h2>
+      <p>Si bien WordPress es accesible y fácil de usar, tiene sus desventajas:</p>
+      <ul>
+        <li>Es un blanco constante para atacantes por su popularidad.</li>
+        <li>Requiere mantenimiento continuo para evitar vulnerabilidades.</li>
+        <li>Puede ser pesado y lento sin optimizaciones.</li>
+        <li>La dependencia de terceros (plugins y temas) aumenta riesgos.</li>
+      </ul>
+      <p>Para proyectos que requieren máxima seguridad, es mejor optar por CMS más ligeros, frameworks personalizados o soluciones menos expuestas.</p>
+    </div>
+
+    <div class="section">
+      <h2>Consejos para mejorar seguridad si usas WordPress</h2>
+      <ul>
+        <li>Usa solo plugins oficiales y con buena reputación.</li>
+        <li>Mantén todo actualizado a la última versión.</li>
+        <li>Configura permisos de archivo correctos en el servidor.</li>
+        <li>Usa contraseñas fuertes y 2FA en cuentas admin.</li>
+        <li>Haz backups periódicos y revisa logs de actividad.</li>
+        <li>Considera usar plugins de seguridad como Wordfence o Sucuri.</li>
+      </ul>
+    </div>
+
+    <p><a href="index.html">← Volver al blog</a></p>
+  </div>
+
+</body>
+</html>
