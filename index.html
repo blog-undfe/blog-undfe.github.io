@@ -627,71 +627,325 @@
   <p>Soy estudiante de ciberseguridad con pasión por la tecnología. Comparto conocimientos y recursos para ayudar a otros a aprender, protegerse en línea y entender mejor el mundo digital.</p>
 </section>
 
-<div class="cookie-box-overlay" id="cookieOverlay" aria-hidden="true" role="dialog" aria-labelledby="cookieBoxTitle" aria-modal="true">
-  <div class="cookie-box" id="cookieBox" tabindex="-1">
-    <h2 id="cookieBoxTitle">Política de Cookies</h2>
-    <p>Utilizamos cookies propias y de terceros para mejorar la experiencia del usuario, personalizar el contenido, analizar el tráfico y mostrar publicidad personalizada. Puedes aceptar, rechazar o configurar tus preferencias.</p>
+<div class="ck-overlay" id="cookieOverlay" role="dialog" aria-modal="true" aria-labelledby="cookieTitle" aria-hidden="true">
+  <div class="ck-modal" id="cookieBox" tabindex="-1">
+    <header class="ck-header">
+      <h2 id="cookieTitle">Preferencias de Cookies</h2>
+      <p>Este sitio web utiliza cookies propias y de terceros para garantizar el correcto funcionamiento, analizar el tráfico y personalizar contenido. Puedes aceptar todas, rechazarlas o configurar el uso detallado.</p>
+    </header>
 
-    <div class="button-container">
-      <a href="#" class="btn" id="acceptCookies">Aceptar todas</a>
-      <a href="#" class="btn" id="rejectCookies" style="background-color:#ddd; color:#333;">Rechazar todas</a>
-      <a href="#gestion" class="btn" style="background-color:#f1c40f; color:#333;">Gestionar preferencias</a>
-    </div>
+    <section class="ck-actions">
+      <button class="ck-btn ck-btn--primary" id="acceptAll">Aceptar todas</button>
+      <button class="ck-btn ck-btn--secondary" id="rejectAll">Rechazar todas</button>
+      <button class="ck-btn ck-btn--config" id="openPreferences">Gestionar preferencias</button>
+    </section>
 
-    <h3>¿Qué cookies usamos?</h3>
-    <ul>
-      <li><strong>Cookies necesarias:</strong> esenciales para la navegación. No requieren consentimiento.</li>
-      <li><strong>Cookies de análisis:</strong> permiten conocer el comportamiento de los usuarios y mejorar el sitio.</li>
-      <li><strong>Cookies de marketing:</strong> usadas para ofrecer publicidad relevante y personalizada.</li>
-    </ul>
+    <section class="ck-types">
+      <h3>¿Qué cookies usamos?</h3>
+      <ul>
+        <li><strong>Cookies necesarias:</strong> esenciales para el funcionamiento del sitio. No se pueden desactivar.</li>
+        <li><strong>Cookies funcionales:</strong> recuerdan tus elecciones (idioma, sesión, etc).</li>
+        <li><strong>Cookies de rendimiento:</strong> miden la velocidad y errores del sitio.</li>
+        <li><strong>Cookies de analítica:</strong> permiten entender el comportamiento del usuario para mejorar la experiencia.</li>
+        <li><strong>Cookies de marketing:</strong> se usan para mostrar publicidad relevante y personalizada.</li>
+      </ul>
+    </section>
 
-    <h3 id="gestion">¿Cómo gestionar tus preferencias?</h3>
-    <p>Desde el primer acceso, puedes aceptar o personalizar el uso de cookies mediante el banner correspondiente.</p>
-    <p>Además, puedes configurar tu navegador para bloquear o eliminar cookies no esenciales.</p>
+    <section class="ck-preferences" id="preferencesSection" style="display:none;">
+      <form id="cookieForm">
+        <fieldset>
+          <legend>Gestiona tus preferencias</legend>
 
-    <ul>
-      <li><strong>Chrome:</strong> <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer">Configuración de cookies</a></li>
-      <li><strong>Firefox:</strong> <a href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies" target="_blank" rel="noopener noreferrer">Administrar cookies</a></li>
-      <li><strong>Safari:</strong> <a href="https://support.apple.com/es-es/HT201265" target="_blank" rel="noopener noreferrer">Preferencias de cookies</a></li>
-      <li><strong>Edge:</strong> <a href="https://support.microsoft.com/es-es/help/4027947" target="_blank" rel="noopener noreferrer">Administrar cookies</a></li>
-    </ul>
+          <div class="ck-category">
+            <label>
+              <input type="checkbox" checked disabled>
+              <strong>Cookies necesarias</strong> — siempre activas.
+            </label>
+          </div>
 
-    <p class="note">El bloqueo de cookies puede afectar algunas funcionalidades del sitio.</p>
-    <p class="note">Fecha de actualización: 6 de junio de 2025</p>
+          <div class="ck-category">
+            <label>
+              <input type="checkbox" id="functionalCookies">
+              <strong>Funcionales</strong> — activan opciones de personalización.
+            </label>
+          </div>
+
+          <div class="ck-category">
+            <label>
+              <input type="checkbox" id="performanceCookies">
+              <strong>Rendimiento</strong> — evalúan velocidad y errores del sitio.
+            </label>
+          </div>
+
+          <div class="ck-category">
+            <label>
+              <input type="checkbox" id="analyticsCookies">
+              <strong>Analítica</strong> — ayudan a mejorar la experiencia web.
+            </label>
+          </div>
+
+          <div class="ck-category">
+            <label>
+              <input type="checkbox" id="marketingCookies">
+              <strong>Marketing</strong> — muestran contenido y anuncios relevantes.
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="ck-actions">
+          <button type="submit" class="ck-btn ck-btn--primary">Guardar preferencias</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="ck-footer">
+      <h3>¿Cómo cambiar tus preferencias más adelante?</h3>
+      <p>Puedes modificar tus elecciones desde el enlace "Gestionar cookies" en el pie de página, o bien configurar directamente tu navegador.</p>
+
+      <ul class="ck-browser-links">
+        <li><a href="https://support.google.com/chrome/answer/95647" target="_blank">Configuración en Chrome</a></li>
+        <li><a href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies" target="_blank">Configuración en Firefox</a></li>
+        <li><a href="https://support.apple.com/es-es/HT201265" target="_blank">Configuración en Safari</a></li>
+        <li><a href="https://support.microsoft.com/es-es/help/4027947" target="_blank">Configuración en Edge</a></li>
+      </ul>
+
+      <p class="ck-note">Bloquear algunas cookies puede afectar funcionalidades como login, carrito o idioma.</p>
+      <p class="ck-note">Última actualización: <span id="updateDate"></span></p>
+      <p><button class="ck-btn ck-btn--reset" id="resetCookies">Borrar preferencias guardadas</button></p>
+    </section>
   </div>
 </div>
+
+<style>
+  .ck-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .ck-overlay.visible {
+    display: flex;
+  }
+
+  .ck-modal {
+    background: #fff;
+    border-radius: 12px;
+    max-width: 640px;
+    width: 100%;
+    padding: 2rem;
+    font-family: 'Segoe UI', sans-serif;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .ck-header h2 {
+    margin-bottom: 0.5rem;
+    font-size: 1.6rem;
+    color: #222;
+  }
+
+  .ck-header p {
+    color: #555;
+    font-size: 1rem;
+  }
+
+  .ck-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .ck-btn {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .ck-btn--primary {
+    background: #0072ce;
+    color: #fff;
+  }
+
+  .ck-btn--secondary {
+    background: #ccc;
+    color: #222;
+  }
+
+  .ck-btn--config {
+    background: #f1c40f;
+    color: #000;
+  }
+
+  .ck-btn--reset {
+    background: transparent;
+    color: #0072ce;
+    text-decoration: underline;
+    border: none;
+    padding: 0.3rem;
+    font-size: 0.9rem;
+  }
+
+  .ck-types ul {
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .ck-types li {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    color: #333;
+  }
+
+  .ck-preferences legend {
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+
+  .ck-category {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .ck-category input {
+    margin-right: 0.6rem;
+  }
+
+  .ck-footer {
+    border-top: 1px solid #eee;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    font-size: 0.9rem;
+    color: #444;
+  }
+
+  .ck-browser-links {
+    list-style: none;
+    padding-left: 0;
+    margin: 0.5rem 0 1rem;
+  }
+
+  .ck-browser-links li {
+    margin: 0.4rem 0;
+  }
+
+  .ck-note {
+    font-size: 0.8rem;
+    color: #666;
+  }
+
+  @media (max-width: 480px) {
+    .ck-actions {
+      flex-direction: column;
+    }
+    .ck-btn {
+      width: 100%;
+    }
+  }
+</style>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const overlay = document.getElementById("cookieOverlay");
-    const acceptBtn = document.getElementById("acceptCookies");
-    const rejectBtn = document.getElementById("rejectCookies");
+    const modal = document.getElementById("cookieBox");
+    const acceptBtn = document.getElementById("acceptAll");
+    const rejectBtn = document.getElementById("rejectAll");
+    const openPrefs = document.getElementById("openPreferences");
+    const resetBtn = document.getElementById("resetCookies");
+    const prefsSection = document.getElementById("preferencesSection");
+    const form = document.getElementById("cookieForm");
 
-    const consent = localStorage.getItem("cookieConsent");
-    if (!consent) {
-      setTimeout(() => {
-        overlay.classList.add("visible");
-        overlay.setAttribute("aria-hidden", "false");
-        document.getElementById("cookieBox").focus();
-      }, 2000);
-    }
+    const showOverlay = () => {
+      overlay.classList.add("visible");
+      overlay.setAttribute("aria-hidden", "false");
+      modal.focus();
+    };
 
-    const hideBanner = () => {
+    const hideOverlay = () => {
       overlay.classList.remove("visible");
       overlay.setAttribute("aria-hidden", "true");
     };
 
-    acceptBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      localStorage.setItem("cookieConsent", "accepted");
-      hideBanner();
+    const savePreferences = (prefs) => {
+      localStorage.setItem("cookieConsent", JSON.stringify(prefs));
+    };
+
+    const loadPreferences = () => {
+      const stored = localStorage.getItem("cookieConsent");
+      return stored ? JSON.parse(stored) : null;
+    };
+
+    const setUpdateDate = () => {
+      const el = document.getElementById("updateDate");
+      if (el) {
+        el.textContent = new Date().toLocaleDateString("es-ES", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric"
+        });
+      }
+    };
+
+    if (!loadPreferences()) {
+      setTimeout(showOverlay, 1200);
+    }
+
+    acceptBtn?.addEventListener("click", () => {
+      savePreferences({
+        necessary: true,
+        functional: true,
+        performance: true,
+        analytics: true,
+        marketing: true
+      });
+      hideOverlay();
     });
 
-    rejectBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      localStorage.setItem("cookieConsent", "rejected");
-      hideBanner();
+    rejectBtn?.addEventListener("click", () => {
+      savePreferences({
+        necessary: true,
+        functional: false,
+        performance: false,
+        analytics: false,
+        marketing: false
+      });
+      hideOverlay();
     });
+
+    openPrefs?.addEventListener("click", () => {
+      prefsSection.style.display = 'block';
+    });
+
+    form?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const prefs = {
+        necessary: true,
+        functional: document.getElementById("functionalCookies")?.checked || false,
+        performance: document.getElementById("performanceCookies")?.checked || false,
+        analytics: document.getElementById("analyticsCookies")?.checked || false,
+        marketing: document.getElementById("marketingCookies")?.checked || false
+      };
+      savePreferences(prefs);
+      hideOverlay();
+    });
+
+    resetBtn?.addEventListener("click", () => {
+      localStorage.removeItem("cookieConsent");
+      location.reload();
+    });
+
+    setUpdateDate();
   });
 </script>
   
