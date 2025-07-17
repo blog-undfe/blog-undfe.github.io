@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="https://ik94g-g2ilo0g24kig24-f4ig4h79g4inuy-p.netlify.app/pfp.jpg" />
+  <title>Como funciona un sistema ferroviario y como se podria vulnerar eticamente</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      overflow-x: hidden;
+    }
+    body {
+      background-color: #fefaf6;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px 15px;
+      background-image: url('https://images.unsplash.com/photo-1604503468502-664d7f2b29f3?auto=format&fit=crop&w=1920&q=80');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.94);
+      max-width: 800px;
+      width: 100%;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      overflow-wrap: break-word;
+      backdrop-filter: saturate(180%) blur(8px);
+      -webkit-backdrop-filter: saturate(180%) blur(8px);
+    }
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: #c95f86;
+      margin-bottom: 0.8rem;
+    }
+    p, ul, ol {
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+    ul, ol {
+      padding-left: 1.2rem;
+    }
+    a {
+      color: #c95f86;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Como funciona un sistema ferroviario y como se podria vulnerar eticamente</h1>
+
+  <div class="section">
+    <h2>Introduccion</h2>
+    <p>Los trenes de hoy en dia no son como los de antes, ahora todo va por sistemas digitales y protocolos muy especificos. Saber como funciona un sistema ferroviario moderno te ayuda a entender tanto la parte tecnica como los posibles puntos debiles, pero ojo, esto es solo con fines educativos. No se trata de hackear nada ni meterse en lios.</p>
+  </div>
+
+  <div class="section">
+    <h2>¿Que compone un sistema ferroviario?</h2>
+    <ul>
+      <li><strong>Sistemas de señalizacion:</strong> Son los que le dicen al tren si puede avanzar o tiene que parar. Tipo semaforos pero digitales.</li>
+      <li><strong>Control de trafico centralizado (CTC):</strong> Donde se gestiona todo desde un panel central, con mapas en tiempo real, sensores, etc.</li>
+      <li><strong>Protocolos de comunicacion:</strong> Como GSM-R, LTE-R o incluso redes privadas via fibra, todo para que trenes y estaciones hablen entre ellos.</li>
+      <li><strong>SCADA:</strong> Control y monitorizacion remota de subestaciones electricas, puertas, sistemas de ventilacion, etc.</li>
+      <li><strong>Sistemas a bordo:</strong> Ordenadores en el tren que reciben ordenes, mandan info y controlan la velocidad, freno, etc.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Vulnerabilidades comunes (etico, obvio)</h2>
+    <ul>
+      <li><strong>Protocolos sin cifrado:</strong> Muchos sistemas antiguos usan protocolos sin cifrar, y eso los deja abiertos a sniffing o inyeccion de comandos.</li>
+      <li><strong>Accesos por defecto:</strong> Hay estaciones que tienen interfaces web SCADA sin contraseña o con admin:admin... si, aun pasa.</li>
+      <li><strong>Redes mal segmentadas:</strong> Una vulnerabilidad en la red de info (por ej., wifi publico en la estacion) puede dar acceso a redes internas.</li>
+      <li><strong>Falta de actualizaciones:</strong> Sistemas que llevan sin tocarse 10 años, con vulnerabilidades conocidas y sin parchear.</li>
+      <li><strong>Ingenieria social:</strong> Técnicos que dejan credenciales pegadas en pantallas o incluso compartidas por email sin cifrar.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>¿Como se podria vulnerar un sistema asi sin hacer nada ilegal?</h2>
+    <p>Ojo: todo lo siguiente es puramente etico, en entornos controlados o simulaciones, nada real.</p>
+    <ul>
+      <li><strong>Analizar redes abiertas:</strong> Escanear wifis en estaciones para ver si hay dispositivos visibles o servicios expuestos (sin conectarse eh, solo mirar).</li>
+      <li><strong>Leer manuales publicos:</strong> Hay mucha docu tecnica en webs de licitaciones, empresas ferroviarias, o foros de ingenieria que muestran como funcionan estos sistemas.</li>
+      <li><strong>Virtual labs:</strong> Algunos sistemas SCADA o de señalizacion tienen simuladores disponibles para aprender como se gestionan sin tocar entornos reales.</li>
+      <li><strong>Captura de RF (radio frecuencia):</strong> Con SDRs se puede analizar señales GSM-R o similares en modo pasivo, sin interferir en nada.</li>
+      <li><strong>Fuzzing de interfaces abiertas:</strong> Simular paquetes de datos en un entorno cerrado para ver como reaccionan ciertos sistemas (solo en lab).</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Consejos para los operadores ferroviarios (por si me lee alguno)</h2>
+    <ul>
+      <li>Segmentar bien redes criticas del resto del sistema.</li>
+      <li>Cambiar credenciales por defecto y usar 2FA donde se pueda.</li>
+      <li>Auditorias periodicas por equipos externos (no los de siempre).</li>
+      <li>Formar al personal tecnico en ciberseguridad ferroviaria (que si, existe).</li>
+      <li>Evitar interfaces accesibles via web sin VPN o proteccion fuerte.</li>
+    </ul>
+  </div>
+
+  <p><a href="index.html">← Volver al blog</a></p>
+</div>
+
+</body>
+</html>
