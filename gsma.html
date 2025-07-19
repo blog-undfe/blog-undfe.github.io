@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="https://ik94g-g2ilo0g24kig24-f4ig4h79g4inuy-p.netlify.app/pfp.jpg" />
+  <title>Redes moviles, frecuencias y lo que se puede hacer (eticamente)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      overflow-x: hidden;
+    }
+    body {
+      background-color: #fefaf6;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px 15px;
+      background-image: url('https://www.skyweaver.net/images/media/wallpapers/wallpaper2.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.94);
+      max-width: 800px;
+      width: 100%;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      overflow-wrap: break-word;
+      backdrop-filter: saturate(180%) blur(8px);
+      -webkit-backdrop-filter: saturate(180%) blur(8px);
+    }
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: #c95f86;
+      margin-bottom: 0.8rem;
+    }
+    p, ul, ol {
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+    ul, ol {
+      padding-left: 1.2rem;
+    }
+    a {
+      color: #c95f86;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Redes moviles, frecuencias y lo que se puede hacer (eticamente)</h1>
+
+  <div class="section">
+    <h2>Introduccion</h2>
+    <p>Los moviles que usamos cada dia se conectan a torres y estaciones base mediante señales de radio, y eso abre un monton de posibilidades tanto tecnicas como de analisis. Saber como funciona todo esto es clave si te mola el hacking etico, SDR, sniffing, etc. Ojo: esto no es para hacer el mal ni nada, es pa entenderlo.</p>
+  </div>
+
+  <div class="section">
+    <h2>¿Como funciona una red movil?</h2>
+    <p>Una red movil se compone de varios elementos que trabajan en conjunto para que puedas mandar un WhatsApp desde mitad del monte:</p>
+    <ul>
+      <li><strong>UE (User Equipment):</strong> tu movil, tablet o dispositivo conectado.</li>
+      <li><strong>Estacion base (BTS o eNodeB):</strong> las torres o antenas que transmiten y reciben señal.</li>
+      <li><strong>Backhaul:</strong> conexion entre antenas y el core de red.</li>
+      <li><strong>Core de red:</strong> gestiona llamadas, datos, autenticacion, etc. (MSC, HLR, MME... depende de la generacion).</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Frecuencias y generaciones</h2>
+    <p>Las redes moviles funcionan en diferentes bandas de frecuencia segun la tecnologia:</p>
+    <ul>
+      <li><strong>2G / GSM:</strong> 850, 900, 1800, 1900 MHz</li>
+      <li><strong>3G / UMTS:</strong> 900, 2100 MHz</li>
+      <li><strong>4G / LTE:</strong> 700, 800, 1800, 2600 MHz (varia por pais)</li>
+      <li><strong>5G:</strong> Sub-6GHz (como 3.5 GHz) y mmWave (24 GHz+)</li>
+    </ul>
+    <p>Con una SDR y una buena antena, se pueden capturar señales de varias de estas bandas (solo pasivamente eh).</p>
+  </div>
+
+  <div class="section">
+    <h2>¿Que se puede hacer con GSM? (educativo, no ilegal)</h2>
+    <ul>
+      <li><strong>Sniffing de señal GSM:</strong> algunas redes usan cifrados debiles o ninguno, asi que se puede capturar señal y analizarla.</li>
+      <li><strong>IMSI Catchers (Stingrays):</strong> dispositivos que simulan ser una torre para que los moviles se conecten. No legal en redes reales, pero si lo haces en lab cerrado, se aprende mucho.</li>
+      <li><strong>Downgrade de red:</strong> hacer que un movil baje de 4G a 2G, donde es mas facil interceptar la comunicacion.</li>
+      <li><strong>Sniffing de metadatos:</strong> incluso con cifrado, se puede ver quien llama a quien, tiempos, celdas usadas, etc.</li>
+      <li><strong>Fuzzing de protocolo GSM:</strong> enviar tramas malformadas en entorno controlado para probar como responde el sistema.</li>
+      <li><strong>Mapeo de celdas (Cell Tower Mapping):</strong> con SDR puedes detectar IDs de celdas, MCC/MNC, etc., para estudiar la cobertura.</li>
+      <li><strong>Suplantacion de BTS:</strong> levantar una torre falsa para estudiar como se comporta un movil. Solo en jaula de Faraday o SDR box, porfa.</li>
+      <li><strong>Decodificacion de trafico no cifrado:</strong> si la red no usa cifrado o usa A5/2, puedes ver datos en claro con Airprobe o gr-gsm.</li>
+      <li><strong>Tracking pasivo de IMSI:</strong> algunas redes no cambian el TMSI bien y puedes ver el IMSI real del movil pasivamente.</li>
+      <li><strong>Analisis de señalizacion GSM:</strong> ver como se hace el handover, registro en red, peticiones de canal, etc. Es brutal pa entender el stack.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>¿Que se puede hacer legalmente?</h2>
+    <ul>
+      <li>Escanear el espectro con SDR sin decodificar nada (solo ver señales activas).</li>
+      <li>Levantar una red GSM en modo laboratorio con OpenBTS o srsRAN (sin SIMs reales ni emitir fuera).</li>
+      <li>Capturar tramas con gr-gsm en entorno cerrado para analizar la estructura de paquetes.</li>
+      <li>Leer specs oficiales de 3GPP (están online y son libres).</li>
+      <li>Hacer pentesting etico a sistemas que usen GSM como modems industriales o M2M, con permiso.</li>
+    </ul>
+    <p>Lo importante es aprender sin romper nada ajeno. Lo que hagas en entorno controlado te puede dar mucho conocimiento para luego proteger sistemas reales.</p>
+  </div>
+
+  <div class="section">
+    <h2>Herramientas utiles</h2>
+    <ul>
+      <li><strong>Hardware SDR:</strong> RTL-SDR (solo recepcion), HackRF One, LimeSDR, USRP</li>
+      <li><strong>Software:</strong> gr-gsm, Airprobe, srsRAN, OpenBTS, Kalibrate, YateBTS</li>
+      <li><strong>Analisis:</strong> Wireshark con plugins GSM, SIMtrace para tarjetas SIM, QCSuper</li>
+    </ul>
+  </div>
+
+  <p><a href="index.html">← Volver al blog</a></p>
+</div>
+
+</body>
+</html>
