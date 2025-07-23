@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://ik94g-g2ilo0g24kig24-f4ig4h79g4inuy-p.netlify.app/pfp.jpg" />
+  <title>Todo lo que hay que saber pa meterse en ciberseguridad y hacking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #fefaf6;
+      color: #333;
+      padding: 30px 20px;
+    }
+    .container {
+      max-width: 850px;
+      margin: auto;
+      background: rgba(255,255,255,0.94);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      backdrop-filter: blur(6px);
+    }
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: #c95f86;
+    }
+    p, ul {
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    ul {
+      padding-left: 1.5rem;
+    }
+    a {
+      color: #c95f86;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Todo lo que hay que saber pa meterse en ciberseguridad y hacking</h1>
+
+  <p>Si quieres aprender ciberseguridad o hacking etico de verdad, no hay una ruta magica pero si muchas cosas claves que hay que pillar bien. Aqui te dejo todo lo que necesitas saber pa empezar sin humo ni cuentos raros.</p>
+
+  <h2>🌐 Redes: el inicio de todo</h2>
+  <p>Si no entiendes como funciona internet por dentro, no vas a poder hackear ni proteger nada. Aprende esto:</p>
+  <ul>
+    <li>¿Que es una IP, una mascara, una puerta de enlace?</li>
+    <li>Diferencias entre TCP, UDP, ICMP</li>
+    <li>DNS, HTTP, HTTPS, FTP, SSH, etc (protocolos tipicos)</li>
+    <li>Como escanear puertos (Nmap, Masscan)</li>
+    <li>Como hacer sniffing de red con Wireshark o tcpdump</li>
+  </ul>
+
+  <h2>🏠 Montar tu servidor desde cero</h2>
+  <p>Aprender montando es clave. Puedes levantar un servidor web desde tu propia IP local pa hacer pruebas (aunque no sea pa exponerlo al publico):</p>
+  <ul>
+    <li>Instalar un servidor web (nginx, apache, o python3 -m http.server)</li>
+    <li>Abrir puertos en tu router (port forwarding)</li>
+    <li>Protegerlo con firewall (ufw, iptables, fail2ban)</li>
+    <li>Ver logs y detectar escaneos o intentos raros</li>
+  </ul>
+  <p>Esto te enseña monton de cosas de redes, de seguridad y de como se ve el trafico real.</p>
+
+  <h2>🧰 Herramientas que tienes que dominar</h2>
+  <ul>
+    <li><strong>Burp Suite:</strong> pa interceptar peticiones web y manipularlas</li>
+    <li><strong>Nmap:</strong> escaneo de redes y servicios</li>
+    <li><strong>Wireshark:</strong> sniffing de trafico</li>
+    <li><strong>Metasploit:</strong> explotacion de vulnerabilidades conocidas</li>
+    <li><strong>Gobuster / Dirsearch:</strong> para enumerar directorios ocultos</li>
+    <li><strong>Hydra / John / Hashcat:</strong> para romper contraseñas o hashes</li>
+    <li><strong>LinPEAS / WinPEAS:</strong> pa enumerar sistemas y buscar escalada de privilegios</li>
+    <li><strong>OSINT tools:</strong> como theHarvester, Sherlock, Holehe</li>
+  </ul>
+
+  <h2>🧠 Que hay que saber para encontrar vulnerabilidades</h2>
+  <ul>
+    <li>Buscar inyecciones (SQLi, LFI, XSS...)</li>
+    <li>Analizar cabeceras HTTP, cookies, tokens</li>
+    <li>Comprobar rutas ocultas o endpoints expuestos</li>
+    <li>Identificar configuraciones malas (debug on, backups accesibles, paneles sin auth)</li>
+    <li>Escuchar y analizar el trafico que va y viene</li>
+  </ul>
+
+  <h2>🔐 Ciberseguridad no es solo atacar, es proteger</h2>
+  <p>Tambien tienes que saber defender:</p>
+  <ul>
+    <li>Como hacer hardening de un servidor</li>
+    <li>Como aplicar minimos privilegios en usuarios</li>
+    <li>Como detectar intrusiones (IDS, logs, sysmon)</li>
+    <li>Backups, monitorizacion, actualizaciones y buenas practicas</li>
+  </ul>
+
+  <h2>📚 Que estudiar o practicar</h2>
+  <ul>
+    <li>CTFs (HackTheBox, TryHackMe, PicoCTF...)</li>
+    <li>Laboratorios locales con maquinas virtuales (Kali, Ubuntu, Windows)</li>
+    <li>Leer CVEs y pruebas de concepto</li>
+    <li>Practicar Python y Bash pa automatizar</li>
+    <li>Probar vulnerabilidades en entornos controlados, nunca en sistemas reales sin permiso</li>
+  </ul>
+
+  <h2>⚠️ Cosas importantes a tener claro</h2>
+  <ul>
+    <li>Si no tienes permiso, no es etico ni legal</li>
+    <li>No uses herramientas automaticas sin saber que hacen</li>
+    <li>No toques sistemas de otros, ni “por aprender”</li>
+    <li>Empieza por entender, no por explotar</li>
+    <li>Ten mentalidad de resolver, no de romper</li>
+  </ul>
+
+  <p>Al final, el hacking real no va de romper cosas a lo loco, va de entender sistemas, pensar diferente y aprender cada dia. Todo esto lleva tiempo, pero si te mola, se vuelve adictivo. 💻🔍</p>
+
+  <p><a href="index.html">← Volver al blog</a></p>
+</div>
+
+</body>
+</html>
