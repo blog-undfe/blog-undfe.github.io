@@ -395,16 +395,27 @@
 
 <style>
   .container {
-    max-width: 900px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 1rem;
     font-family: 'Segoe UI', sans-serif;
-    color: #e4e4e4;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
     background-color: #111;
+    color: #e4e4e4;
   }
 
   .section {
-    margin-bottom: 2.5rem;
+    background-color: #1b1b1b;
+    border: 1px solid #2a2a2a;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 255, 200, 0.08);
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 550px;
+    flex: 1 1 300px;
   }
 
   .section-title {
@@ -416,12 +427,12 @@
   }
 
   .post {
-    margin-bottom: 2rem;
-    padding: 1.25rem 1.5rem;
-    background-color: #1a1a1a;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #262626;
     border-radius: 0.75rem;
-    border: 1px solid #2a2a2a;
-    box-shadow: 0 2px 6px rgba(0, 255, 200, 0.08);
+    border: 1px solid #333;
+    box-shadow: 0 2px 6px rgba(0, 255, 200, 0.05);
     transition: transform 0.2s ease;
   }
 
@@ -454,13 +465,19 @@
     text-decoration: underline;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     .container {
+      flex-direction: column;
       padding: 2rem 1rem;
     }
 
+    .section {
+      width: 100%;
+      max-width: 100%;
+    }
+
     .section-title {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       margin-bottom: 1rem;
     }
 
