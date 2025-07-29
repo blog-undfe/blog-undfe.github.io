@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://ik94g-g2ilo0g24kig24-f4ig4h79g4inuy-p.netlify.app/pfp.jpg" />
+  <title>Como se vulneran bases de datos y paneles</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #fefaf6;
+      color: #333;
+      padding: 30px 20px;
+    }
+    .container {
+      max-width: 850px;
+      margin: auto;
+      background: rgba(255,255,255,0.94);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      backdrop-filter: blur(6px);
+    }
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: #c95f86;
+    }
+    p, ul {
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    ul {
+      padding-left: 1.5rem;
+    }
+    a {
+      color: #c95f86;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Como se vulneran bases de datos y paneles de acceso</h1>
+
+  <p>Las bases de datos mal configuradas o expuestas son una mina de oro para cualquier atacante. Muchas veces no hace falta ni técnicas avanzadas, solo pillar un panel mal cerrado o un backup suelto por ahi. Vamos a ver cómo se suelen romper estas cosas, paso a paso y sin humo.</p>
+
+  <h2>Paneles de acceso mal puestos</h2>
+  <ul>
+    <li>URLs como <code>/phpmyadmin</code>, <code>/adminer</code> o <code>/db</code> que están abiertas al mundo</li>
+    <li>Accesibles desde cualquier IP sin ningún tipo de firewall o limitación</li>
+    <li>Usuarios tipo <code>admin</code>, <code>root</code> y claves flojas o por defecto</li>
+    <li>Servicios web montados en máquinas sin revisar ni endurecer</li>
+  </ul>
+
+  <h2>Fugas de backups o ficheros sensibles</h2>
+  <ul>
+    <li>Archivos <code>.sql</code>, <code>.bak</code>, <code>.gz</code> olvidados en carpetas públicas</li>
+    <li>URLs predecibles tipo <code>/backup.sql</code> o <code>/db_dump_2023.sql</code></li>
+    <li>Errores de permisos en buckets públicos (AWS S3, Azure, etc)</li>
+    <li>Backup automáticos expuestos por scripts mal hechos o sin auth</li>
+  </ul>
+
+  <h2>Inyecciones SQL y errores en código</h2>
+  <ul>
+    <li>Campos no filtrados que van directos a consultas SQL</li>
+    <li>Consultas dinámicas con variables concatenadas a lo bestia</li>
+    <li>ORMs mal usados que permiten filtrado arbitrario</li>
+    <li>Fallos de lógica que dejan escapar datos (por ejemplo, debug activado en prod)</li>
+  </ul>
+
+  <h2>Bases de datos expuestas directamente</h2>
+  <ul>
+    <li>Puertos abiertos de <code>MySQL</code>, <code>PostgreSQL</code>, <code>MongoDB</code> o <code>Redis</code></li>
+    <li>MongoDB sin contraseña en versiones viejas = acceso completo</li>
+    <li>Redis expuesto sin contraseña = ejecución remota y persistencia</li>
+    <li>ElasticSearch con datos abiertos por no poner reglas de red</li>
+  </ul>
+
+  <h2>Errores comunes que ayudan al atacante</h2>
+  <ul>
+    <li>Mensajes de error detallados que dicen qué tabla falló o qué consulta se usó</li>
+    <li>Paneles sin captcha, sin 2FA, ni límite de intentos</li>
+    <li>Sesiones mal gestionadas que permiten secuestros</li>
+    <li>Logs con datos sensibles visibles desde el navegador</li>
+  </ul>
+
+  <h2>Herramientas que se usan pa explotar esto</h2>
+  <ul>
+    <li><strong>sqlmap:</strong> automatiza casi cualquier inyección</li>
+    <li><strong>Burp Suite:</strong> ideal para modificar peticiones y buscar huecos</li>
+    <li><strong>Gobuster / Dirsearch:</strong> para descubrir rutas raras y ficheros sueltos</li>
+    <li><strong>Hydra:</strong> fuerza bruta de logins cuando no hay bloqueo</li>
+    <li><strong>nmap + scripts:</strong> para detectar servicios y versiones</li>
+  </ul>
+
+  <h2>Como evitar que pase todo esto</h2>
+  <ul>
+    <li>Paneles y servicios solo accesibles por IPs permitidas o VPN</li>
+    <li>Contraseñas fuertes, rotación periódica y 2FA siempre que se pueda</li>
+    <li>Backup cifrados y nunca en rutas accesibles públicamente</li>
+    <li>Filtros de entrada bien aplicados, escapes de variables y validaciones</li>
+    <li>Logs protegidos, errores genéricos en producción y mínimo privilegio</li>
+  </ul>
+
+  <p>Una base de datos no es solo donde se guarda todo, es lo que más valor tiene para quien quiera robar algo o romper cosas. Por eso lo primero que hacen algunos es buscar cómo acceder a eso antes que a nada. Si entiendes cómo se entra, puedes cerrarlo mejor.</p>
+
+  <p><a href="index.html">← Volver al blog</a></p>
+</div>
+
+</body>
+</html>
