@@ -113,87 +113,75 @@
 </head>
 <body>
 
-  <div class="content">
-    <h1>Inyección de Plantillas del Lado del Servidor (SSTI)</h1>
-    <p class="subtitle">Cuando las plantillas dejan de ser seguras</p>
+<div class="content">
+  <h1>Inyección de Plantillas del Lado del Servidor (SSTI)</h1>
+  <p class="subtitle">Cuando las plantillas dejan de ser seguras</p>
 
-    <p><strong>SSTI</strong> ocurre cuando una aplicación web inserta datos del usuario directamente en una plantilla sin validación, permitiendo que se ejecute código malicioso.</p>
+  <p><strong>SSTI</strong> ocurre si una app inserta datos del usuario en la plantilla sin validación. Eso abre la puerta a ejecutar código que ni imaginas.</p>
 
-    <h2>Ejemplo básico</h2>
-    <pre><code>Plantilla: Hola {{nombre}}
-Entrada legítima: Juan
-Resultado: Hola Juan
+  <h2>Ejemplo sencillo</h2>
+  <pre><code>Plantilla: Hola {{nombre}}
+Entrada: Juan → Hola Juan
 
-Entrada maliciosa: {{7*7}}
-Resultado: Hola 49</code></pre>
+Entrada maliciosa: {{7*7}} → Hola 49</code></pre>
+  <p>Ver “49” en lugar del código significa que tienes un problema.</p>
 
-    <div class="warning">
-      Si ves un resultado como <code>49</code> en lugar de <code>{{7*7}}</code>, tu plantilla es vulnerable.
-    </div>
+  <h2>Cómo van las plantillas por dentro</h2>
+  <p>Normalmente solo muestran datos:</p>
+  <pre><code>template = "Hola {{usuario}}"
+render(usuario="Ana") → "Hola Ana"</code></pre>
+  <p>El fallo viene cuando el usuario puede reescribir la plantilla.</p>
 
-    <h2>¿Cómo funcionan las plantillas?</h2>
-    <p>Normalmente, las plantillas sólo deberían mostrar datos:</p>
-    <pre><code>template = "Bienvenido {{usuario}}, tienes {{mensajes}} mensajes"
-render(usuario="Ana", mensajes=5)</code></pre>
-    <p>Pero si el usuario puede modificar la estructura de la plantilla, el resultado puede ser crítico.</p>
+  <h2>Motores con historial de vulnerabilidades</h2>
+  <ul>
+    <li><strong>Jinja2 (Python)</strong>: se pueden exponer objetos internos como <code>config</code>.</li>
+    <li><strong>Twig (PHP)</strong>: en versiones antiguas permitía ejecución arbitraria.</li>
+    <li><strong>Handlebars</strong>: ciertos helpers inseguros pueden permitir acceso al sistema.</li>
+    <li><strong>Pug / Jade</strong>: errores en nesting o lógica pueden colarse.</li>
+  </ul>
 
-    <h2>Motores de plantillas vulnerables</h2>
-    <ul>
-      <li><strong>Jinja2 (Python)</strong>: <code>{{config}}</code> expone configuración.</li>
-      <li><strong>Twig (PHP)</strong>: permite ejecución remota.</li>
-      <li><strong>Handlebars (JS)</strong>: puede ejecutar comandos del sistema.</li>
-    </ul>
+  <h2>Tácticas típicas de ataque</h2>
+  <ul>
+    <li><strong>Leak de variables internas</strong>: pedir listas de objetos, clases o entorno.</li>
+    <li><strong>RCE directo</strong>: calcular resultados o leer ficheros como <code>/etc/passwd</code>.</li>
+    <li><strong>Subida de ficheros</strong>: usar <code>out</code> o <code>read</code> para cargar shell.</li>
+    <li><strong>Lista de templates</strong>: ver rutas cargables y acceder a plantillas privadas.</li>
+  </ul>
 
-    <h2>Escenarios de ataque</h2>
-    <ul>
-      <li><strong>Divulgación de información:</strong> <code>{{request.environ}}</code></li>
-      <li><strong>Ejecución remota:</strong> <code>{{''.__class__.__mro__[2].__subclasses__()[40]('/etc/passwd').read()}}</code></li>
-      <li><strong>Acceso a archivos:</strong> lectura y escritura de archivos maliciosos.</li>
-    </ul>
+  <h2>Maneras comunes de probarlo</h2>
+  <ul>
+    <li>Metes <code>{{7*7}}</code> en formularios, URLs o headers para ver si evalúa.</li>
+    <li>Intentas <code>{{''.__class__.__mro__}}</code> para ver clases internas.</li>
+    <li>Combinas payloads con {{config}}, {{os.popen}} o herramientas FP.</li>
+    <li>Uso de Burp Suite o Proxy para manipular valores en JSON o templates.</li>
+  </ul>
 
-    <h2>Cómo detectarlo</h2>
-    <pre><code>{{7*7}} → ¿devuelve 49?
-{{''.__class__}} → ¿expone clases?</code></pre>
+  <h2>Otros métodos que se olvidan</h2>
+  <ul>
+    <li>Inyectar en plantillas de errores: algunos frameworks muestran texto de excepción con variables.</li>
+    <li>Reescrituras indirectas: si renderizas plantillas desde strings precargadas que el usuario puede elegir.</li>
+    <li>Exposición por logs: si el sistema refleja valores del input sin filtrar.</li>
+  </ul>
 
-    <h2>Prevención</h2>
+  <h2>Cómo comprobar si eres vulnerable</h2>
+  <ul>
+    <li>Prueba primero {{7*7}} y si ves 49, hay que actuar.</li>
+    <li>Envía payloads tipo <code>{{config.items()}}</code> o <code>{{os.environ}}</code>.</li>
+    <li>Si puedes ver rutas del servidor, es señal de que hay problema.</li>
+    <li>Valida también que el error no muestre el stack completo.</li>
+  </ul>
 
-    <div class="tip">
-      <strong>1. Nunca insertes entrada del usuario directamente:</strong>
-      <pre><code># ❌ Malo:
-render_template_string(f"Hola {usuario}")
-
-# ✅ Bueno:
-render_template("hola.html", nombre=usuario)</code></pre>
-    </div>
-
-    <div class="tip">
-      <strong>2. Valida y filtra la entrada:</strong>
-      <pre><code>re.match("^[a-zA-Z0-9 ]+$", entrada)</code></pre>
-    </div>
-
-    <div class="tip">
-      <strong>3. Usa entornos seguros (sandbox):</strong>
-      <pre><code>from jinja2.sandbox import SandboxedEnvironment</code></pre>
-    </div>
-
-    <div class="tip">
-      <strong>4. Limita las funciones disponibles:</strong>
-      <pre><code>env.globals.update({'upper': str.upper})</code></pre>
-    </div>
-
-    <h2>Casos reales</h2>
-    <ul>
-      <li><strong>Uber:</strong> $10,000 de recompensa por un bug SSTI</li>
-      <li><strong>Shopify:</strong> acceso a datos sensibles desde plantillas</li>
-    </ul>
-
-    <h2>Conclusión</h2>
-    <p>
-      Las plantillas deben mostrar datos, no ejecutar código. Usa buenas prácticas, evita insertar entradas sin validar y no confíes ciegamente en tu framework.
-    </p>
-
-    <a class="back-button" href="index.html">← Volver al blog</a>
-  </div>
+  <h2>Cómo evitarlo de verdad</h2>
+  <ul>
+    <li>Jamás renders directos con f-strings o `template_string` del usuario.</li>
+    <li>Usar archivos de plantilla controlados y nunca inputs sin procesar.</li>
+    <li>Implementar sandboxing (como Jinja2 SDBEnv) y limitar métodos.</li>
+    <li>Usar validaciones tipo <code>re.match("^[a-zA-Z0-9 ]+$")</code> si hay entradas reutilizables.</li>
+    <li>Deshabilitar funciones peligrosas, solo exponer lo mínimo.</li>
+  </ul>
+  
+  <a class="back-button" href="index.html">← Volver al blog</a>
+</div>
 
   <footer>
     © 2025 Undefined_name blog
