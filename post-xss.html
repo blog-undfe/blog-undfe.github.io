@@ -90,70 +90,71 @@
 </head>
 <body>
 
-  <div class="content">
-    <h1>Cross-Site Scripting (XSS)</h1>
+<h2>Cross-Site Scripting (XSS)</h2>
+<p><strong>XSS</strong> es una vulnerabilidad que permite a atacantes inyectar código JavaScript malicioso en páginas web que otros usuarios visitan. Esto puede usarse para robar cookies, sesiones, hacer phishing o manipular el comportamiento del navegador sin permiso.</p>
 
-    <p><strong>XSS</strong> permite a un atacante inyectar código JavaScript en una página web que otros usuarios visitan, provocando robo de datos, suplantación de identidad o acciones automatizadas.</p>
+<h2>Tipos de XSS</h2>
+<ul>
+  <li><strong>Reflejado:</strong> El script malicioso se inserta en una petición (como en una URL o formulario) y el servidor lo refleja directamente en la respuesta sin filtrar.</li>
+  <li><strong>Persistente (o almacenado):</strong> El código se guarda en bases de datos, comentarios o cualquier almacenamiento, y se ejecuta cada vez que alguien carga esa página afectada.</li>
+  <li><strong>DOM-based:</strong> El ataque sucede en el navegador, cuando el JavaScript manipula el DOM con datos inseguros, sin que el servidor intervenga directamente.</li>
+</ul>
 
-    <h2>Tipos de XSS</h2>
-    <ul>
-      <li><strong>Reflejado:</strong> El payload se refleja directamente en la respuesta.</li>
-      <li><strong>Persistente:</strong> El script se guarda en la base de datos y se ejecuta cada vez que se carga la página.</li>
-      <li><strong>DOM-based:</strong> Se ejecuta debido a manipulaciones del DOM en el lado del cliente.</li>
-    </ul>
+<h2>Ejemplo simple de XSS reflejado</h2>
+<p>Si una URL recibe un parámetro así:</p>
+<pre><code>https://web.com/buscar?q=&lt;script&gt;alert('XSS')&lt;/script&gt;</code></pre>
+<p>y el servidor devuelve sin filtrar:</p>
+<pre><code>Resultado: Hola &lt;script&gt;alert('XSS')&lt;/script&gt;</code></pre>
+<p>ese código se ejecutará en el navegador, causando el ataque.</p>
 
-    <h2>Ejemplo de XSS reflejado</h2>
-    <pre><code>URL: https://example.com?q=&lt;script&gt;alert('XSS')&lt;/script&gt;
+<h2>Cómo suelen explotarlo</h2>
+<ul>
+  <li>Campos de búsqueda o formularios que no filtran entradas.</li>
+  <li>Parámetros que se insertan directamente en el DOM sin escaping.</li>
+  <li>HTML generado dinámicamente con datos sin validar.</li>
+  <li>Usar funciones peligrosas como <code>innerHTML</code> con contenido de usuarios.</li>
+</ul>
 
-Respuesta del servidor:
-Hola &lt;script&gt;alert('XSS')&lt;/script&gt;</code></pre>
+<h2>Prevención práctica</h2>
+<ul>
+  <li><strong>Escapar siempre el contenido dinámico:</strong> antes de insertarlo en HTML, sustituye caracteres como <code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>.</li>
+  <li><strong>Implementar Content Security Policy (CSP):</strong> limita qué scripts pueden ejecutarse y desde dónde, reduciendo riesgos.</li>
+  <li><strong>Validar y filtrar entradas:</strong> usar expresiones regulares para aceptar solo caracteres esperados, evitar scripts.</li>
+  <li><strong>Evitar usar funciones peligrosas:</strong> como <code>eval()</code> o manipular <code>innerHTML</code> con datos inseguros.</li>
+  <li><strong>Usar frameworks modernos:</strong> React, Angular o Vue escapan datos automáticamente, minimizando riesgos.</li>
+  <li><strong>Separar datos y código:</strong> nunca mezcles directamente el input de usuario con el código HTML o JS sin saneamiento.</li>
+</ul>
 
-    <h2>Cómo se explota</h2>
-    <ul>
-      <li><strong>Campos de búsqueda, formularios, URLs</strong> mal sanitizados</li>
-      <li><strong>Parámetros que se insertan directamente en el DOM</strong></li>
-      <li>Contenido HTML generado dinámicamente sin escaping</li>
-    </ul>
+<h2>Consecuencias graves</h2>
+<ul>
+  <li>Robo de cookies o tokens, permitiendo suplantar sesiones.</li>
+  <li>Phishing o manipulación visual de la página para engañar usuarios.</li>
+  <li>Instalación de malware o redirecciones maliciosas.</li>
+  <li>Control completo del navegador de la víctima, incluso con acceso a cámara o micrófono si se explota junto con otros bugs.</li>
+</ul>
 
-    <h2>Prevención</h2>
+<h2>Errores comunes que generan XSS</h2>
+<ul>
+  <li>No usar funciones de escaping para el output HTML.</li>
+  <li>Confiar en validaciones solo del lado cliente (JavaScript).</li>
+  <li>Insertar contenido del usuario directamente en atributos HTML o URLs sin sanitización.</li>
+  <li>Permitir HTML o JavaScript en comentarios o inputs sin filtrar.</li>
+</ul>
 
-    <div class="tip">
-      <strong>1. Escapa todo el contenido dinámico en HTML:</strong>
-      <pre><code>&lt;%= userInput %&gt; → correcto
-&lt;%= raw userInput %&gt; → ❌ vulnerable</code></pre>
-    </div>
+<h2>Ejemplo de código vulnerable en JavaScript</h2>
+<pre><code>const userInput = location.search.split('q=')[1];
+document.getElementById('result').innerHTML = "Resultado: " + userInput;</code></pre>
+<p>Si <code>userInput</code> no se filtra, un atacante puede inyectar etiquetas <code>&lt;script&gt;</code> y ejecutar código.</p>
 
-    <div class="tip">
-      <strong>2. Usa CSP (Content Security Policy):</strong>
-      <pre><code>Content-Security-Policy: default-src 'self'; script-src 'self'</code></pre>
-    </div>
+<h2>Recomendaciones finales</h2>
+<ul>
+  <li>Aplica escaping en el servidor y en el cliente.</li>
+  <li>Usa políticas CSP estrictas y evita cargar scripts externos inseguros.</li>
+  <li>Actualiza librerías y frameworks para corregir fallos conocidos.</li>
+  <li>Haz pruebas frecuentes de seguridad, como usar escáneres y pentesting para detectar XSS.</li>
+</ul>
 
-    <div class="tip">
-      <strong>3. Valida y filtra entrada del usuario:</strong>
-      <pre><code>re.match("^[a-zA-Z0-9 ]+$", entrada)</code></pre>
-    </div>
-
-    <div class="tip">
-      <strong>4. Usa frameworks que hacen escaping automáticamente:</strong>
-      <ul>
-        <li>React</li>
-        <li>Angular</li>
-        <li>Vue (con delimitadores estándar)</li>
-      </ul>
-    </div>
-
-    <h2>Consecuencias de XSS</h2>
-    <ul>
-      <li>Robo de cookies y sesiones</li>
-      <li>Phishing y suplantación de interfaces</li>
-      <li>Control total del navegador víctima</li>
-    </ul>
-
-    <h2>Conclusión</h2>
-    <p>XSS es tan peligroso como común. Escapa el contenido, valida siempre lo que venga del usuario y evita crear HTML desde strings sin filtros.</p>
-
-    <a class="back-button" href="index.html">← Volver al inicio</a>
-  </div>
+<a href="index.html">← Volver al inicio</a>
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9778679469657985"
      crossorigin="anonymous"></script>
