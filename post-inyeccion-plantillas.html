@@ -115,70 +115,68 @@
 
 <div class="content">
   <h1>Inyección de Plantillas del Lado del Servidor (SSTI)</h1>
-  <p class="subtitle">Cuando las plantillas dejan de ser seguras</p>
+  <p class="subtitle">cuando el render te juega en contra</p>
 
-  <p><strong>SSTI</strong> ocurre si una app inserta datos del usuario en la plantilla sin validación. Eso abre la puerta a ejecutar código que ni imaginas.</p>
+  <p><strong>SSTI</strong> ocurre cuando una aplicación mete valores que vienen del usuario directamente en una plantilla sin controlarlos ni filtrarlos. Eso puede acabar en ejecución remota de código si el motor de plantillas lo permite y el dev no cortó lo que tocaba.</p>
 
-  <h2>Ejemplo sencillo</h2>
-  <pre><code>Plantilla: Hola {{nombre}}
-Entrada: Juan → Hola Juan
+  <h2>¿Dónde empieza la liada?</h2>
+  <p>Algo básico:</p>
+  <pre><code>Hola {{nombre}}</code></pre>
+  <p>Si metes <code>{{7*7}}</code> y te sale <code>Hola 49</code>, hay SSTI. Pero eso es solo el principio.</p>
 
-Entrada maliciosa: {{7*7}} → Hola 49</code></pre>
-  <p>Ver “49” en lugar del código significa que tienes un problema.</p>
+  <h2>Subiendo de nivel: explorando el entorno</h2>
+  <p>En motores como <code>Jinja2</code>, podrías meter cosas como:</p>
+  <pre><code>{{ config }}</code></pre>
+  <p>O peor:</p>
+  <pre><code>{{ self._TemplateReference__context.cycler.__init__.__globals__.os.popen('ls').read() }}</code></pre>
+  <p>Y si eso te saca cosas del sistema, ya estamos hablando de <strong>RCE directo</strong>. Ahi la fiesta empieza de verdad.</p>
 
-  <h2>Cómo van las plantillas por dentro</h2>
-  <p>Normalmente solo muestran datos:</p>
-  <pre><code>template = "Hola {{usuario}}"
-render(usuario="Ana") → "Hola Ana"</code></pre>
-  <p>El fallo viene cuando el usuario puede reescribir la plantilla.</p>
+  <h2>Plantillas: qué hacen y por qué se rompen</h2>
+  <p>Una template debería recibir datos ya validados, tipo:</p>
+  <pre><code>"Bienvenido {{usuario}}"</code></pre>
+  <p>Pero si al final el usuario puede modificar la propia lógica de la plantilla (y no solo el valor), puede colarse lógica, llamadas a funciones, e incluso escapes del sandbox.</p>
 
-  <h2>Motores con historial de vulnerabilidades</h2>
+  <h2>Motores que han petado feo</h2>
   <ul>
-    <li><strong>Jinja2 (Python)</strong>: se pueden exponer objetos internos como <code>config</code>.</li>
-    <li><strong>Twig (PHP)</strong>: en versiones antiguas permitía ejecución arbitraria.</li>
-    <li><strong>Handlebars</strong>: ciertos helpers inseguros pueden permitir acceso al sistema.</li>
-    <li><strong>Pug / Jade</strong>: errores en nesting o lógica pueden colarse.</li>
+    <li><strong>Jinja2</strong>: sin sandbox, puedes llegar a ejecutar comandos del sistema desde el navegador. Literalmente <code>os.popen()</code> desde un campo de input.</li>
+    <li><strong>Twig</strong>: permite acceder a propiedades y funciones internas. Si no tienes cuidado, se filtra info o ejecutas código PHP.</li>
+    <li><strong>Handlebars</strong>: si alguien cuela un helper o manipula el prototipo del objeto, puedes llegar a modificar la lógica del render.</li>
+    <li><strong>Pug / Jade</strong>: errores en la indentación o uso de mixins pueden derivar en lógica inyectada sin querer.</li>
   </ul>
 
-  <h2>Tácticas típicas de ataque</h2>
+  <h2>Explotación típica</h2>
+  <p>1. Mandas un input con algo que sabes que se ejecuta, tipo <code>{{7*8}}</code>.<br>
+     2. Si ves que sale <code>56</code> en vez de lo que escribiste, ya sabes que evalúa.<br>
+     3. Buscas objetos accesibles: <code>{{ self }}</code>, <code>{{ config }}</code>, <code>{{ ''.__class__.__mro__ }}</code>...<br>
+     4. Intentas llegar a funciones tipo <code>os.system</code> o <code>popen()</code> para ejecutar comandos.</p>
+
+  <h2>Bypasses y evasiones</h2>
+  <p>Hay filtros tontos tipo bloquear <code>{</code> o <code>}}</code>, pero los motores suelen permitir notación alternativa:</p>
   <ul>
-    <li><strong>Leak de variables internas</strong>: pedir listas de objetos, clases o entorno.</li>
-    <li><strong>RCE directo</strong>: calcular resultados o leer ficheros como <code>/etc/passwd</code>.</li>
-    <li><strong>Subida de ficheros</strong>: usar <code>out</code> o <code>read</code> para cargar shell.</li>
-    <li><strong>Lista de templates</strong>: ver rutas cargables y acceder a plantillas privadas.</li>
+    <li><code>${7*7}</code></li>
+    <li><code><%= 7*7 %></code></li>
+    <li>Uso de <code>set</code>, <code>eval</code>, objetos internos, contextos ocultos...</li>
   </ul>
 
-  <h2>Maneras comunes de probarlo</h2>
-  <ul>
-    <li>Metes <code>{{7*7}}</code> en formularios, URLs o headers para ver si evalúa.</li>
-    <li>Intentas <code>{{''.__class__.__mro__}}</code> para ver clases internas.</li>
-    <li>Combinas payloads con {{config}}, {{os.popen}} o herramientas FP.</li>
-    <li>Uso de Burp Suite o Proxy para manipular valores en JSON o templates.</li>
-  </ul>
-
-  <h2>Otros métodos que se olvidan</h2>
-  <ul>
-    <li>Inyectar en plantillas de errores: algunos frameworks muestran texto de excepción con variables.</li>
-    <li>Reescrituras indirectas: si renderizas plantillas desde strings precargadas que el usuario puede elegir.</li>
-    <li>Exposición por logs: si el sistema refleja valores del input sin filtrar.</li>
-  </ul>
-
-  <h2>Cómo comprobar si eres vulnerable</h2>
-  <ul>
-    <li>Prueba primero {{7*7}} y si ves 49, hay que actuar.</li>
-    <li>Envía payloads tipo <code>{{config.items()}}</code> o <code>{{os.environ}}</code>.</li>
-    <li>Si puedes ver rutas del servidor, es señal de que hay problema.</li>
-    <li>Valida también que el error no muestre el stack completo.</li>
-  </ul>
-
-  <h2>Cómo evitarlo de verdad</h2>
-  <ul>
-    <li>Jamás renders directos con f-strings o `template_string` del usuario.</li>
-    <li>Usar archivos de plantilla controlados y nunca inputs sin procesar.</li>
-    <li>Implementar sandboxing (como Jinja2 SDBEnv) y limitar métodos.</li>
-    <li>Usar validaciones tipo <code>re.match("^[a-zA-Z0-9 ]+$")</code> si hay entradas reutilizables.</li>
-    <li>Deshabilitar funciones peligrosas, solo exponer lo mínimo.</li>
-  </ul>
+<h2>Prevención real</h2>
+<ul>
+  <li>Jamás metas datos directos del usuario dentro de la plantilla sin ni siquiera echarles un vistazo.</li>
+  <li>Procura usar motores que no permitan que se ejecute código dinámico, así evitas problemas chungos.</li>
+  <li>Escapa todo, valida con ojo de halcón lo que entra, no te quedes corto filtrando.</li>
+  <li>Si el motor que usas deja, activa un sandbox que limite lo que puede hacer el código.</li>
+  <li>Chequea los logs para encontrar patrones raros, como <code>{{</code> o palabras como <code>__class__</code>, que suelen ser señal de ataques.</li>
+  <li>Olvídate de funciones peligrosas como <code>eval()</code> o <code>exec()</code> cuando el input viene del usuario, no las uses para nada.</li>
+  <li>Restringe bien qué variables y métodos puede acceder la plantilla, no le des acceso a todo el cotarro.</li>
+  <li>Con Jinja2, usa <code>autoescape=True</code> y crea un entorno (<code>Environment</code>) con las reglas bien puestas.</li>
+  <li>No dejes que los usuarios puedan tirar mano de atributos con doble guión bajo (<code>__*</code>) o métodos sensibles.</li>
+  <li>Evita que el usuario decida qué plantilla cargar o la ruta, eso es peligroso y abre puertas a ataques.</li>
+  <li>Usa listas blancas para los inputs que terminen en plantillas, controla bien los patrones, algo tipo <code>^[a-zA-Z0-9 ]+$</code> va bien.</li>
+  <li>Monta un sistema para vigilar y auditar los puntos donde llegan datos para plantillas, así pillas cualquier cosa rara rápido.</li>
+  <li>Haz pruebas tú mismo con payloads locos tipo <code>{{config}}</code>, <code>{{request}}</code> o <code>{{self.__class__}}</code>, para ver si te cuela algo.</li>
+  <li>Si hay errores, no muestres información que deje ver la estructura interna ni tracebacks completos, eso da pistas a los malos.</li>
+  <li>Piénsate usar análisis estático que te diga dónde el código mete plantillas inseguras.</li>
+</ul>
+</div>
   
   <a class="back-button" href="index.html">← Volver al blog</a>
 </div>
@@ -192,3 +190,4 @@ render(usuario="Ana") → "Hola Ana"</code></pre>
   
 </body>
 </html>
+
