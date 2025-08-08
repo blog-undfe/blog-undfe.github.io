@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="https://ik94g-g2ilo0g24kig24-f4ig4h79g4inuy-p.netlify.app/pfp.jpg" />
+  <title>Vulnerabilidades comunes de WordPress y por qué no usarlo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      overflow-x: hidden;
+    }
+    body {
+      background-color: #fefaf6;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px 15px;
+      background-image: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.94);
+      max-width: 800px;
+      width: 100%;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      overflow-wrap: break-word;
+      backdrop-filter: saturate(180%) blur(8px);
+      -webkit-backdrop-filter: saturate(180%) blur(8px);
+    }
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: #c95f86;
+      margin-bottom: 0.8rem;
+    }
+    p, ul, ol {
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+    ul, ol {
+      padding-left: 1.2rem;
+    }
+    a {
+      color: #c95f86;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="content">
+<h1>Buscando vulnerabilidades web como un cazador viejo</h1>
+
+<p>Aquí no hay magia negra, lo que hay es mucha observación, saber por dónde mirar y, sobre todo, entender por qué ciertas cosas acaban estando expuestas sin que nadie lo haya pensado demasiado. Vamos a hablar de cómo encontrar fallos en webs reales, desde configuraciones olvidadas hasta rutas internas que no pintan nada de cara al público.</p>
+
+<h2>1. Rutas olvidadas y ficheros que delatan</h2>
+<div class="box">
+<p>Uno de los clásicos es <code>autodiscover.xml</code>. Este fichero aparece en servidores de correo (Exchange, sobre todo) y sirve para que los clientes se autoconfiguren. El problema es que muchos admins lo dejan expuesto sin filtrarlo y a veces muestra rutas internas o nombres de servidores.</p>
+<p><strong>Por qué está ahí:</strong> forma parte del protocolo de configuración automática. Outlook lo usa, pero si no limitas el acceso, cualquiera puede pedirlo.</p>
+<p><strong>Qué datos puede filtrar:</strong> dominios internos, rutas, direcciones IP, configuración de servicios.</p>
+<p><strong>Cómo se arregla:</strong> restringir acceso por IP, deshabilitar si no es necesario, filtrar en el proxy inverso.</p>
+<pre>GET /autodiscover/autodiscover.xml HTTP/1.1
+Host: ejemplo.com
+</pre>
+</div>
+
+<h2>2. Subdominios y joyas escondidas</h2>
+<p>Mapear subdominios de un dominio es como buscar habitaciones secretas en una casa enorme. Muchas veces hay entornos de desarrollo (<code>dev</code>, <code>test</code>, <code>staging</code>) que tienen datos reales pero menos seguridad.</p>
+<pre>subfinder -d ejemplo.com
+assetfinder --subs-only ejemplo.com
+</pre>
+<p>Al encontrar uno, conviene mirar si hay paneles de login sin protección, APIs expuestas o incluso backups (<code>.zip</code>, <code>.sql</code>) olvidados.</p>
+
+<h2>3. Modificación de peticiones</h2>
+<p>Aquí entra el juego interceptar y alterar lo que envías al servidor. Un proxy como Burp o mitmproxy te deja cambiar cabeceras, parámetros o incluso el método de la petición.</p>
+<ul>
+<li>Cambiar un <code>GET</code> por <code>POST</code> y ver si responde igual.</li>
+<li>Mandar valores fuera de rango para ver si rompe algo.</li>
+<li>Eliminar cabeceras de autenticación y ver si aún así deja pasar.</li>
+</ul>
+<p>Si un endpoint no valida bien, aquí es donde asoma el fallo.</p>
+
+<h2>4. Vulnerabilidades clásicas pero vivas</h2>
+<div class="box">
+<p>Siguen vivas y coleando: XSS, SQLi, RCE... y a veces no están escondidas en rutas raras, sino en el flujo normal de la web. Ejemplo de RCE en una API que evalúa expresiones:</p>
+<pre>{
+ "input": "__import__('os').system('id')"
+}</pre>
+<p>Si el backend no valida y usa algo tipo <code>eval()</code> con datos de usuario, la has liado.</p>
+</div>
+
+<h2>5. Directorios y listados públicos</h2>
+<p>Hay servidores que aún permiten listar el contenido de carpetas si no hay un <code>index.html</code>. Esto puede enseñar scripts internos, configs o ficheros con credenciales.</p>
+<p>Herramientas tipo <code>gobuster</code> o <code>feroxbuster</code> ayudan a encontrar estas rutas sin depender de Google.</p>
+
+<h2>6. Señales raras en cabeceras</h2>
+<p>Las cabeceras HTTP muchas veces delatan tecnología, versión o rutas internas. Un <code>X-Powered-By: PHP/5.6.40</code> ya te dice que hay una versión vulnerable ahí fuera. Otras como <code>Location:</code> pueden mostrar rutas que no deberías conocer.</p>
+
+<h2>7. Fallos de configuración en APIs</h2>
+<p>APIs abiertas sin autenticación o con CORS mal configurado permiten desde enumerar usuarios hasta extraer datos enteros. Si ves un <code>Access-Control-Allow-Origin: *</code> en producción, mala señal.</p>
+
+<h2>8. Cosas que no deberías encontrar pero están</h2>
+<ul>
+<li>Backups con nombres tipo <code>db_backup.sql</code> o <code>site-old.zip</code>.</li>
+<li>Logs con trazas completas de errores.</li>
+<li>Paneles de admin en rutas por defecto (<code>/admin</code>, <code>/cpanel</code>).</li>
+<li>Archivos de control de versiones (<code>.git/</code>, <code>.svn/</code>).</li>
+</ul>
+
+<h2>9. Errores que hablan demasiado</h2>
+<p>Un error 500 con traceback completo es como un mapa para el atacante: muestra rutas, funciones, versiones... Por eso siempre hay que mostrar errores genéricos al usuario y loguear el detalle internamente.</p>
+
+<h2>10. Qué hacer cuando ves algo raro</h2>
+<p>No es solo encontrarlo, es entenderlo. Mirar en qué contexto aparece, si es reproducible y qué impacto real tiene. Y siempre, siempre, probar en entornos controlados para no romper nada sin querer.</p>
+
+</div>
+
+    <p><a href="index.html">← Volver al blog</a></p>
+  </div>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9778679469657985"
+     crossorigin="anonymous"></script>
+  
+</body>
+</html>
