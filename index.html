@@ -556,11 +556,11 @@
   <a href="vulns.html">Leer más</a>
 </div>
 
-    <div class="content">
-  <h2>Cómo funcionan las vulnerabilidades en páginas web</h2>
-  <p>Ya te he contado mil veces qué es un XSS o SQLi, así que hoy te tiro algo más avanzado: hablamos de <strong>SSRF</strong>, que permite que un servidor haga peticiones donde no debe, o <strong>CSRF</strong>, que engaña al navegador para hacer cosas sin permiso. También las plantillas inseguras (<strong>SSTI</strong>) que pueden ejecutar código, y una movida llamada <strong>DWR</strong>, que si está mal configurada, puede abrirte las puertas del backend a saco.</p>
-  <p>Además, hay otros rollos menos vistos, como redirecciones abiertas, path traversal para leer archivos, o deserializaciones que pueden reventar el sistema.</p>
-  <p>Si quieres enterarte bien y con ejemplos, <a href="vulns.html">lee más aquí</a>.</p>
+<div class="post">
+  <h2>Cómo funcionan las vulnerabilidades en las páginas web</h2>
+  <p>Ya he hablado bastante de XSS, SQLi y demás, así que ahora vamos con algo más avanzado: cosas como SSRF que permiten que un servidor haga peticiones donde no debe, CSRF que aprovecha la sesión del usuario para hacer líos, o plantillas mal puestas que ejecutan código (SSTI). También está el rollo de <code>DWR</code>, una librería Java que si no está bien protegida puede dar acceso directo a funciones internas, y con eso abrir un buen agujero en el sistema.</p>
+  <p>Además, hay rutas olvidadas y exposiciones típicas que se cuelan en muchos sitios, path traversal para leer archivos que no deberías, deserializaciones peligrosas y mucho más.</p>
+  <a href="vulns.html">Leer más</a>
 </div>
   </div>
 
@@ -1195,3 +1195,4 @@
   
 </body>
 </html>
+
