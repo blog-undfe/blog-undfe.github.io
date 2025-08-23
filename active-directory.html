@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="https://ik94g-g2ilo0g24kig24-f4ig4h79g4inuy-p.netlify.app/pfp.jpg" />
+  <title>Active directory</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      overflow-x: hidden;
+    }
+    body {
+      background-color: #fefaf6;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px 15px;
+      background-image: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.94);
+      max-width: 800px;
+      width: 100%;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      overflow-wrap: break-word;
+      backdrop-filter: saturate(180%) blur(8px);
+      -webkit-backdrop-filter: saturate(180%) blur(8px);
+    }
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: #c95f86;
+      margin-bottom: 0.8rem;
+    }
+    p, ul, ol {
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+    ul, ol {
+      padding-left: 1.2rem;
+    }
+    a {
+      color: #c95f86;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="content">
+  <h1>Active Directory: funcionamiento, configuración y riesgos</h1>
+  <p class="subtitle">Lo esencial para entender su importancia y seguridad</p>
+
+  <p><strong>Active Directory (AD)</strong> no es solo un sistema para guardar usuarios. Es un motor que organiza toda la red corporativa: quién puede entrar, qué recursos usar, qué permisos tienen, qué políticas de seguridad aplican. Básicamente controla casi todo lo que pasa dentro de un dominio.</p>
+
+  <h2>Para qué sirve</h2>
+  <ul>
+    <li>Gestionar cuentas de usuario y contraseñas centralizadas.</li>
+    <li>Administrar grupos y roles de manera jerárquica.</li>
+    <li>Aplicar políticas de seguridad y configuraciones automáticamente a equipos y usuarios.</li>
+    <li>Controlar accesos a carpetas compartidas, impresoras, aplicaciones y servicios internos.</li>
+    <li>Facilitar la autenticación segura usando protocolos como Kerberos o LDAP.</li>
+  </ul>
+
+  <h2>Cómo se configura uno de forma básica</h2>
+  <ul>
+    <li>Instalar Windows Server y añadir el rol de Active Directory Domain Services (AD DS).</li>
+    <li>Promocionar el servidor a controlador de dominio.</li>
+    <li>Crear un dominio y un bosque, algo así como el “mundo” de tu red.</li>
+    <li>Configurar unidades organizativas (OU) para organizar usuarios, equipos y grupos.</li>
+    <li>Definir políticas de grupo (GPO) para aplicar configuraciones y reglas de seguridad.</li>
+    <li>Agregar controladores de dominio adicionales para redundancia y replicación.</li>
+  </ul>
+
+  <h2>Por qué es importante</h2>
+  <ul>
+    <li>Centraliza la administración y reduce errores humanos.</li>
+    <li>Permite aplicar seguridad de manera consistente en toda la red.</li>
+    <li>Facilita auditorías y seguimiento de accesos.</li>
+    <li>Si falla o es comprometido, toda la red puede quedar expuesta o inaccesible.</li>
+  </ul>
+
+  <h2>Cómo se podría vulnerar</h2>
+  <ul>
+    <li>Contraseñas débiles o políticas de caducidad insuficientes, fáciles de adivinar.</li>
+    <li>Exposición de servicios LDAP, RPC o Kerberos al internet público.</li>
+    <li>Errores en delegaciones y permisos, permitiendo escalada de privilegios.</li>
+    <li>Kerberoasting: extraer tickets de servicio y crackear contraseñas offline.</li>
+    <li>Movimientos laterales dentro de la red usando cuentas privilegiadas.</li>
+    <li>Usuarios con permisos de más: cualquier fallo en sus credenciales se multiplica.</li>
+    <li>Falta de segmentación de la red, sin firewalls internos, permite propagación rápida de malware.</li>
+    <li>Configuraciones incorrectas de replicación o controladores de dominio, causando filtraciones de información sensible.</li>
+  </ul>
+
+  <h2>Recomendaciones rápidas de seguridad</h2>
+  <ul>
+    <li>Contraseñas largas y complejas, idealmente con autenticación multifactor.</li>
+    <li>No exponer servicios internos fuera de la red corporativa.</li>
+    <li>Auditar usuarios con privilegios y limitar permisos al mínimo.</li>
+    <li>Segmentar la red y aplicar firewalls internos para contener movimientos laterales.</li>
+    <li>Revisar periódicamente logs y alertas de actividades sospechosas.</li>
+    <li>Actualizar servidores, controladores de dominio y sistemas críticos regularmente.</li>
+    <li>Evitar delegaciones inseguras y revisar políticas de grupo para inconsistencias.</li>
+  </ul>
+
+  <a class="back-button" href="index.html">← Volver al inicio</a>
+</div>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9778679469657985"
+     crossorigin="anonymous"></script>
+  
+</body>
+</html>
