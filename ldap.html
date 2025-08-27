@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/x-icon" href="https://ik94g-g2ilo0g24kig24-f4ig4h79g4inuy-p.netlify.app/pfp.jpg" />
+  <title>Inyección de Plantillas del Lado del Servidor (SSTI)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* General */
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Fira Code", monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+  }
+
+  a {
+    color: #58a6ff;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Header */
+  header {
+    background: linear-gradient(90deg, #1f2937, #3b82f6);
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #2563eb;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 2rem;
+  }
+
+  /* Main content */
+  main {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+  }
+
+  h1 { font-size: 2rem; margin-top: 1.5rem; }
+  h2 { font-size: 1.5rem; margin-top: 1.2rem; }
+  h3 { font-size: 1.2rem; margin-top: 1rem; }
+  h4 { font-size: 1rem; margin-top: 0.8rem; }
+  p { margin: 0.5rem 0; }
+
+  code {
+    font-family: 'Fira Code', monospace;
+    background-color: #161b22;
+    color: #c9d1d9;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+  }
+
+  pre {
+    background-color: #161b22;
+    color: #c9d1d9;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+
+  pre code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>LDAP Enumeration</h1>
+</header>
+<main>
+  <h1>Ldap Enumeration</h1>
+
+  <h2>Ldap Enumeration</h2>
+
+  <h4>Enumeración LDAP sin credenciales <a href="#enumeracion-ldap-sin-credenciales" id="enumeracion-ldap-sin-credenciales"></a></h4>
+
+  <pre><code>ldapsearch -x -H ldap://&lt;IP&gt; -D '' -w '' -b "DC=&lt;1_SUBDOMAIN&gt;,DC=&lt;TLD&gt;"
+ldapsearch -x -H ldap://10.10.10.182 -D '' -w '' -b "DC=cascade,DC=local"</code></pre>
+
+  <h4>Enumeración LDAP <a href="#enumeracion-ldap" id="enumeracion-ldap"></a></h4>
+
+  <pre><code>ldapsearch -x -H ldap://&lt;ip&gt; -D '&lt;domain&gt;\&lt;username&gt;' -w '&lt;password&gt;' -b 'DC=&lt;domain&gt;,DC=&lt;TLD&gt;'</code></pre>
+
+  <h4>Enumeración LDAP sin certificación <a href="#ldap-enum-without-certification" id="ldap-enum-without-certification"></a></h4>
+
+  <pre><code>LDAPTLS_REQCERT=never ldapsearch -x -ZZ -H ldap://10.10.11.202 -D 'sequel\sql_svc' -w 'REGGIE1234ronnie' -b 'DC=sequel,DC=htb'</code></pre>
+</main>
+  
+  <a class="back-button" href="index.html">← Volver al blog</a>
+</div>
+
+  <footer>
+    © 2025 Undefined_name blog
+  </footer>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9778679469657985"
+     crossorigin="anonymous"></script>
+  
+</body>
+</html>
