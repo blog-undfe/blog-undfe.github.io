@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/x-icon" href="https://ik94g-g2ilo0g24kig24-f4ig4h79g4inuy-p.netlify.app/pfp.jpg" />
+  <title>Ldap Enum</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Fira Code", monospace;
+    background: #0d1117;
+    color: #c9d1d9;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+  }
+
+  a {
+    color: #58a6ff;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  header {
+    background: linear-gradient(90deg, #1f2937, #3b82f6);
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #2563eb;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 2rem;
+  }
+
+  main {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+  }
+
+  h1 { font-size: 2rem; margin-top: 1.5rem; }
+  h2 { font-size: 1.5rem; margin-top: 1.2rem; }
+  h3 { font-size: 1.2rem; margin-top: 1rem; }
+  h4 { font-size: 1rem; margin-top: 0.8rem; }
+  p { margin: 0.5rem 0; }
+
+  code {
+    font-family: 'Fira Code', monospace;
+    background-color: #161b22;
+    color: #c9d1d9;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+  }
+
+  pre {
+    background-color: #161b22;
+    color: #c9d1d9;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+
+  pre code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>LDAP Enumeration</h1>
+</header>
+<main>
+  <h1>Ldap Enumeration</h1>
+
+  <h2>Ldap Enumeration</h2>
+
+  <h4>Enumeración LDAP sin credenciales <a href="#enumeracion-ldap-sin-credenciales" id="enumeracion-ldap-sin-credenciales"></a></h4>
+
+  <pre><code># TrustedToAuthForDelegation vs TrustedForDelegation
+
+#### **TrustedForDelegation (Delegación Sin Restricciones)**
+
+* **Qué es:** Un atributo de una cuenta de servicio que le permite guardar una copia de las credenciales de cualquier usuario que se autentique en él.
+* **Cómo funciona:** Cuando un usuario accede a ese servicio, este service guarda una "copia" del ticket de ese usuario (el TGT). Luego, el servicio puede usar esa copia para **suplantar al usuario y conectarse a cualquier otro servicio** de la red en su nombre.
+* **El Riesgo:** Es el nivel más alto de riesgo. Si un atacante compromete un servidor con esta configuración, podrá robar los tickets de todos los usuarios que se conecten a él y usarlos para acceder a cualquier recurso de la red como si fuera ese usuario.
+
+<figure><img src="https://2595558126-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FHjqTJjRBS3V5sxNFyqrT%2Fuploads%2FOVEPrzD5JZECA28KqwIL%2Fimage.png?alt=media&#x26;token=1a2d533f-b2d2-436f-b61b-f97fc9ae1850" alt=""><figcaption></figcaption></figure>
+
+#### **TrustedToAuthForDelegation (Delegación Restringida Basada en Recursos)**
+
+* **Qué es:** Un atributo que permite a una cuenta de servicio delegar credenciales de usuarios **solo a servicios específicos** que se le hayan definido explícitamente.
+* **Cómo funciona:** No se guarda una copia de las credenciales. En su lugar, el servicio recibe un ticket especial que solo es válido para los servicios preautorizados en su configuración (por ejemplo, solo puede delegar credenciales a un servidor de base de datos SQL específico).
+* **El Riesgo:** El riesgo está limitado y controlado. Un atacante que comprometa este servicio solo podrá suplantar a los usuarios para acceder a los servicios específicos que están en la lista de permitidos, y nada más.
+
+<figure><img src="https://2595558126-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FHjqTJjRBS3V5sxNFyqrT%2Fuploads%2FjZuwVfigohdeQF82kYz6%2Fimage.png?alt=media&#x26;token=3c7b5963-1b32-49d7-a0a0-77533d0bc980" alt=""><figcaption></figcaption></figure>
+
+\
+</code></pre>
+</main>
+  
+  <a class="back-button" href="index.html">← Volver al blog</a>
+</div>
+
+  <footer>
+    © 2025 Undefined_name blog
+  </footer>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9778679469657985"
+     crossorigin="anonymous"></script>
+  
+</body>
+</html>
