@@ -77,25 +77,27 @@
   <h1>trustedtoauthfordelegation-vs-trustedfordelegation</h1>
 </header>
 <main>
-# TrustedToAuthForDelegation vs TrustedForDelegation
+TrustedToAuthForDelegation vs TrustedForDelegation
 
-#### **TrustedForDelegation (Delegación Sin Restricciones)**
+TrustedForDelegation (Delegación Sin Restricciones)
 
-* **Qué es:** Un atributo de una cuenta de servicio que le permite guardar una copia de las credenciales de cualquier usuario que se autentique en él.
-* **Cómo funciona:** Cuando un usuario accede a ese servicio, este service guarda una "copia" del ticket de ese usuario (el TGT). Luego, el servicio puede usar esa copia para **suplantar al usuario y conectarse a cualquier otro servicio** de la red en su nombre.
-* **El Riesgo:** Es el nivel más alto de riesgo. Si un atacante compromete un servidor con esta configuración, podrá robar los tickets de todos los usuarios que se conecten a él y usarlos para acceder a cualquier recurso de la red como si fuera ese usuario.
+Qué es: Un atributo de una cuenta de servicio que le permite guardar una copia de las credenciales de cualquier usuario que se autentique en él.
 
-<figure><img src="https://2595558126-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FHjqTJjRBS3V5sxNFyqrT%2Fuploads%2FOVEPrzD5JZECA28KqwIL%2Fimage.png?alt=media&#x26;token=1a2d533f-b2d2-436f-b61b-f97fc9ae1850" alt=""><figcaption></figcaption></figure>
+Cómo funciona: Cuando un usuario accede a ese servicio, este service guarda una "copia" del ticket de ese usuario (el TGT). Luego, el servicio puede usar esa copia para suplantar al usuario y conectarse a cualquier otro servicio de la red en su nombre.
 
-#### **TrustedToAuthForDelegation (Delegación Restringida Basada en Recursos)**
+El Riesgo: Es el nivel más alto de riesgo. Si un atacante compromete un servidor con esta configuración, podrá robar los tickets de todos los usuarios que se conecten a él y usarlos para acceder a cualquier recurso de la red como si fuera ese usuario.
 
-* **Qué es:** Un atributo que permite a una cuenta de servicio delegar credenciales de usuarios **solo a servicios específicos** que se le hayan definido explícitamente.
-* **Cómo funciona:** No se guarda una copia de las credenciales. En su lugar, el servicio recibe un ticket especial que solo es válido para los servicios preautorizados en su configuración (por ejemplo, solo puede delegar credenciales a un servidor de base de datos SQL específico).
-* **El Riesgo:** El riesgo está limitado y controlado. Un atacante que comprometa este servicio solo podrá suplantar a los usuarios para acceder a los servicios específicos que están en la lista de permitidos, y nada más.
+<figure><img src="https://2595558126-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FHjqTJjRBS3V5sxNFyqrT%2Fuploads%2FOVEPrzD5JZECA28KqwIL%2Fimage.png?alt=media&token=1a2d533f-b2d2-436f-b61b-f97fc9ae1850" alt=""><figcaption></figcaption></figure>
 
-<figure><img src="https://2595558126-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FHjqTJjRBS3V5sxNFyqrT%2Fuploads%2FjZuwVfigohdeQF82kYz6%2Fimage.png?alt=media&#x26;token=3c7b5963-1b32-49d7-a0a0-77533d0bc980" alt=""><figcaption></figcaption></figure>
+TrustedToAuthForDelegation (Delegación Restringida Basada en Recursos)
 
-\
+Qué es: Un atributo que permite a una cuenta de servicio delegar credenciales de usuarios solo a servicios específicos que se le hayan definido explícitamente.
+
+Cómo funciona: No se guarda una copia de las credenciales. En su lugar, el servicio recibe un ticket especial que solo es válido para los servicios preautorizados en su configuración (por ejemplo, solo puede delegar credenciales a un servidor de base de datos SQL específico).
+
+El Riesgo: El riesgo está limitado y controlado. Un atacante que comprometa este servicio solo podrá suplantar a los usuarios para acceder a los servicios específicos que están en la lista de permitidos, y nada más.
+
+<figure><img src="https://2595558126-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FHjqTJjRBS3V5sxNFyqrT%2Fuploads%2FjZuwVfigohdeQF82kYz6%2Fimage.png?alt=media&token=3c7b5963-1b32-49d7-a0a0-77533d0bc980" alt=""><figcaption></figcaption></figure>
 </main>
   
   <a class="back-button" href="index.html">← Volver al blog</a>
