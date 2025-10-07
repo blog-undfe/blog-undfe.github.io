@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="https://ik94g-g2ilo0g24kig24-f4ig4h79g4inuy-p.netlify.app/pfp.jpg" />
+  <title>Cómo funciona una API — explicación completa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      overflow-x: hidden;
+    }
+    body {
+      background-color: #fefaf6;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px 15px;
+      background-image: url('https://www.skyweaver.net/images/media/wallpapers/wallpaper2.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.94);
+      max-width: 800px;
+      width: 100%;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      overflow-wrap: break-word;
+      backdrop-filter: saturate(180%) blur(8px);
+      -webkit-backdrop-filter: saturate(180%) blur(8px);
+    }
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: #c95f86;
+      margin-bottom: 0.8rem;
+    }
+    p, ul, ol, pre {
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+      color: #333;
+    }
+    ul, ol {
+      padding-left: 1.2rem;
+    }
+    code {
+      background: #f2f2f2;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      color: #1a1a1a;
+    }
+    pre {
+      background: #0f1724;
+      color: #a7f3d0;
+      padding: 10px;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+    a {
+      color: #c95f86;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .subtitle { color:#777; margin-top: -0.4rem; margin-bottom: 1rem; display:block; }
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Cómo funciona una API — explicación completa</h1>
+  <span class="subtitle">Qué la compone, cómo se le envían peticiones y qué mirar cuando trabajas con ellas</span>
+
+  <p>Una API web es básicamente un contrato entre dos programas: uno pide, otro responde. Las APIs modernas usan HTTP y JSON, pero pueden trabajar con XML, form-data, multipart y otros formatos. Lo importante es entender las piezas y cómo encajan para poder diseñar, probar o consumir una API correctamente.</p>
+
+  <h2>Componentes básicos</h2>
+  <ul>
+    <li><strong>Endpoint / Ruta:</strong> la URL donde escuchan las peticiones. Ej: <code>/api/users</code>, <code>/posts/123</code>.</li>
+    <li><strong>Métodos HTTP:</strong> definen la intención: <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>PATCH</code>, <code>DELETE</code>.</li>
+    <li><strong>Cabeceras (Headers):</strong> metadata de la petición: <code>Content-Type</code>, <code>Accept</code>, <code>Authorization</code>, etc.</li>
+    <li><strong>Cuerpo (Body):</strong> datos que envías en <code>POST</code> o <code>PUT</code>, típicamente JSON: <code>{"name":"Ana"}</code>.</li>
+    <li><strong>Códigos de estado:</strong> respuesta del servidor: <code>200</code>, <code>201</code>, <code>400</code>, <code>401</code>, <code>404</code>, <code>500</code>, etc.</li>
+    <li><strong>Respuesta:</strong> normalmente JSON o XML con la data solicitada o el mensaje de error.</li>
+  </ul>
+
+  <h2>Métodos HTTP en detalle</h2>
+  <p>Los más usados y su semántica:</p>
+  <ul>
+    <li><code>GET</code> → pedir un recurso, no debe cambiar nada, idempotente.</li>
+    <li><code>POST</code> → crear o enviar datos que el servidor procesa, no idempotente en general.</li>
+    <li><code>PUT</code> → reemplazar un recurso entero, idempotente (mismo request varias veces, mismo resultado).</li>
+    <li><code>PATCH</code> → actualizar parcialmente, no siempre idempotente.</li>
+    <li><code>DELETE</code> → borrar un recurso. Normalmente idempotente.</li>
+  </ul>
+
+  <h2>Formatos de cuerpo y cabeceras clave</h2>
+  <ul>
+    <li><code>Content-Type: application/json</code> → cuerpo en JSON.</li>
+    <li><code>Content-Type: application/x-www-form-urlencoded</code> → formularios clásicos.</li>
+    <li><code>Content-Type: multipart/form-data</code> → uploads de archivos.</li>
+    <li><code>Accept</code> → qué formatos acepta el cliente, ej <code>Accept: application/json</code>.</li>
+  </ul>
+
+  <h2>Ejemplo simple de petición y respuesta</h2>
+  <pre><code>GET /api/users/42 HTTP/1.1
+Host: api.ejemplo.com
+Accept: application/json
+Authorization: Bearer eyJ...
+
+RESPONSE 200 OK
+Content-Type: application/json
+
+{
+  "id": 42,
+  "name": "Ana",
+  "email": "ana@ejemplo.com"
+}
+</code></pre>
+
+  <h2>Autenticación y autorización</h2>
+  <p>Dos cosas distintas: autenticar = demostrar quién eres; autorizar = qué puedes hacer. Los métodos comunes:</p>
+  <ul>
+    <li><strong>API keys:</strong> token simple en header o query, fácil de usar, no es la opción más segura por sí sola.</li>
+    <li><strong>Bearer tokens / JWT:</strong> token firmado que incluye info (claims), se envía en <code>Authorization: Bearer ...</code>.</li>
+    <li><strong>OAuth2:</strong> flujo para delegar acceso (ideal para APIs públicas que trabajan con terceros).</li>
+    <li><strong>Mutual TLS:</strong> cliente y servidor se autentican con certificados, usado en entornos muy seguros.</li>
+  </ul>
+
+  <h2>Estados y códigos de error</h2>
+  <p>Los servidores deben devolver códigos claros, y mensajes con la mínima info necesaria:</p>
+  <ul>
+    <li><code>2xx</code> → éxito (200 OK, 201 Created).</li>
+    <li><code>3xx</code> → redirección.</li>
+    <li><code>4xx</code> → error del cliente (400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found).</li>
+    <li><code>5xx</code> → error en el servidor (500 Internal Server Error).</li>
+  </ul>
+
+  <h2>CORS y políticas de origen</h2>
+  <p>CORS regula qué orígenes pueden hacer peticiones desde el navegador. Si un API no configura CORS correctamente, puede exponer datos a dominios no deseados. Cabeceras clave: <code>Access-Control-Allow-Origin</code>, <code>Access-Control-Allow-Credentials</code>, <code>Access-Control-Allow-Methods</code>.</p>
+
+  <h2>Idempotencia y seguridad en métodos</h2>
+  <p>Diseñar APIs pensando en idempotencia ayuda a evitar efectos no deseados. También es importante validar inputs, escapar datos y no confiar en la entrada del cliente sea cual sea el método.</p>
+
+  <h2>Paginación, filtrado y búsqueda</h2>
+  <p>Cuando una colección es grande, la API debe soportar paginación y filtros. Patrones comunes:</p>
+  <ul>
+    <li><code>?page=2&per_page=50</code></li>
+    <li><code>?limit=20&offset=40</code></li>
+    <li>Filtros por campos: <code>?status=active&sort=-created_at</code></li>
+  </ul>
+
+  <h2>Caching y rendimiento</h2>
+  <p>Cabeceras como <code>Cache-Control</code>, <code>ETag</code> y <code>Last-Modified</code> ayudan a reducir carga. Para APIs públicas, usar CDNs y limitar tamaño de respuestas es clave.</p>
+
+  <h2>Rate limiting y protección</h2>
+  <p>Limitar peticiones por IP o por token evita abusos. Responder con <code>429 Too Many Requests</code> y un header con el reset time es una práctica habitual.</p>
+
+  <h2>Versionado</h2>
+  <p>Mantener versiones evita romper clientes: ejemplos comunes <code>/v1/users</code> o usar cabeceras <code>Accept: application/vnd.ejemplo.v2+json</code>.</p>
+
+  <h2>HATEOAS y REST vs GraphQL</h2>
+  <p>REST es arquitectura basada en recursos y HTTP. HATEOAS añade enlaces en las respuestas para descubrir acciones. GraphQL es alternativa que permite pedir exactamente los campos que quieres en una sola petición, con sus pros y contras.</p>
+
+  <h2>Buenas prácticas de diseño</h2>
+  <ul>
+    <li>Documentación viva (OpenAPI/Swagger).</li>
+    <li>Validación estricta de inputs y límites en tamaño de payloads.</li>
+    <li>Mensajes de error útiles pero concisos (no leaks de info sensible).</li>
+    <li>Logs y trazabilidad, correlación por request-id para debug.</li>
+    <li>Principio de mínimo privilegio en tokens y permisos.</li>
+  </ul>
+
+  <h2>Ejemplos prácticos</h2>
+  <p>Crear un recurso (POST):</p>
+  <pre><code>POST /api/users HTTP/1.1
+Host: api.ejemplo.com
+Content-Type: application/json
+Authorization: Bearer eyJ...
+
+{
+  "name": "Juan",
+  "email": "juan@ejemplo.com"
+}
+
+# Response
+201 Created
+Location: /api/users/101
+</code></pre>
+
+  <p>Actualizar parcialmente (PATCH):</p>
+  <pre><code>PATCH /api/users/101 HTTP/1.1
+Content-Type: application/json
+
+{ "email": "juan.nuevo@ejemplo.com" }
+
+# Response
+200 OK
+{ "id":101, "name":"Juan", "email":"juan.nuevo@ejemplo.com" }
+</code></pre>
+
+  <h2>Errores comunes a evitar</h2>
+  <ul>
+    <li>Dejar endpoints sin autenticación por error.</li>
+    <li>Exponer demasiada información en los errores (stack traces).</li>
+    <li>No validar tamaños o tipos de datos (riesgo de DoS o inyección).</li>
+    <li>No rotar o revocar claves y tokens comprometidos.</li>
+  </ul>
+
+  <h2>Resumen práctico</h2>
+  <p>La API es el contrato entre clientes y servidor. Diseñarla bien implica pensar en métodos correctos, seguridad, control de acceso, documentación y rendimiento. Si lo montas pensando en escenarios reales, evitas sorpresas. Si consumes una API, revisa documentación, límites, formatos y comportamiento ante errores.</p>
+
+  <p><a href="index.html">← Volver al blog</a></p>
+</div>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9778679469657985"
+     crossorigin="anonymous"></script>
+
+</body>
+</html>
