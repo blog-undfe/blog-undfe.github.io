@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cómo hacer un reporte completo de vulnerabilidades de una página web</title>
+  <link rel="icon" type="image/x-icon" href="https://ik94g-g2ilo0g24kig24-f4ig4h79g4inuy-p.netlify.app/pfp.jpg" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      overflow-x: hidden;
+    }
+    body {
+      background-color: #fefaf6;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px 15px;
+      background-image: url('https://images.alphacoders.com/296/thumb-1920-296801.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.94);
+      max-width: 800px;
+      width: 100%;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      overflow-wrap: break-word;
+      backdrop-filter: saturate(180%) blur(8px);
+      -webkit-backdrop-filter: saturate(180%) blur(8px);
+    }
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      color: #c95f86;
+      margin-bottom: 0.8rem;
+    }
+    p, ul, ol {
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+    ul, ol {
+      padding-left: 1.2rem;
+    }
+    a {
+      color: #c95f86;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Cómo hacer un reporte completo de vulnerabilidades de una página web</h1>
+      </div>
+
+    <section>
+      <h2>Introducción</h2>
+    </section>
+
+    <section>
+      <h2>Antes de empezar: autorización y alcance</h2>
+      <div class="card">
+        <ul>
+          <li><strong>Autorización previa:</strong> nunca pruebes sistemas sin permiso explícito. Un acuerdo por escrito o un programa de bug bounty/penetration testing autorizado es imprescindible.</li>
+          <li><strong>Definir el alcance:</strong> URLs, dominios y subdominios permitidos, entornos (producción/staging), y pruebas excluidas.</li>
+          <li><strong>Reglas de compromiso:</strong>límites de impacto (evitar interrupciones), manejo de datos sensibles y canales de comunicación con el equipo técnico.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Metodología (enfoque seguro y no intrusivo)</h2>
+      <p>La metodología debe priorizar la seguridad del servicio y la privacidad de los usuarios. A modo general:</p>
+      <ol>
+        <li><strong>Reconocimiento pasivo:</strong> enumerar URLs públicas, subdominios, tecnologías visibles y versiones expuestas mediante fuentes públicas y servicios de inventario. No realizar ataques activos en esta fase.</li>
+        <li><strong>Reconocimiento activo controlado:</strong> comprobaciones de configuración y exposición (paneles de administración públicos, formularios accesibles, endpoints documentados). Realiza pruebas y registra todo.</li>
+        <li><strong>Validación responsable:</strong> confirmar un hallazgo, documentando exactamente lo observado para que el equipo de la aplicación pueda reproducirlo.</li>
+        <li><strong>Clasificación y priorización:</strong> estimar el impacto y priorizar la corrección de acuerdo a riesgo para usuarios y negocio.</li>
+      </ol>
+      <p>Nota: evita enumeración agresiva o fuerza bruta en entornos productivos sin autorización expresa.</p>
+    </section>
+
+<section>
+  <h2>Checklist de elementos a revisar (no intrusivo)</h2>
+  <ul>
+    <li>Documentar la existencia de URLs sensibles o paneles administrativos accesibles públicamente (por ejemplo: <code>/admin</code>, <code>/login</code>, <code>/wp-admin</code>) y cualquier subdominio relacionado (por ejemplo: <code>admin.miweb.com</code>).</li>
+    <li>Si existen versiones de algun framework vulnerables, anotar la versión o indicios de versión y si estan parcheadas <strong>no</strong> intentar explotarlos sin autorización expresa.</li>
+    <li>evitar pruebas destructivas (por ejemplo, no realizar fuerza bruta en entornos productivos). En su lugar, documentar la existencia de contraseñas débiles potenciales.</li>
+    <li>Comprobar si hay indicios de brechas históricas o filtraciones de credenciales relacionadas con el dominio (mencionar la posibilidad sin divulgar datos ni enlazar a servicios concretos por motivos de seguridad y ética).</li>
+    <li>Revisar formularios públicos (registro, contacto, etc.) y documentar si las respuestas contienen campos adicionales que no deberían estar.</li>
+    <li>Si existe un flujo de registro/login, documentar comportamientos anómalos (por ejemplo: registro activo pero login deshabilitado) que puedan crear vectores involuntarios de exposición (y es ilogico tener registro pero no login activo).</li>
+    <li>Verificar si las respuestas de ciertos endpoints devuelven información de roles, privilegios u otros datos sensibles; registrar estos hallazgos sin intentar modificar roles ni privilegios.</li>
+    <li>Identificar tecnologías visibles (CMS, bases de datos, plugins, etc.) y anotar sus versiones para comprobar si hay correcciones o actualizaciones recomendadas; documentar vulnerabilidades conocidas relevantes sin ejecutar exploits.</li>
+    <li>Enumerar subdominios y entornos de prueba (por ejemplo: <code>pruebaweb.miweb.com</code>, <code>staging.miweb.com</code>); advertir sobre la existencia de entornos temporales o de desarrollo que puedan contener información sensible y recomendar su protección o eliminación si no son necesarios.</li>
+  </ul>
+</section>
+
+
+<section>
+  <h2>Cómo documentar cada hallazgo (plantilla práctica)</h2>
+  <p>Para cada hallazgo detectado, incluye los siguientes apartados en el informe:</p>
+  <div class="card">
+    <ol>
+      <li><strong>Título:</strong> frase corta y descriptiva (ej. "Exposición de subdominio de pruebas").</li>
+      <li><strong>Resumen ejecutivo (1–2 líneas):</strong> impacto general y activos afectados.</li>
+      <li><strong>Alcance / Activos afectados:</strong> dominios, URLs, entorno y credenciales usadas (si aplica y si está autorizado).</li>
+      <li><strong>Descripción técnica:</strong> explicar qué sucede de forma no operativa — cómo se manifiesta el problema.</li>
+      <li><strong>Impacto estimado:</strong> riesgo para la confidencialidad, integridad y disponibilidad; impacto en negocio y usuarios.</li>
+      <li><strong>Ejemplo reproducible seguro:</strong> evidencia reproducible en forma de capturas de pantalla, logs o fragmentos de respuesta. <em>Anonimiza</em> cualquier dato personal antes de incluirlo.</li>
+      <li><strong>Nivel de severidad:</strong> Bajo / Medio / Alto / Crítico (con justificación).</li>
+      <li><strong>Medidas de corrección:</strong> pasos concretos que el equipo técnico puede aplicar (actualizar versión, limitar acceso, aplicar parches, revisar configuración).</li>
+      <li><strong>Notas y referencias:</strong> enlaces a documentación oficial o guías de parcheo (sin incluir exploits).</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <h2>Clasificación de severidad (orientativa)</h2>
+  <p>Una clasificación clara ayuda a priorizar:</p>
+  <ul>
+    <li><strong>Crítico:</strong> acceso completo a datos sensibles o posibilidad de comprometer la plataforma sin intervención adicional.</li>
+    <li><strong>Alto:</strong> fallos que permiten manipulación de datos importantes o escalado de privilegios en condiciones comunes.</li>
+    <li><strong>Medio:</strong> exposición de configuraciones, datos parcialmente sensibles o vectores que requieren condiciones específicas para explotarse.</li>
+    <li><strong>Bajo:</strong> información de contexto, cabeceras ausentes, configuraciones recomendables pero de bajo impacto inmediato.</li>
+  </ul>
+  <p>Si empleas métricas formales (p. ej., CVSS) incluye la puntuación y vector en el informe.</p>
+</section>
+
+<section>
+  <h2>Evidencia y manejo de la misma</h2>
+  <p>Documentar bien la evidencia para que el equipo pueda validar los hallazgos:</p>
+  <ul>
+    <li>Incluye solo la parte necesaria de logs o capturas; <strong>elimina</strong> datos personales o secretos antes de compartir.</li>
+    <li>Guarda y entrega evidencia en formatos comunes (capturas PNG, PDFs, .txt con respuestas HTTP).</li>
+    <li>Si la incidencia afecta a cuentas, comunica el riesgo sin divulgar contraseñas ni credenciales en el informe.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Recomendaciones de mitigación (ejemplos generales)</h2>
+  <ul>
+    <li>Mantener software y dependencias actualizadas; aplicar parches publicados por los proveedores.</li>
+    <li>Restringir acceso a paneles administrativos (VPN, listas de IP permitidas, autenticación robusta).</li>
+    <li>Revisar subdominios y entornos de prueba: eliminarlos o protegerlos si no son necesarios.</li>
+    <li>Revisar y aplicar políticas de contraseñas y rotación de credenciales; activar doble factor allí donde sea posible.</li>
+    <li>Implementar y revisar cabeceras de seguridad (CSP, HSTS, X-Frame-Options, etc.) y prácticas de endurecimiento.</li>
+    <li>Realizar revisiones periódicas y pruebas autorizadas por terceros para validar las correcciones.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Proceso de notificación coordinada</h2>
+  <ol>
+    <li>Contacta al equipo propietario por canales seguros y documentados (correo de seguridad o formulario de contacto oficial).</li>
+    <li>Proporciona un resumen ejecutivo y una versión técnica, y ofrece el ejemplo reproducible y la evidencia anonimizada.</li>
+    <li>Establece un canal de comunicación para seguimiento y acuerda plazos razonables para la corrección.</li>
+    <li>No publiques detalles técnicos ni el ejemplo reproducible hasta que el problema esté resuelto o hasta que el proveedor lo autorice.</li>
+    <li>Si no recibes respuesta, considera escalar a contactos superiores o a plataformas de notificación coordinada —siempre documentando tus intentos de contacto.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Herramientas y recursos (categorías)</h2>
+  <p>Para cada actividad es útil conocer herramientas/recursos, pero usa siempre herramientas autorizadas y configuradas para pruebas seguras:</p>
+  <ul>
+    <li><strong>Detección e inventariado:</strong> servicios de DNS, certificados y registros públicos para identificar subdominios y tecnología.</li>
+    <li><strong>Revisión pasiva:</strong> fuentes públicas y feeds de seguridad para ver si existen CVE aplicables a versiones detectadas.</li>
+    <li><strong>Comprobación no destructiva:</strong> proxies y escáneres configurados para pruebas seguras y con límites de velocidad.</li>
+    <li><strong>Documentación de seguridad:</strong> guías oficiales del software usado y entradas CVE para versiones conocidas.</li>
+  </ul>
+  <p>Evita compartir o publicar enlaces a explotaciones; en su lugar, enlaza a documentación oficial de parches y mitigaciones.</p>
+</section>
+
+    <section>
+      <h2>Plantilla resumida (para copiar en el reporte)</h2>
+      <div class="card">
+        <pre style="white-space:pre-wrap; margin:0; font-family:inherit;">
+Título: 
+Resumen ejecutivo: 
+Activo(s) afectado(s): 
+Fecha de descubrimiento: 
+Descripción técnica: 
+Impacto estimado: 
+Evidencia (sanitizada): 
+Severidad: 
+Recomendaciones: 
+Contacto para seguimiento:
+        </pre>
+      </div>
+    </section>
+
+    <p><a href="index.html">← Volver al blog</a></p>
+  </div>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9778679469657985"
+     crossorigin="anonymous"></script>
+</body>
+</html>
